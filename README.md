@@ -1,6 +1,6 @@
 # Eaco
 
-TODO: Write a gem description
+Eacus, the holder of the keys of Hades, is an ACL-based authorization framework for Ruby.
 
 ## Installation
 
@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+TODO
 
 ## Contributing
 
