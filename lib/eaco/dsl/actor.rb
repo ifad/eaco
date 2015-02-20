@@ -45,7 +45,7 @@ module Eaco
       #
       def designators(&block)
         new_designators = target_eval do
-          @_designators ||= Designators.eval(self, &block).freeze
+          @_designators = Designators.eval(self, &block).freeze
         end
 
         all_designators.update(new_designators)
