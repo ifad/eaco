@@ -7,8 +7,7 @@ module Eaco
       end
 
       def initialize(target, options)
-        @target = target
-        @options = options
+        @target, @options = target, options
 
         if mod = module_get(:ClassMethods)
           @target.extend mod

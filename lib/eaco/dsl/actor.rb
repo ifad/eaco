@@ -4,6 +4,7 @@ module Eaco
     class Actor < Base
       def designators(&block)
         target = @target
+
         self.class.instance_eval do
           @designators ||= Designators.eval(target, &block)
         end
@@ -28,8 +29,7 @@ module Eaco
         attr_reader :designators
 
         def initialize(target)
-          @target = target
-          @designators = {}
+          @target, @designators = target, {}
         end
 
         private
