@@ -7,7 +7,9 @@ module Eaco
       def install(model)
         # Create the ACL constant
         acl_class = Class.new(Eaco::ACL)
-        model.const_set(:ACL, acl_class)
+        unless model.const_defined?(:ACL)
+          model.const_set(:ACL, acl_class)
+        end
 
         # Define unmarshalers
         orm = if model.respond_to?(:base_class)
