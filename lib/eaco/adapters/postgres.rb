@@ -7,9 +7,9 @@ module Eaco
       def accessible_by(user)
         return scoped if user.is_admin?
 
-       designators = user.designators.map {|d| quote_value(d) }
+        designators = user.designators.map {|d| quote_value(d) }
 
-       where("acl ?| array[#{designators.join(',')}]")
+        where("acl ?| array[#{designators.join(',')}]")
       end
     end
 
