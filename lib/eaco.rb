@@ -1,8 +1,13 @@
 require 'eaco/version'
+
 require 'eaco/acl'
-require 'eaco/controller'
 require 'eaco/designator'
 require 'eaco/dsl'
+
+if defined? Rails
+  require 'eaco/railtie'
+  require 'eaco/controller'
+end
 
 require 'pathname'
 

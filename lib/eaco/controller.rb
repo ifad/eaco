@@ -38,7 +38,3 @@ module Eaco
   end
 
 end
-
-ActionController::Base.instance_eval do
-  include Eaco::Controller
-end
