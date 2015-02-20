@@ -10,11 +10,14 @@ module Eaco
   class Forbidden < Error; end
   class Malformed < Error; end
 
-  autoload :ACL, 'eaco/acl'
-  autoload :Adapters, 'eaco/adapters'
-  autoload :DSL, 'eaco/dsl'
+  autoload :ACL,        'eaco/acl'
+  autoload :Actor,      'eaco/actor'
+  autoload :Adapters,   'eaco/adapters'
+  autoload :DSL,        'eaco/dsl'
   autoload :Designator, 'eaco/designator'
-  autoload :VERSION, 'eaco/version'
+  autoload :Resource,   'eaco/resource'
+
+  autoload :VERSION,    'eaco/version'
 
   # Parses and evaluates authorization rules
   #

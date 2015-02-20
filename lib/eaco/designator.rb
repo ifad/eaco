@@ -3,9 +3,7 @@ module Eaco
   class Designator < String
     class << self
       def make(type, value)
-        Eaco::DSL::Actor.designators.fetch(type.intern).new(value)
-      rescue KeyError
-        raise Error, "Designator not found: #{type.inspect}"
+        Eaco::DSL::Actor.find_designator(type).new(value)
       end
 
       def parse(designator)
