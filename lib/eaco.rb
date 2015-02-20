@@ -1,12 +1,5 @@
-require 'eaco/version'
-
-require 'eaco/acl'
-require 'eaco/designator'
-require 'eaco/dsl'
-
 if defined? Rails
   require 'eaco/railtie'
-  require 'eaco/controller'
 end
 
 require 'pathname'
@@ -16,6 +9,12 @@ module Eaco
   class Error < StandardError; end
   class Forbidden < Error; end
   class Malformed < Error; end
+
+  autoload :ACL, 'eaco/acl'
+  autoload :Adapters, 'eaco/adapters'
+  autoload :DSL, 'eaco/dsl'
+  autoload :Designator, 'eaco/designator'
+  autoload :VERSION, 'eaco/version'
 
   # Parses and evaluates authorization rules
   #

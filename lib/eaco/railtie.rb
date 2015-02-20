@@ -1,12 +1,14 @@
 module Eaco
 
+  autoload :Controller, 'eaco/controller'
+
   class Railtie < ::Rails::Railtie
     initializer 'eaco.parse-rules' do
       Eaco.parse!
 
       unless Rails.configuration.cache_classes
         ActionDispatch::Reloader.to_prepare do
-          Authorization.parse!
+          Eaco.parse!
         end
       end
     end
