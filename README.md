@@ -2,6 +2,10 @@
 
 Eacus, the holder of the keys of Hades, is an ACL-based authorization framework for Ruby.
 
+## Design
+
+TODO
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -18,7 +22,44 @@ Or install it yourself as:
 
 ## Usage
 
-TODO
+`config/authorization.rb`:
+
+```ruby
+
+    # Defines `Document` to be an authorized resource.
+    #
+    # Adds Document.accessible_by and Document#allows
+    #
+    authorize Document, using: :lucene do
+      roles :owner, :editor, :reader
+
+      permissions do
+        reader   :read
+        editor   reader, :edit
+        assignee editor
+        owner    editor, :destroy
+      end
+    end
+
+
+    # Defines an actor and the sources from which the
+    # designators are harvested.
+    #
+    # Adds User#designators
+    #
+    actor User do
+      admin do |user|
+        user.admin?
+      end
+
+      designators do
+        user       from: :id
+        group      from: :group_ids
+        department from: :department_ids
+      end
+    end
+```
+
 
 ## Contributing
 
