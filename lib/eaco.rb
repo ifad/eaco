@@ -7,6 +7,7 @@ require 'pathname'
 module Eaco
 
   class Error < StandardError; end
+
   class Forbidden < Error; end
   class Malformed < Error; end
 
