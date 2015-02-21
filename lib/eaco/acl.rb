@@ -90,11 +90,13 @@ module Eaco
       end.to_a
     end
 
+    # :nodoc:
     def inspect
       "#<#{self.class.name}: #{super}>"
     end
-    alias :pretty_print_inspect :inspect
+    alias pretty_print_inspect inspect # :nodoc:
 
+    # :nodoc:
     def pretty_inspect
       "#{self.class.name}\n#{super}"
     end

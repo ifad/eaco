@@ -5,17 +5,17 @@ module Eaco
     #
     # Example:
     #
-    #    authorize Document do
-    #      roles :owner, :editor, :reader
+    #     authorize Document do
+    #       roles :owner, :editor, :reader
     #
-    #      role :owner, 'Author'
+    #       role :owner, 'Author'
     #
-    #      permissions do
-    #        reader   :read
-    #        editor   reader, :edit
-    #        owner    editor, :destroy
-    #      end
-    #    end
+    #       permissions do
+    #         reader   :read
+    #         editor   reader, :edit
+    #         owner    editor, :destroy
+    #       end
+    #     end
     #
     # The DSL installs authorization in the Document model,
     # defining three access roles. The `owner` role is given
@@ -85,9 +85,9 @@ module Eaco
 
       # Defines the roles valid for this resource. e.g.
       #
-      # authorize Foobar do
-      #   roles :owner, :editor, :reader
-      # end
+      #     authorize Foobar do
+      #       roles :owner, :editor, :reader
+      #     end
       #
       # Roles defined first have higher priority.
       #

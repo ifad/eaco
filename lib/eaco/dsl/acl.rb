@@ -10,6 +10,11 @@ module Eaco
     # * Installs the authorized collection extraction strategy .accessible_by
     #
     class ACL < Base
+
+      # Performs ACL setup on the target Resource class.
+      #
+      # See each private initializer for details.
+      #
       def initialize(*)
         super
 

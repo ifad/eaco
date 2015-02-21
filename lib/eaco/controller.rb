@@ -13,6 +13,8 @@ module Eaco
       before_filter :confront_eaco
     end
 
+    # Controller authorization DSL.
+    #
     module ClassMethods
       # Defines the ability required to access a given controller action.
       #
@@ -40,13 +42,18 @@ module Eaco
         actions.each {|action| authorization_permissions.update(action => target)}
       end
 
-      def authorization_permissions
-        @_authorization_permissions ||= {}
-      end
-
+      # Returns the permission required to access the given action.
+      #
       def permission_for(action)
         authorization_permissions[action] || authorization_permissions[:all]
       end
+
+      protected
+        # Permission requirements configured on this controller.
+        #
+        def authorization_permissions
+          @_authorization_permissions ||= {}
+        end
     end
 
     # Asks Eaco whether thou shalt pass or not.

@@ -1,6 +1,8 @@
 module Eaco
   module DSL
 
+    # Parses the actor DSL.
+    #
     class Actor < Base
       autoload :Designators, 'eaco/dsl/actor/designators'
 
@@ -12,6 +14,7 @@ module Eaco
         target_eval do
           include Eaco::Actor
 
+          ##
           # The designators implementations defined for this Actor as an Hash
           # keyed by designator type symbol and with the concrete Designator
           # implementations as values.
@@ -20,6 +23,7 @@ module Eaco
             @_designators
           end
 
+          ##
           # The logic that evaluates whether an Actor instance is an admin.
           #
           def admin_logic
@@ -32,13 +36,13 @@ module Eaco
       #
       # Example:
       #
-      #  actor User do
-      #    designators do
-      #      authenticated from: :class
-      #      user          from: :id
-      #      group         from: :group_ids
-      #    end
-      # end
+      #     actor User do
+      #       designators do
+      #         authenticated from: :class
+      #         user          from: :id
+      #         group         from: :group_ids
+      #       end
+      #     end
       #
       # Designator names are collected using `method_missing`, and are
       # named after the method name. Implementations are looked up in
@@ -70,11 +74,11 @@ module Eaco
       #
       # Example:
       #
-      #   actor User do
-      #     admin do |user|
-      #       user.admin?
+      #     actor User do
+      #       admin do |user|
+      #         user.admin?
+      #       end
       #     end
-      #   end
       #
       def admin(&block)
         target_eval do
@@ -94,6 +98,8 @@ module Eaco
           raise Malformed, "Designator not found: #{name.inspect}"
         end
 
+        # Saves the given designators in the global designators registry.
+        #
         def register_designators(new_designators)
           all_designators.update(new_designators)
         end

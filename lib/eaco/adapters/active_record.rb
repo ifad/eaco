@@ -6,10 +6,13 @@ module Eaco
     module ActiveRecord
       autoload :PostgresJSONb, 'eaco/adapters/active_record/postgres_jsonb'
 
-      def self.strategies
+      def self.strategies # :nodoc:
         {:pg_jsonb => PostgresJSONb}
       end
 
+      # Checks whether the model's data structure fits the ACL persistance
+      # requirements.
+      #
       def self.included(base)
         column = base.columns_hash.fetch('acl', nil)
 
@@ -22,11 +25,15 @@ module Eaco
         end
       end
 
+      # Returns the Resource's ACL
+      #
       def acl
         acl = read_attribute(:acl)
         self.class.acl.new(acl)
       end
 
+      # Sets the Resource's ACL
+      #
       def acl=(acl)
         write_attribute acl.to_hash
       end

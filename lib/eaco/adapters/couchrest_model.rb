@@ -8,11 +8,11 @@ module Eaco
     module CouchrestModel
       autoload :CouchDBLucene, 'eaco/adapters/couchrest_model/couchdb_lucene'
 
-      def self.strategies
+      def self.strategies # :nodoc:
         {lucene: CouchDBLucene}
       end
 
-      def self.included(base)
+      def self.included(base) # :nodoc:
         base.instance_eval do
           property :acl, acl
         end

@@ -44,6 +44,9 @@ module Eaco
       # Made in Italy.
       #
       module CouchDBLucene
+
+        # Returns authorized Resource objects accessible by the given Actor.
+        #
         def accessible_by(actor)
          return search(nil) if actor.is_admin?
 

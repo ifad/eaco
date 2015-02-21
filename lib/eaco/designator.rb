@@ -135,7 +135,12 @@ module Eaco
       super([ self.class.id, value ].join(':'))
     end
 
-    attr_reader :value, :instance
+    # This designator unique ID in the namespace of the designator type.
+    #
+    attr_reader :value
+
+    # :nodoc:
+    attr_reader :instance
 
     # Should return an extended description for this designator. You can then
     # use this to display it in your application.

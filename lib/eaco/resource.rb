@@ -9,11 +9,13 @@ module Eaco
   # access is denied. Negative authorizations are not yet implemented.
   #
   module Resource
-    def self.included(base)
+    def self.included(base) # :nodoc:
       base.extend ClassMethods
     end
 
-    module ClassMethods
+    module ClassMethods # :nodoc:
+      # Returns true if the given role is valid.
+      #
       def role?(role)
         role.to_sym.in?(roles)
       end
@@ -124,6 +126,10 @@ module Eaco
         return self.acl
       end
 
+      # Checks whether the given +role+ is valid for this Resource.
+      #
+      # Raises +Eaco::Error+ if not valid.
+      #
       def check_role!(role)
         unless self.class.role?(role)
           raise Error,
