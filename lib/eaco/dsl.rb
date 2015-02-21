@@ -3,6 +3,10 @@ module Eaco
   ##
   # Eaco DSL entry point.
   #
+  # @see DSL::Resource
+  # @see DSL::Actor
+  # @see DSL::ACL
+  #
   module DSL
     extend self # Oh the irony.
 
