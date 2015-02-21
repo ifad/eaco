@@ -163,7 +163,7 @@ module Eaco
     # Pretty prints the designator in your console
     #
     def inspect
-      %[#<#{self.class.name} Designator type:#{type} value:#{value.inspect}>]
+      %[#<Designator(#{self.class.name.demodulize}) value:#{value.inspect}>]
     end
 
     # Returns the designator's class label
