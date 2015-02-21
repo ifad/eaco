@@ -88,13 +88,9 @@ module Eaco
       # @return [void]
       #
       def install_persistance
-        adapter = {
-          'ActiveRecord::Base'     => Eaco::Adapters::ActiveRecord,
-          'CouchRest::Model::Base' => Eaco::Adapters::CouchrestModel,
-        }.fetch(orm.name, nil)
-
         if adapter
-          target.instance_eval { include adapter }
+          target.send(:include, adapter)
+          install_authorized_collection_strategy
 
         elsif target.respond_to?(:acl) && target.respond_to?(:acl=)
           raise Malformed, <<-EOF
@@ -104,18 +100,14 @@ module Eaco
           EOF
         end
 
-        if adapter && (strategy = adapter.strategies[ options.fetch(:using, nil) ])
-          target.extend strategy
-        end
-
         unless target.respond_to?(:accessible_by)
-          strategies = adapter.strategies.keys
+          strategies = adapter ? adapter.strategies.keys : []
 
           raise Malformed, <<-EOF
             Don't know how to look up authorized records on <#{target}>'s
             ORM (identified as <#{orm}>). To authorize <#{target}>
 
-            #{ unless strategies.blank?
+            #{ if strategies.size > 0
               "either use one of the available strategies: #{strategies.join(', ')} or"
             end }
 
@@ -124,6 +116,31 @@ module Eaco
             and send a pull request :-).
           EOF
         end
+      end
+
+      ##
+      # Looks up the authorized collection strategy within the Adapter,
+      # using the +:using+ option given to the +authorize+ Resource DSL
+      #
+      # @see DSL::Resource
+      #
+      # @return [void]
+      #
+      def install_authorized_collection_strategy
+        if adapter && (strategy = adapter.strategies[ options.fetch(:using, nil) ])
+          target.extend strategy
+        end
+      end
+
+      ##
+      # Tries to identify which ORM adapter to use for the +target+ class.
+      #
+      # @return [Class] the adapter implementation or nil if not available.
+      #
+      def adapter
+        { 'ActiveRecord::Base'     => Eaco::Adapters::ActiveRecord,
+          'CouchRest::Model::Base' => Eaco::Adapters::CouchrestModel,
+        }.fetch(orm.name, nil)
       end
 
       ##
