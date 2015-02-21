@@ -50,7 +50,8 @@ module Eaco
   #
   def self.parse_rules!(rules)
     unless rules.exist?
-      raise Malformed, "Please create #{rules.realpath} with Eaco authorization rules"
+      path = rules.realpath rescue rules.to_s
+      raise Malformed, "Please create #{path} with Eaco authorization rules"
     end
 
     eval! rules.read, rules.realpath.to_s
