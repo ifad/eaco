@@ -20,7 +20,7 @@ module Eaco
         role.to_sym.in?(roles)
       end
 
-      # Checks whether the ACL and permissiosn defined on this object
+      # Checks whether the ACL and permissions defined on this object
       # allow the given +user+ to perform the given +action+ on it, that
       # depends on the +role+ the user has on the target, calculated from
       # the +ACL+.
