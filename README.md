@@ -49,7 +49,7 @@ Or install it yourself as:
 
 ## Usage
 
-Create `config/authorization.rb`:
+Create `config/authorization.rb` [(rdoc)](http://www.rubydoc.info/github/ifad/eaco/master/Eaco/DSL)
 
 ```ruby
 # Defines `Document` to be an authorized resource.
@@ -62,7 +62,6 @@ authorize Document, using: :lucene do
   permissions do
     reader   :read
     editor   reader, :edit
-    assignee editor
     owner    editor, :destroy
   end
 end
@@ -78,11 +77,61 @@ actor User do
   end
 
   designators do
-    user       from: :id
-    group      from: :group_ids
-    department from: :department_ids
+    user  from: :id
+    group from: :groups
+    tag   from: :tags
   end
 end
+```
+
+Given a Resource [(rdoc)](http://www.rubydoc.info/github/ifad/eaco/master/Eaco/Resource)
+with an ACL [(rdoc)](http://www.rubydoc.info/github/ifad/eaco/master/Eaco/ACL):
+
+```ruby
+# An example ACL
+>> document = Document.first
+=> #<Document id:42 name:"President's report for loans.docx" [...]>
+>> document.acl
+=> #<Document::ACL {"user:10" => :owner, "group:reviewers" => :reader}>
+```
+
+and an Actor [(rdoc)](http://www.rubydoc.info/github/ifad/eaco/master/Eaco/Actor):
+
+```ruby
+# An example Actor
+>> user = User.find(10)
+=> #<User id:10 name:"Bob Fropp" group_ids:['employees'], tags:['english']>
+>> user.designators
+=> #<Set{ #<Designator(User) value:10>, #<Designator(Group) value:"employees">, #<Designator(Tag) value:"english"> }
+```
+
+you can check if the Actor can perform a specific action on the Resource:
+
+```ruby
+>> user.can? :read, document
+=> true
+
+>> document.allows? :read, user
+=> true
+```
+
+and which access level (`role`) the Actor has for this Resource:
+
+```ruby
+>> document.role_of user
+=> :owner
+
+>> boss = User.find_by_group('reviewer').first
+=> #<User id:42 name:"Jake Leister" group_ids:['reviewers', 'bosses']>
+
+>> document.role_of boss
+=> :reader
+
+>> boss.can? :destroy, document
+=> false
+
+>> user.can? :destroy, document
+=> true
 ```
 
 Grant reader access to a specific user:
@@ -94,7 +143,7 @@ Grant reader access to a specific user:
 >> document.grant :reader, :user, user.id
 => #<Document::ACL "user:42" => :reader>
 
->> user.can? :read, d
+>> user.can? :read, document
 => true
 ```
 
@@ -102,19 +151,19 @@ Grant reader access to a group:
 
 ```ruby
 >> user
-=> #<User id:42 group_ids:[3,7,1]>
+=> #<User id:42 groups:['reviewers']>
 
 >> document.grant :reader, :group, 3
-=> #<Document::ACL "group:3" => :reader>
+=> #<Document::ACL "group:reviewers" => :reader>
 
->> user.can? :read, d
+>> user.can? :read, document
 => true
 
 >> document.allows? :read, user
 => true
 ```
 
-Obtain a collection of Resources accessible by a given Actor:
+Obtain a collection of Resources accessible by a given Actor [(rdoc)](http://www.rubydoc.info/github/ifad/eaco/master/Eaco/Adapters):
 
 ```ruby
 >> Document.accessible_by(user)
@@ -122,6 +171,7 @@ Obtain a collection of Resources accessible by a given Actor:
 
 Check whether a controller action can be accessed by an user. Your
 `ApplicationController` must respond to `current_user` for this to work.
+[(rdoc)](http://www.rubydoc.info/github/ifad/eaco/master/Eaco/Controller)
 
 ```ruby
 class DocumentsController < ApplicationController
