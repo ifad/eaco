@@ -60,7 +60,7 @@ module Eaco
           @_designators = Designators.eval(self, &block).freeze
         end
 
-        all_designators.update(new_designators)
+        Actor.register_designators(new_designators)
       end
 
       # Defines the boolean logic that determines whether an user is an
@@ -82,23 +82,29 @@ module Eaco
         end
       end
 
-      # Looks up the given designator implementation by its +name+.
-      #
-      # Raises +Eaco::Malformed+ if the designator is not found.
-      #
-      def find_designator(name)
-        all_designators.fetch(name.intern)
-
-      rescue KeyError
-        raise Malformed, "Designator not found: #{name.inspect}"
-      end
-
-      private
-        # A registry of all the defined designators.
+      class << self
+        # Looks up the given designator implementation by its +name+.
         #
-        def all_designators
-          @_all_designators ||= {}
+        # Raises +Eaco::Malformed+ if the designator is not found.
+        #
+        def find_designator(name)
+          all_designators.fetch(name.intern)
+
+        rescue KeyError
+          raise Malformed, "Designator not found: #{name.inspect}"
         end
+
+        def register_designators(new_designators)
+          all_designators.update(new_designators)
+        end
+
+        private
+          # A registry of all the defined designators.
+          #
+          def all_designators
+            @_all_designators ||= {}
+          end
+      end
     end
 
   end
