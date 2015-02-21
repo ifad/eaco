@@ -120,6 +120,8 @@ module Eaco
         acl = yield self.acl.try(:dup) || self.class.acl.new
 
         self.acl = acl unless acl == self.acl
+
+        return self.acl
       end
 
       def check_role!(role)
