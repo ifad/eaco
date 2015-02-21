@@ -135,7 +135,7 @@ module Eaco
     #     |   "group:medium bloggers"=>:editor
     #     | }
     #
-    def identify(designator, actor_or_id)
+    def identify(designator, actor_or_id = nil)
       if designator.is_a?(Eaco::Designator)
         [designator]
 
