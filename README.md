@@ -119,7 +119,7 @@ Check whether a controller action can be accessed by an user. Your
 
 ```ruby
     class DocumentsController < ApplicationController
-      before_filter :find_documenet
+      before_filter :find_document
 
       authorize :edit, :update, [:document, :read]
 
