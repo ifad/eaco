@@ -3,6 +3,8 @@
 Eacus, the holder of the keys of Hades, is an ACL-based authorization
 framework for Ruby.
 
+![Eaco e Telamone][eaco-e-telamone]
+
 ## Design
 
 Eaco provides your context's Resources discretionary access by an Actor.
@@ -137,3 +139,5 @@ Check whether a controller action can be accessed by an user. Your
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
+
+[eaco-e-telamone]: http://upload.wikimedia.org/wikipedia/commons/7/70/Aeacus_telemon.jpg "Aeacus telemon by user Ravenous at en.wikipedia.org - Public domain through Wikimedia Commons - http://commons.wikimedia.org/wiki/File:Aeacus_telemon.jpg#mediaviewer/File:Aeacus_telemon.jpg"
