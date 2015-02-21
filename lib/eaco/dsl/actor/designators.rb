@@ -6,13 +6,20 @@ module Eaco
       #
       # Parses the following DSL:
       #
-      #  actor User do
-      #    designators do
-      #      authenticated from: :class
-      #      user          from: :id
-      #      group         from: :group_ids
-      #    end
-      # end
+      #   actor User do
+      #     designators do
+      #       authenticated from: :class
+      #       user          from: :id
+      #       group         from: :group_ids
+      #     end
+      #   end
+      #
+      # and looks up within the Designators namespace of the Actor model the
+      # concrete implementations of the described designators.
+      #
+      # Here the User model is expected to define an User::Designators module
+      # and to implement within it a `class Authenticated < Eaco::Designator`
+      # See +Eaco::Designator+ for details about Designators.
       #
       class Designators
         def self.eval(klass, &block)
@@ -30,6 +37,7 @@ module Eaco
           # Looks up the implementation for the designator of the given
           # +name+, configures it with the given +options+ and saves it in
           # the designators map.
+          #
           def define_designator(name, options)
             designators[name] = implementation_for(name).configure!(options)
           end
@@ -39,16 +47,21 @@ module Eaco
             impl = name.to_s.camelize.intern
 
             unless container.const_defined?(impl)
-              raise NameError, "Implementation #{container}::#{impl} for designator #{name} not found"
+              raise Malformed, <<-EOF
+                Implementation #{container}::#{impl} for Designator #{name} not found
+              EOF
             end
 
             container.const_get(impl)
           end
 
+          # Looks up the `Designators` namepsace within the Actor's class or
+          # raises if not found.
+          #
           def container
             @_container ||= begin
               unless target.const_defined?(:Designators)
-                raise NameError, "Please put designators implementations in #{target}::Designators"
+                raise Malformed, "Please put designators implementations in #{target}::Designators"
               end
 
               target.const_get(:Designators)

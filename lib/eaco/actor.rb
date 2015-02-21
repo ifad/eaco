@@ -3,6 +3,12 @@ module Eaco
   # An Actor is an entity whose access to Resources is discretionary,
   # depending on the Role this actor has in the ACL.
   #
+  # The role of this +Actor+ is calculated from the +Designator+ that
+  # the actor instance has, and the +ACL+ instance attached to the
+  # +Resource+.
+  #
+  # See +Eaco::Resource+ for details.
+  #
   module Actor
 
     # Returns the designators granted to this user.
@@ -12,7 +18,7 @@ module Eaco
     def designators
       @_designators ||= Set.new.tap do |ret|
         self.class.designators.each do |_, designator|
-          ret.merge designator.eval(self)
+          ret.merge designator.harvest(self)
         end
       end
     end

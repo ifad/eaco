@@ -1,6 +1,11 @@
 module Eaco
   module DSL
 
+    # Base DSL class, provides the target class, the given options, and a
+    # `target_eval` helper to do instance_eval on the target.
+    #
+    # Nothing fancy.
+    #
     class Base
       def self.eval(klass, options = {}, &block)
         new(klass, options).tap do |dsl|

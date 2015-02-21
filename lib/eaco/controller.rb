@@ -2,11 +2,15 @@ require 'active_support/concern'
 
 module Eaco
 
+  # An ActionController plugin to verify authorization in Rails applications.
+  #
+  # Tested on Rails 3.2 and up on Ruby 2.0 and up.
+  #
   module Controller
     extend ActiveSupport::Concern
 
     included do
-      before_filter :check_authorization
+      before_filter :confront_eaco
     end
 
     module ClassMethods
@@ -14,7 +18,7 @@ module Eaco
       #
       # Example:
       #
-      #   class DocumentsController
+      #   class DocumentsController < ApplicationController
       #     authorize :index,           [:folder, :index]
       #     authorize :show,            [:folder, :read]
       #     authorize :create, :update, [:folder, :write]
@@ -45,21 +49,29 @@ module Eaco
       end
     end
 
-    # Checks that the current user can access this action
+    # Asks Eaco whether thou shalt pass or not.
     #
-    def check_authorization
+    # The implementation is left in this method's body, despite a bit long for
+    # many's taste, as it is pretty imperative and simple code. Moreover, the
+    # less we pollute ActionController's namespace, the better.
+    #
+    def confront_eaco
       action = params[:action].intern
-      ivar, perm = self.class.permission_for(action)
+      resource_ivar, permission = self.class.permission_for(action)
 
-      if ivar && perm
-        resource = instance_variable_get(['@', ivar].join.intern)
+      if resource_ivar && permission
+        resource = instance_variable_get(['@', resource_ivar].join.intern)
 
         if resource.nil?
-          raise Error, "Cannot find @#{ivar} while authorizing #{self}##{action}"
+          raise Error, <<-EOF
+            @#{resource_ivar} is not set, can't authorize #{self}##{action}
+          EOF
         end
 
-        unless current_user.can? perm, resource
-          raise Forbidden, "`#{current_user}' not authorized to `#{action}' on `#{resource}'"
+        unless current_user.can? permission, resource
+          raise Forbidden, <<-EOF
+            `#{current_user}' not authorized to `#{action}' on `#{resource}'
+          EOF
         end
       end
     end

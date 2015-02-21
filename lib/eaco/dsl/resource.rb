@@ -1,6 +1,30 @@
 module Eaco
   module DSL
 
+    # Parses the Resource definition DSL.
+    #
+    # Example:
+    #
+    #    authorize Document do
+    #      roles :owner, :editor, :reader
+    #
+    #      role :owner, 'Author'
+    #
+    #      permissions do
+    #        reader   :read
+    #        editor   reader, :edit
+    #        owner    editor, :destroy
+    #      end
+    #    end
+    #
+    # The DSL installs authorization in the Document model,
+    # defining three access roles. The `owner` role is given
+    # a label of "Author".
+    #
+    # Each role has then different abilities, defined in the
+    # permissions block. See +Eaco::DSL::Resource::Permissions+
+    # for details.
+    #
     class Resource < Base
       autoload :Permissions, 'eaco/dsl/resource/permissions'
 
@@ -10,15 +34,6 @@ module Eaco
       #
       def initialize(*)
         super
-
-        if adapter = options.fetch(:using, nil)
-          adapter = adapter.to_s.camelize
-          target.extend Eaco::Adapters.const_get(adapter)
-        end
-
-        unless target.respond_to?(:accessible_by)
-          raise Error, "To authorize #{target} either use an adapter or define your own `accessible_by` method."
-        end
 
         target_eval do
           include Eaco::Resource
@@ -87,7 +102,9 @@ module Eaco
 
       # Sets the given label on the given role.
       #
-      # TODO rename this method, or use it to pass options.
+      # TODO rename this method, or use it to pass options
+      # to improve readability of the DSL and to store more
+      # metadata with each role for future extensibility.
       #
       def role(role, label)
         target_eval do

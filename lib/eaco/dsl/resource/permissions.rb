@@ -15,17 +15,36 @@ module Eaco
       #   7 end
       #
       # Within the block, each undefined method call defines a new
-      # method that returns the given arguments. E.g. on line 4 above
-      # the `reader` call then defines the `reader` method that returns
-      # a #<Set: {$read_foo, :read_bar}>.
+      # method that returns the given arguments.
+      #
+      # After evaluating line 3 above:
+      #
+      #   >> reader
+      #   => #<Set{ :read_foo, :read_bar }>
       #
       # The method is used then on line 4, giving the `editor` role the
-      # same set of permissions granted to the `reader`.
+      # same set of permissions granted to the `reader`, plus its own
+      # set of permissions:
+      #
+      #   >> editor
+      #   => #<Set{ :read_foo, :read_bar, :edit_foo, :edit_bar }>
       #
       class Permissions
         # Evaluates the given block in the context of a new collector
         #
-        # Returns a frozen Hash of permissions.
+        # Returns an Hash of permissions, keyed by role.
+        #
+        #   >> Permissions.eval do
+        #    |   permissions do
+        #    |     reader :read
+        #    |     editor reader, :edit
+        #    |   end
+        #    | end
+        #
+        #   => {
+        #    |   reader: #<Set{ :read },
+        #    |   editor: #<Set{ :read, :edit }
+        #    | }
         #
         def self.eval(&block)
           new.tap {|c| c.instance_eval(&block)}.result
@@ -37,18 +56,35 @@ module Eaco
           @permissions = Hash.new {|hsh, key| hsh[key] = Set.new}
         end
 
-        attr_reader :permissions
-
-        # Returns the collected permissions in a plain hash without
-        # a default block.
+        # Returns the collected permissions in a plain Hash, lacking the
+        # default block used by the collector's internals - to give to
+        # the outside an Hash with a predictable behaviour :-).
         #
         def result
           Hash.new.merge(@permissions)
         end
 
         private
-          def define_permissions(role, perms)
-            perms = perms.inject(Set.new) do |set, perm|
+          # Here the method name is the role code. If we already have defined
+          # permissions for the given role, those are returned.
+          #
+          # Else, save_permission is called to memoize the given permissions
+          # for the role.
+          #
+          def method_missing(role, *permissions)
+            if @permissions.key?(role)
+              @permissions[role]
+            else
+              save_permission(role, permissions)
+            end
+          end
+
+          # Memoizes the given set of permissions for the given role.
+          #
+          # Raises +Eaco::Malformed+ if the syntax is not valid.
+          #
+          def save_permission(role, permissions)
+            permissions = permissions.inject(Set.new) do |set, perm|
               if perm.is_a?(Symbol)
                 set.add perm
 
@@ -56,19 +92,14 @@ module Eaco
                 set.merge perm
 
               else
-                raise Error, "Invalid permission definition: #{perm.inspect}"
+                raise Malformed, <<-EOF
+                  Invalid #{role} permission definition: #{perm.inspect}.
+                  Permissions can be defined only by plain symbols.
+                EOF
               end
             end
 
-            permissions[role].merge(perms)
-          end
-
-          def method_missing(method, *args, &block)
-            if permissions.key?(method)
-              permissions[method]
-            else
-              define_permissions(method, args)
-            end
+            @permissions[role].merge(permissions)
           end
       end
 

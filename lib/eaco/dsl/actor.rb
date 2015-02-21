@@ -4,19 +4,23 @@ module Eaco
     class Actor < Base
       autoload :Designators, 'eaco/dsl/actor/designators'
 
+      # Initializes an Actor entity.
+      #
       def initialize(*)
         super
 
         target_eval do
           include Eaco::Actor
 
-          # The designators implementations defined for this Actor
+          # The designators implementations defined for this Actor as an Hash
+          # keyed by designator type symbol and with the concrete Designator
+          # implementations as values.
           #
           def designators
             @_designators
           end
 
-          # The logic that defines whether this Actor is an admin
+          # The logic that evaluates whether an Actor instance is an admin.
           #
           def admin_logic
             @_admin_logic
@@ -42,6 +46,8 @@ module Eaco
       #
       # Each designator implementation is expected to be named after the
       # designator's name, camelized, and inherit from Eaco::Designator.
+      #
+      # See +Eaco::DSL::Actor::Designators+.
       #
       def designators(&block)
         new_designators = target_eval do
@@ -72,13 +78,13 @@ module Eaco
 
       # Looks up the given designator implementation by its +name+.
       #
-      # Raises +Error+ if the designator is not found.
+      # Raises +Eaco::Malformed+ if the designator is not found.
       #
       def find_designator(name)
         all_designators.fetch(name.intern)
 
       rescue KeyError
-        raise Error, "Designator not found: #{name.inspect}"
+        raise Malformed, "Designator not found: #{name.inspect}"
       end
 
       private

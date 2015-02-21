@@ -1,10 +1,11 @@
 module Eaco
 
+  # Persistance adapters for ACL objects and authorized collections extractor
+  # strategies.
+  #
   module Adapters
-    autoload :ACL,      'eaco/adapters/acl'
-
-    autoload :Lucene,   'eaco/adapters/lucene'
-    autoload :Postgres, 'eaco/adapters/postgres'
+    autoload :ActiveRecord,   'eaco/adapters/active_record'
+    autoload :CouchrestModel, 'eaco/adapters/couchrest_model'
   end
 
 end

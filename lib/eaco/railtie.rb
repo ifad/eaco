@@ -2,6 +2,14 @@ module Eaco
 
   autoload :Controller, 'eaco/controller'
 
+  # Initializer for Rails 3 and up
+  #
+  # * Parses the configuration rules upon startup and, in development, after a
+  #   console `reload!`.
+  #
+  # * Installs +Eaco::Controller+ authorization filters in
+  # +ActionController::Base+.
+  #
   class Railtie < ::Rails::Railtie
     initializer 'eaco.parse-rules' do
       Eaco.parse!
