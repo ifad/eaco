@@ -24,20 +24,31 @@ module Eaco
   autoload :Designator, 'eaco/designator'
   autoload :Resource,   'eaco/resource'
 
+  # The location of the default rules file
+  DEFAULT_RULES = Pathname('./config/authorization.rb')
+
   ##
-  # Parses and evaluates the authorization rules from
-  #
-  #   ./config/authorization.rb
+  # Parses and evaluates the authorization rules from the {DEFAULT_RULES}.
   #
   # The authorization rules define all the authorization framework behaviour
-  # through a DSL. Please see +Eaco::DSL+ and below for details.
+  # through the {DSL}
   #
-  # @return true
-  # @raise  Eaco::Error if an error occurs during parsing.
+  # @return (see .eval!)
   #
   def self.parse_default_rules_file!
-    rules = Pathname('./config/authorization.rb')
+    parse_rules! DEFAULT_RULES
+  end
 
+  ##
+  # Parses the given +rules+ file.
+  #
+  # @param rules [Pathname]
+  #
+  # @return (see .eval!)
+  #
+  # @raise [Malformed] if the +rules+ file does not exist.
+  #
+  def self.parse_rules!(rules)
     unless rules.exist?
       raise Malformed, "Please create #{rules.realpath} with Eaco authorization rules"
     end
