@@ -152,7 +152,9 @@ module Eaco
       # @see DSL::Actor::Designators#implementation_for
       #
       def id
-        @_id ||= self.designator_name.underscore.intern
+        @_id ||= self.designator_name.gsub(/([a-z])?([A-Z])/) do |x|
+          [$1, $2.downcase].compact.join '_'
+        end.intern
       end
       alias type id
 
