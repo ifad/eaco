@@ -80,8 +80,11 @@ module Eaco
           # Here the method name is the role code. If we already have defined
           # permissions for the given role, those are returned.
           #
-          # Else, save_permission is called to memoize the given permissions
-          # for the role.
+          # Else, {#save_permission} is called to memoize the given permissions
+          # for the +role+.
+          #
+          # @param role [Symbol]
+          # @param permissions [Array] permissions to grant to the given +role+.
           #
           # @return [Set]
           #
@@ -95,6 +98,9 @@ module Eaco
 
           ##
           # Memoizes the given set of permissions for the given role.
+          #
+          # @param role [Symbol]
+          # @param permissions [Array]
           #
           # @return [Set]
           #

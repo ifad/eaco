@@ -14,6 +14,34 @@ module Eaco
   #
   module Actor
 
+    # @private
+    def self.included(base)
+      base.extend ClassMethods
+    end
+
+    ##
+    # Singleton methods added to Actor classes.
+    #
+    module ClassMethods
+      ##
+      # The designators implementations defined for this Actor as an Hash
+      # keyed by designator type symbol and with the concrete Designator
+      # implementations as values.
+      #
+      # @see DSL::Actor#initialize
+      #
+      def designators
+      end
+
+      ##
+      # The logic that evaluates whether an Actor instance is an admin.
+      #
+      # @see DSL::Actor#initialize
+      #
+      def admin_logic
+      end
+    end
+
     ##
     # @return [Set] the designators granted to this Actor.
     #

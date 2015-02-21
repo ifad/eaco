@@ -14,7 +14,7 @@ module Eaco
   # designators of an Actor and the ones defined in the ACL gives the role of
   # the Actor for the Resource that the ACL secures.
   #
-  # Designators for actors are defined through the DSL, see {DSL::Actor}+
+  # Designators for actors are defined through the DSL, see {DSL::Actor}
   #
   # @see ACL
   # @see Actor

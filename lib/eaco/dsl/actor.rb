@@ -2,7 +2,20 @@ module Eaco
   module DSL
 
     ##
-    # Parses the actor DSL.
+    # Parses the Actor DSL, that describes how to harvest {Designator}s from
+    # an {Actor} and how to identify it as an +admin+, or superuser.
+    #
+    #   actor User do
+    #     admin do |user|
+    #       user.admin?
+    #     end
+    #
+    #     designators do
+    #       authenticated from: :class
+    #       user          from: :id
+    #       group         from: :group_ids
+    #     end
+    #   end
     #
     class Actor < Base
       autoload :Designators, 'eaco/dsl/actor/designators'
@@ -10,24 +23,18 @@ module Eaco
       ##
       # Initializes an Actor class.
       #
+      # @see Eaco::Actor
+      #
       def initialize(*)
         super
 
         target_eval do
           include Eaco::Actor
 
-          ##
-          # The designators implementations defined for this Actor as an Hash
-          # keyed by designator type symbol and with the concrete Designator
-          # implementations as values.
-          #
           def designators
             @_designators
           end
 
-          ##
-          # The logic that evaluates whether an Actor instance is an admin.
-          #
           def admin_logic
             @_admin_logic
           end
