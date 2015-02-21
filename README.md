@@ -33,19 +33,15 @@ ACLs are hashes with designators as keys and roles as values. Extracting
 authorized collections requires only an hash key lookup mechanism in your
 database. Adapters are provided for PG's jsonb and for CouchDB-Lucene.
 
-## Installation within Rails
+## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'eaco'
+    gem 'eaco', github: 'ifad/eaco'
 
 And then execute:
 
     $ bundle
-
-Or install it yourself as:
-
-    $ gem install eaco
 
 ## Usage
 
