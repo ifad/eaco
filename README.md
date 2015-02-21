@@ -127,6 +127,9 @@ and which access level (`role`) the Actor has for this Resource:
 >> document.role_of boss
 => :reader
 
+>> boss.can? :read, document
+=> true
+
 >> boss.can? :destroy, document
 => false
 
