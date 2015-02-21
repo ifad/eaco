@@ -79,7 +79,7 @@ module Eaco
       #
       def permissions(&block)
         target_eval do
-          @_permissions = Permissions.eval(&block).freeze
+          @_permissions = Permissions.eval(self, &block).result.freeze
         end
       end
 

@@ -61,7 +61,7 @@ module Eaco
       #
       def designators(&block)
         new_designators = target_eval do
-          @_designators = Designators.eval(self, &block).freeze
+          @_designators = Designators.eval(self, &block).result.freeze
         end
 
         Actor.register_designators(new_designators)

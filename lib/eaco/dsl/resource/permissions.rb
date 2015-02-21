@@ -29,7 +29,7 @@ module Eaco
       #   >> editor
       #   => #<Set{ :read_foo, :read_bar, :edit_foo, :edit_bar }>
       #
-      class Permissions
+      class Permissions < Base
         # Evaluates the given block in the context of a new collector
         #
         # Returns an Hash of permissions, keyed by role.
@@ -46,13 +46,15 @@ module Eaco
         #    |   editor: #<Set{ :read, :edit }
         #    | }
         #
-        def self.eval(&block)
-          new.tap {|c| c.instance_eval(&block)}.result
+        def self.eval(*, &block)
+          super
         end
 
         # Sets up an hash with a default value of a new Set.
         #
-        def initialize
+        def initialize(*)
+          super
+
           @permissions = Hash.new {|hsh, key| hsh[key] = Set.new}
         end
 

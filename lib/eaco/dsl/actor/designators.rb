@@ -21,17 +21,19 @@ module Eaco
       # and to implement within it a `class Authenticated < Eaco::Designator`
       # See +Eaco::Designator+ for details about Designators.
       #
-      class Designators
-        def self.eval(klass, &block)
-          new(klass).tap {|design| design.instance_eval(&block) }.designators
-        end
+      class Designators < Base
+        def initialize(*) # :nodoc:
+          super
 
-        attr_reader :target, :designators
-
-        def initialize(target)
-          @target      = target
           @designators = {}
         end
+
+        attr_reader :designators # :nodoc:
+
+        # The parsed designators, keyed by type symbol and with concrete
+        # implementations as values.
+        #
+        alias result designators
 
         private
           # Looks up the implementation for the designator of the given
