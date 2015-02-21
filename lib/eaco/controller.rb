@@ -11,15 +11,6 @@ module Eaco
     extend ActiveSupport::Concern
 
     ##
-    # Adds {Controller#confront_eaco} as a +before_filter+
-    #
-    # @!method included
-    #
-    included do
-      before_filter :confront_eaco
-    end
-
-    ##
     # Controller authorization DSL.
     #
     module ClassMethods
@@ -45,6 +36,8 @@ module Eaco
       #
       # If an action has no authorization defined, access is granted.
       #
+      # Adds {Controller#confront_eaco} as a +before_filter+.
+      #
       # @param actions [Variadic] see above.
       #
       # @return void
@@ -53,6 +46,11 @@ module Eaco
         target = actions.pop
 
         actions.each {|action| authorization_permissions.update(action => target)}
+
+        @_eaco_filter_installed ||= begin
+          before_filter :confront_eaco
+          true
+        end
       end
 
       ##
