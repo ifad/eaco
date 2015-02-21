@@ -7,6 +7,7 @@ framework for Ruby.
 
 ## Status
 
+[![Build Status](https://travis-ci.org/ifad/eaco.svg)](https://travis-ci.org/ifad/eaco)
 [![Code Climate](https://codeclimate.com/github/ifad/eaco/badges/gpa.svg)](https://codeclimate.com/github/ifad/eaco)
 [![Inline docs](http://inch-ci.org/github/ifad/eaco.svg?branch=master)](http://inch-ci.org/github/ifad/eaco)
 
