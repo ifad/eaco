@@ -12,11 +12,11 @@ module Eaco
   #
   class Railtie < ::Rails::Railtie
     initializer 'eaco.parse-rules' do
-      Eaco.parse!
+      Eaco.setup!
 
       unless Rails.configuration.cache_classes
         ActionDispatch::Reloader.to_prepare do
-          Eaco.parse!
+          Eaco.setup!
         end
       end
     end

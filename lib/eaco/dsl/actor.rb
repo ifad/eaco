@@ -47,7 +47,13 @@ module Eaco
       # Each designator implementation is expected to be named after the
       # designator's name, camelized, and inherit from Eaco::Designator.
       #
-      # See +Eaco::DSL::Actor::Designators+.
+      # TODO all designators share the same namespace. This is due to the
+      # fact that designator string representations aren't scoped by the
+      # Actor model they belong to. As such when instantiating a designator
+      # from +Eaco::Designator.make+ the registry is consulted to find the
+      # designator implementation.
+      #
+      # See also +Eaco::DSL::Actor::Designators+.
       #
       def designators(&block)
         new_designators = target_eval do

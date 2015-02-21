@@ -17,20 +17,36 @@ module Eaco
   autoload :Designator, 'eaco/designator'
   autoload :Resource,   'eaco/resource'
 
-  # Parses and evaluates the authorization rules, looking them up into
-  # './config/authorization.rb'.
+  # Parses and evaluates the authorization rules from
   #
-  def self.parse!
+  #   ./config/authorization.rb
+  #
+  # The authorization rules define all the authorization framework behaviour
+  # through a DSL. Please see +Eaco::DSL+ and below for details.
+  #
+  def self.setup!
     rules = Pathname('./config/authorization.rb')
 
     unless rules.exist?
-      raise Malformed, "Please create #{rules.realpath} with authorization rules"
+      raise Malformed, "Please create #{rules.realpath} with Eaco authorization rules"
     end
 
     DSL.send :eval, rules.read, nil, rules.realpath.to_s, 1
 
   rescue => e
-    raise Error, "\n\n=== EACO === Error while parsing authorization rules: #{e.message}\n\n  #{e.backtrace.join("\n  ")}\n\n=== EACO ===\n\n"
+    raise Error, <<-EOF
+
+=== EACO === Error while evaluating rules
+
+#{e.message}
+
+ +--------- -- -
+ | #{e.backtrace.join("\n | ")}
+ +-
+
+=== EACO ===
+
+    EOF
   end
 
 end
