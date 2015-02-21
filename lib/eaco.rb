@@ -7,6 +7,8 @@ end
 
 require 'pathname'
 
+############################################################################
+#
 # Welcome to Eaco!
 #
 # Eaco is a full-fledged authorization framework for Ruby that allows you to
@@ -22,6 +24,7 @@ module Eaco
   autoload :Designator, 'eaco/designator'
   autoload :Resource,   'eaco/resource'
 
+  ##
   # Parses and evaluates the authorization rules from
   #
   #   ./config/authorization.rb
@@ -32,14 +35,31 @@ module Eaco
   # @return true
   # @raise  Eaco::Error if an error occurs during parsing.
   #
-  def self.setup!
+  def self.parse_default_rules_file!
     rules = Pathname('./config/authorization.rb')
 
     unless rules.exist?
       raise Malformed, "Please create #{rules.realpath} with Eaco authorization rules"
     end
 
-    DSL.send :eval, rules.read, nil, rules.realpath.to_s, 1
+    eval! rules.read, rules.realpath.to_s
+  end
+
+  ##
+  # Evaluates the given authorization rules +source+, orignally found on
+  # +path+.
+  #
+  # @param source [String] {DSL} source code
+  # @param path [String] Source code origin, for better backtraces.
+  #
+  # @return true
+  #
+  # @raise [Error] if something goes wrong while evaluating the DSL.
+  #
+  # @see DSL
+  #
+  def self.eval!(source, path)
+    DSL.send :eval, source, nil, path, 1
 
     true
   rescue => e

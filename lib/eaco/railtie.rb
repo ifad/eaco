@@ -8,21 +8,21 @@ module Eaco
   # * Parses the configuration rules upon startup and, in development, after a
   #   console +reload!+.
   #
-  # * Installs +Eaco::Controller+ authorization filters in +ActionController::Base+.
+  # * Installs {Controller} authorization filters in +ActionController::Base+.
   #
   class Railtie < ::Rails::Railtie
 
     ##
-    # Calls {Eaco.setup!}
+    # Calls {Eaco.parse_default_rules_file!}
     #
     # @!method parse_rules
     #
     initializer 'eaco.parse_rules' do
-      Eaco.setup!
+      Eaco.parse_default_rules_file!
 
       unless Rails.configuration.cache_classes
         ActionDispatch::Reloader.to_prepare do
-          Eaco.setup!
+          Eaco.parse_default_rules_file!
         end
       end
     end
