@@ -125,7 +125,14 @@ module Eaco
       #
       def label(value = nil)
         @label = value if value
-        @label ||= name.demodulize
+        @label ||= designator_name
+      end
+
+      ##
+      # Returns this class' demodulized name
+      #
+      def designator_name
+        self.name.split('::').last
       end
 
       ##
@@ -145,7 +152,7 @@ module Eaco
       # @see DSL::Actor::Designators#implementation_for
       #
       def id
-        @_id ||= self.name.demodulize.underscore.intern
+        @_id ||= self.designator_name.underscore.intern
       end
       alias type id
 
@@ -229,7 +236,7 @@ module Eaco
     # @return [String]
     #
     def inspect
-      %[#<Designator(#{self.class.name.demodulize}) value:#{value.inspect}>]
+      %[#<Designator(#{self.class.designator_name}) value:#{value.inspect}>]
     end
 
     ##
