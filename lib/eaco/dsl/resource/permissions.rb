@@ -1,6 +1,6 @@
 module Eaco
   module DSL
-    class Resource
+    class Resource < Base
 
       # Permission collector, based on +method_missing+.
       #

@@ -1,3 +1,5 @@
+require 'eaco/dsl/base'
+
 module Eaco
   module DSL
 

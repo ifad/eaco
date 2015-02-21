@@ -1,6 +1,6 @@
 module Eaco
   module DSL
-    class Actor
+    class Actor < Base
 
       # Designators collector using +method_missing+.
       #
