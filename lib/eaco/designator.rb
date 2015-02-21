@@ -51,6 +51,7 @@ module Eaco
       # @return [Designator]
       #
       def parse(string)
+        return string if string.is_a?(Designator)
         make(*string.split(':', 2))
       end
 
