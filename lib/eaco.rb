@@ -9,6 +9,11 @@ require 'pathname'
 
 # Welcome to Eaco!
 #
+# Eaco is a full-fledged authorization framework for Ruby that allows you to
+# describe which actions are allowed on your resources, how to identify your
+# users as having a particular privilege and which privileges are granted to
+# a specific resource through the usage of ACLs.
+#
 module Eaco
   autoload :ACL,        'eaco/acl'
   autoload :Actor,      'eaco/actor'
@@ -24,6 +29,9 @@ module Eaco
   # The authorization rules define all the authorization framework behaviour
   # through a DSL. Please see +Eaco::DSL+ and below for details.
   #
+  # @return true
+  # @raise  Eaco::Error if an error occurs during parsing.
+  #
   def self.setup!
     rules = Pathname('./config/authorization.rb')
 
@@ -33,6 +41,7 @@ module Eaco
 
     DSL.send :eval, rules.read, nil, rules.realpath.to_s, 1
 
+    true
   rescue => e
     raise Error, <<-EOF
 

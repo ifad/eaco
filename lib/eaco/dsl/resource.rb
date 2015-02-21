@@ -1,36 +1,42 @@
 module Eaco
   module DSL
 
+    ##
     # Parses the Resource definition DSL.
     #
     # Example:
     #
-    #     authorize Document do
-    #       roles :owner, :editor, :reader
+    #   authorize Document do
+    #     roles :owner, :editor, :reader
     #
-    #       role :owner, 'Author'
+    #     role :owner, 'Author'
     #
-    #       permissions do
-    #         reader   :read
-    #         editor   reader, :edit
-    #         owner    editor, :destroy
-    #       end
+    #     permissions do
+    #       reader   :read
+    #       editor   reader, :edit
+    #       owner    editor, :destroy
     #     end
+    #   end
     #
-    # The DSL installs authorization in the Document model,
-    # defining three access roles. The `owner` role is given
-    # a label of "Author".
+    # The DSL installs authorization in your +Document+ model,
+    # defining three access roles.
+    #
+    # The +owner+ role is given a label of "Author".
     #
     # Each role has then different abilities, defined in the
-    # permissions block. See +Eaco::DSL::Resource::Permissions+
-    # for details.
+    # permissions block.
+    #
+    # @see DSL::Resource::Permissions
     #
     class Resource < Base
       autoload :Permissions, 'eaco/dsl/resource/permissions'
 
+      ##
       # Sets up an authorized resource. The only required API
-      # is `accessible_by`. For available implementations, see
-      # the +Adapters+ module.
+      # is +accessible_by+. For available implementations, see
+      # the {Adapters} module.
+      #
+      # @see Resource
       #
       def initialize(*)
         super
@@ -38,28 +44,20 @@ module Eaco
         target_eval do
           include Eaco::Resource
 
-          # The permissions defined for each role.
-          #
           def permissions
             @_permissions
           end
 
-          # The defined roles.
-          #
           def roles
             @_roles
           end
 
-          # Roles' priority map keyed by role symbol.
-          #
           def roles_priority
             @_roles_priority ||= {}.tap do |priorities|
               roles.each_with_index {|role, idx| priorities[role] = idx }
             end.freeze
           end
 
-          # Role labels map keyed by role symbol
-          #
           def roles_with_labels
             @_roles_with_labels ||= roles.inject({}) do |labels, role|
               labels.update(role => role.to_s.humanize)
@@ -74,8 +72,11 @@ module Eaco
         end
       end
 
-      # Defines the permissions on this resource. The evaluated registries are
-      # memoized in the target class.
+      ##
+      # Defines the permissions on this resource.
+      # The evaluated registries are memoized in the target class.
+      #
+      # @return [void]
       #
       def permissions(&block)
         target_eval do
@@ -83,6 +84,7 @@ module Eaco
         end
       end
 
+      ##
       # Defines the roles valid for this resource. e.g.
       #
       #     authorize Foobar do
@@ -91,8 +93,12 @@ module Eaco
       #
       # Roles defined first have higher priority.
       #
-      # If the same user is at the same time `reader` and `editor`, the
-      # resulting role is `editor`.
+      # If the same user is at the same time +reader+ and +editor+, the
+      # resulting role is +editor+.
+      #
+      # @param keys [Variadic]
+      #
+      # @return [void]
       #
       def roles(*keys)
         target_eval do
@@ -100,11 +106,17 @@ module Eaco
         end
       end
 
+      ##
       # Sets the given label on the given role.
       #
       # TODO rename this method, or use it to pass options
       # to improve readability of the DSL and to store more
       # metadata with each role for future extensibility.
+      #
+      # @param role [Symbol]
+      # @param label [String]
+      #
+      # @return [void]
       #
       def role(role, label)
         target_eval do

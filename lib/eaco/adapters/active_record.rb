@@ -1,17 +1,31 @@
 module Eaco
   module Adapters
 
+    ##
     # PostgreSQL 9.4 and up backing store for ACLs.
+    #
+    # @see ACL
+    # @see PostgresJSONb
     #
     module ActiveRecord
       autoload :PostgresJSONb, 'eaco/adapters/active_record/postgres_jsonb'
 
-      def self.strategies # :nodoc:
+      ##
+      # Currently defined collection extraction strategies.
+      #
+      # @return Hash
+      #
+      def self.strategies
         {:pg_jsonb => PostgresJSONb}
       end
 
+      ##
       # Checks whether the model's data structure fits the ACL persistance
       # requirements.
+      #
+      # @param base [Class] your application's model
+      #
+      # @return void
       #
       def self.included(base)
         column = base.columns_hash.fetch('acl', nil)
@@ -25,14 +39,24 @@ module Eaco
         end
       end
 
-      # Returns the Resource's ACL
+      ##
+      # @return [ACL] this Resource's ACL.
+      #
+      # @see ACL
       #
       def acl
         acl = read_attribute(:acl)
         self.class.acl.new(acl)
       end
 
-      # Sets the Resource's ACL
+      ##
+      # Sets the Resource's ACL.
+      #
+      # @param acl [ACL] the new ACL to set.
+      #
+      # @return [ACL]
+      #
+      # @see ACL
       #
       def acl=(acl)
         write_attribute acl.to_hash

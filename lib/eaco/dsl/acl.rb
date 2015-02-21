@@ -3,19 +3,23 @@ require 'eaco/dsl/base'
 module Eaco
   module DSL
 
-    # Block-less DSL to set up the ACL machinery onto an authorized +Resource+
+    ##
+    # Block-less DSL to set up the {ACL} machinery onto an authorized {Resource}.
     #
-    # * Defines an ACL subclass in the Resource namespace
-    # * Defines syntactic sugar on the ACL to easily retrieve Actors with a
+    # * Defines an {ACL} subclass in the Resource namespace
+    # * Defines syntactic sugar on the ACL to easily retrieve {Actor}s with a
     #   specific Role
-    # * Installs ACL objects persistance for the supported ORMs
-    # * Installs the authorized collection extraction strategy .accessible_by
+    # * Installs {ACL} objects persistance for the supported ORMs
+    # * Installs the authorized collection extraction strategy +.accessible_by+
     #
     class ACL < Base
 
+      ##
       # Performs ACL setup on the target Resource class.
       #
-      # See each private initializer for details.
+      # @see #define_acl_subclass
+      # @see #define_role_getters
+      # @see #install_persistance
       #
       def initialize(*)
         super
@@ -27,12 +31,15 @@ module Eaco
 
       private
 
-      # Creates the ACL constant on the target, inheriting from Eaco::ACL.
+      ##
+      # Creates the ACL constant on the target, inheriting from {Eaco::ACL}.
       # Removes if it is already set, so that a reload of the authorization
       # rules refreshes also these constants.
       #
-      # The ACL subclass can be retrieved using the `.acl` singleton method
-      # on the Resource class.
+      # The ACL subclass can be retrieved using the +.acl+ singleton method
+      # on the {Resource} class.
+      #
+      # @return [void]
       #
       def define_acl_subclass
         target_eval do
@@ -45,11 +52,16 @@ module Eaco
         end
       end
 
+      ##
       # Define getter methods on the ACL for each role, syntactic sugar
-      # for calling find_by_role() passing the role name.
+      # for calling {ACL#find_by_role}.
       #
-      # If a `reader` role is defined, allows doing `resource.acl.readers`
-      # and returns all the designators having the `reader` role set.
+      # Example:
+      #
+      # If a +reader+ role is defined, allows doing +resource.acl.readers+
+      # and returns all the designators having the +reader+ role set.
+      #
+      # @return [void]
       #
       def define_role_getters
         roles = self.target.roles
@@ -61,16 +73,19 @@ module Eaco
         end
       end
 
-      # Sets up the persistance layer for ACLs (#acl and #acl=) and the
-      # authorized collection extraction strategy (.accessible_by).
+      ##
+      # Sets up the persistance layer for ACLs (+#acl+ and +#acl=+) and the
+      # authorized collection extraction strategy (+.accessible_by+).
       #
       # All these APIs can be implemented directly in your models, as
-      # long as the acl accessor accepts and returns the model's ACL
-      # subclass (see +define_acl_subclass+ above); and the accessible_by
-      # returns an Enumerable collection of instances.
+      # long as the +acl+ accessor accepts and returns the model's ACL
+      # subclass (see {.define_acl_subclass}); and the +.accessible_by+
+      # returns an +Enumerable+ collection.
       #
       # See each adapter for the details of the extraction strategies
       # they provide.
+      #
+      # @return [void]
       #
       def install_persistance
         adapter = {
@@ -111,9 +126,12 @@ module Eaco
         end
       end
 
+      ##
       # Tries to naively identify which ORM the target model is using.
       #
       # TODO support more stuff
+      #
+      # @return [Class] the ORM base class.
       #
       def orm
         if target.respond_to?(:base_class)

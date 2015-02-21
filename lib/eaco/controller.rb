@@ -2,20 +2,29 @@ require 'active_support/concern'
 
 module Eaco
 
-  # An ActionController plugin to verify authorization in Rails applications.
+  ##
+  # An ActionController extension to verify authorization in Rails applications.
   #
   # Tested on Rails 3.2 and up on Ruby 2.0 and up.
   #
   module Controller
     extend ActiveSupport::Concern
 
+    ##
+    # Adds {Controller#confront_eaco} as a +before_filter+
+    #
+    # @!method included
+    #
     included do
       before_filter :confront_eaco
     end
 
+    ##
     # Controller authorization DSL.
     #
     module ClassMethods
+
+      ##
       # Defines the ability required to access a given controller action.
       #
       # Example:
@@ -26,15 +35,19 @@ module Eaco
       #     authorize :create, :update, [:folder, :write]
       #   end
       #
-      # Here `@folder` is expected to be an authorized +Resource+, and for the
-      # `index` action the +current_user+ is checked to `can?(:index, @folder)`
-      # while for `show`, `can?(:read, @folder)` and for `create` and `update`
-      # checks that it `can?(:write, @folder)`.
+      # Here +@folder+ is expected to be an authorized +Resource+, and for the
+      # +index+ action the +current_user+ is checked to +can?(:index, @folder)+
+      # while for +show+, +can?(:read, @folder)+ and for +create+ and +update+
+      # checks that it +can?(:write, @folder)+.
       #
-      # The special `:all` action name requires the given ability on the given
+      # The special +:all+ action name requires the given ability on the given
       # Resource for all actions.
       #
       # If an action has no authorization defined, access is granted.
+      #
+      # @param actions [Variadic] see above.
+      #
+      # @return void
       #
       def authorize(*actions)
         target = actions.pop
@@ -42,13 +55,15 @@ module Eaco
         actions.each {|action| authorization_permissions.update(action => target)}
       end
 
-      # Returns the permission required to access the given action.
+      ##
+      # @return [Symbol] the permission required to access the given action.
       #
       def permission_for(action)
         authorization_permissions[action] || authorization_permissions[:all]
       end
 
       protected
+        ##
         # Permission requirements configured on this controller.
         #
         def authorization_permissions
@@ -56,63 +71,69 @@ module Eaco
         end
     end
 
+    ##
     # Asks Eaco whether thou shalt pass or not.
     #
     # The implementation is left in this method's body, despite a bit long for
     # many's taste, as it is pretty imperative and simple code. Moreover, the
     # less we pollute ActionController's namespace, the better.
     #
-    #                   La Guardiana
+    # @return [void]
     #
-    #                                        /\
-    #                       .-_-.           /  \
-    #              ||   .-.(    .' .-.   // \  /
-    #               \\\/ (((\   /)))  \ / // )(
-    #                ) '._  ,-.   ___. )/ //(__)
-    #                \_((( (  :)  \)))/ ,  / ||
-    #                 \_  \ '-' /_   /| ),// ||
-    #                   \ (_._.'_ \ (o__//  _||_
-    #                    \ )\  .(/ /  __)   \   \
-    #                    ( \ '_  .'  /(      |-. \
-    #                     \_'._'.\__/))))    (__)'.'.
-    #                    _._   |  |    _.-._ ||   \ '.
-    #                   / //--'  / '--//'-'/\||____\  '.
-    #                   \---.\ .----.//  //  ||//  '\   \
-    #                  /   ' \/    ' \\__\\ ,||\\_______.'
-    #                  \\___//\\____//\____\ ||
-    #       _.-'''---. /\___/  \____/  \\/   ||
-    #    ..'_.''''---.|   /.  \        /     ||
-    #  .'.-'O    __  /  _/  )_.--.____(      ||
-    # / / /  \__/  /'  /\ \(__.--._____)     ||
-    # | |    /\ \  \_.' | |   \      |       ||
-    # \  '.__\,_.'.__/./ /     ) .   |\      ||
-    #  '..__ O --' ___..'     /\     /|'.    ||
-    #       ''----'           | \/\.' / /'.  ||
-    #                         |\(()).' /   \ ||
-    #                       _/ \ \/   /     \||
-    #               __..--''    '.   |      |||
-    #           .-''            / '._|/     |||
-    #          /                __.- /      /||
-    #          \   ____..-----''    /      | ||
-    #           '.     )).         |       / ||
-    #             ''._//  \        .-----./  ||
-    #                 '.   \      (.-----.)  ||
-    #                   '.  \      |    /    ||
-    #                     )_ \     |   |     ||
-    #                    /__'O\    ( ) (     ||
-    #      _______mrf,-'____/|/__   |\  \    ||
-    #                               |    |   ||
-    #                               |____)  (__)
-    #                               '-----'  ||
-    #                                \   |   ||
-    #                                 \  |   ||
-    #                                  \ |   ||
-    #                                   | \  ||
-    #                                   |_ \ ||
-    #                                   /_'O\||
-    #                                .-'___/(__)
+    # @raise Error if the instance variable configured in {.authorize} is not found
+    # @raise Forbidden if the +current_user+ is not granted access.
     #
-    #                                http://ascii.co.uk/art/guardiana
+    #
+    # == La Guardiana
+    #                                            /\
+    #                           .-_-.           /  \
+    #                  ||   .-.(    .' .-.   // \  /
+    #                   \\\/ (((\   /)))  \ / // )(
+    #                    ) '._  ,-.   ___. )/ //(__)
+    #                    \_((( (  :)  \)))/ ,  / ||
+    #                     \_  \ '-' /_   /| ),// ||
+    #                       \ (_._.'_ \ (o__//  _||_
+    #                        \ )\  .(/ /  __)   \   \
+    #                        ( \ '_  .'  /(      |-. \
+    #                         \_'._'.\__/))))    (__)'.'.
+    #                        _._   |  |    _.-._ ||   \ '.
+    #                       / //--'  / '--//'-'/\||____\  '.
+    #                       \---.\ .----.//  //  ||//  '\   \
+    #                      /   ' \/    ' \\__\\ ,||\\_______.'
+    #                      \\___//\\____//\____\ ||
+    #           _.-'''---. /\___/  \____/  \\/   ||
+    #        ..'_.''''---.|   /.  \        /     ||
+    #      .'.-'O    __  /  _/  )_.--.____(      ||
+    #     / / /  \__/  /'  /\ \(__.--._____)     ||
+    #     | |    /\ \  \_.' | |   \      |       ||
+    #     \  '.__\,_.'.__/./ /     ) .   |\      ||
+    #      '..__ O --' ___..'     /\     /|'.    ||
+    #           ''----'           | \/\.' / /'.  ||
+    #                             |\(()).' /   \ ||
+    #                           _/ \ \/   /     \||
+    #                   __..--''    '.   |      |||
+    #               .-''            / '._|/     |||
+    #              /                __.- /      /||
+    #              \   ____..-----''    /      | ||
+    #               '.     )).         |       / ||
+    #                 ''._//  \        .-----./  ||
+    #                     '.   \      (.-----.)  ||
+    #                       '.  \      |    /    ||
+    #                         )_ \     |   |     ||
+    #                        /__'O\    ( ) (     ||
+    #          _______mrf,-'____/|/__   |\  \    ||
+    #                                   |    |   ||
+    #                                   |____)  (__)
+    #                                   '-----'  ||
+    #                                    \   |   ||
+    #                                     \  |   ||
+    #                                      \ |   ||
+    #                                       | \  ||
+    #                                       |_ \ ||
+    #                                       /_'O\||
+    #                                    .-'___/(__)
+    #
+    #                                    http://ascii.co.uk/art/guardiana
     #
     def confront_eaco
       action = params[:action].intern

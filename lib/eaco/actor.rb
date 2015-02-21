@@ -1,5 +1,6 @@
 module Eaco
 
+  ##
   # An Actor is an entity whose access to Resources is discretionary,
   # depending on the Role this actor has in the ACL.
   #
@@ -7,13 +8,16 @@ module Eaco
   # the actor instance has, and the +ACL+ instance attached to the
   # +Resource+.
   #
-  # See +Eaco::Resource+ for details.
+  # @see ACL
+  # @see Resource
+  # @see DSL::Actor
   #
   module Actor
 
-    # Returns the designators granted to this user.
+    ##
+    # @return [Set] the designators granted to this Actor.
     #
-    # See +Eaco::Designator+ for details.
+    # @see Designator
     #
     def designators
       @_designators ||= Set.new.tap do |ret|
@@ -23,12 +27,14 @@ module Eaco
       end
     end
 
-    # Returns true if this actor fulfills the admin logic, or nil if no admin
-    # logic is defined.
+    ##
+    # Checks whether this Actor fulfills the admin logic.
     #
-    # This logic is called by +Resource+ Adapters' `accessible_by`, that
-    # returns the full collection, and by the +Resource+ `allows?` method,
-    # that bypassess access checks always returning true.
+    # This logic is called by +Resource+ Adapters' +accessible_by+, that
+    # returns the full collection, and by {Resource#allows?}, that bypassess
+    # access checks always returning true.
+    #
+    # @return [Boolean] True or False if admin logic is defined, nil if not.
     #
     def is_admin?
       return unless self.class.admin_logic
@@ -36,10 +42,16 @@ module Eaco
       instance_exec(self, &self.class.admin_logic)
     end
 
-    # Returns true if the target allows this target to perform the given action.
+    ##
+    # Checks wether the given Resource allows this Actor to perform the given action.
     #
-    def can?(action, target)
-      target.allows?(action, self)
+    # @param action [Symbol] a valid action for this Resource (see {DSL::Resource})
+    # @param resource [Resource] an authorized resource
+    #
+    # @see Resource
+    #
+    def can?(action, resource)
+      resource.allows?(action, self)
     end
   end
 

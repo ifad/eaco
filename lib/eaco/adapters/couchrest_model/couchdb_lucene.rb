@@ -2,6 +2,7 @@ module Eaco
   module Adapters
     module CouchrestModel
 
+      ##
       # Authorized collection extractor on CouchDB using the CouchDB Lucene
       # full-text indexer <https://github.com/ifad/couchdb-lucene>, a patched
       # CouchRest <https://github.com/ifad/couchrest> to interact with the
@@ -43,9 +44,18 @@ module Eaco
       #
       # Made in Italy.
       #
+      # @see ACL
+      # @see Actor
+      # @see Resource
+      #
       module CouchDBLucene
 
-        # Returns authorized Resource objects accessible by the given Actor.
+        ##
+        # Uses a Lucene query to extract Resources accessible by the given Actor.
+        #
+        # @param actor [Actor]
+        #
+        # @return [CouchRest::Model::Search::View] the authorized collection scope.
         #
         def accessible_by(actor)
          return search(nil) if actor.is_admin?

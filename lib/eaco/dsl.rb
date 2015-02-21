@@ -1,6 +1,7 @@
 module Eaco
 
-  # Eaco DSL namespace
+  ##
+  # Eaco DSL entry point.
   #
   module DSL
     extend self # Oh the irony.
@@ -11,18 +12,21 @@ module Eaco
     autoload :Actor,    'eaco/dsl/actor'
     autoload :Resource, 'eaco/dsl/resource'
 
-    # Entry point for the Resource authorization definition.
+    ##
+    # Entry point for the {Resource} authorization definition.
     #
-    # See +Eaco::DSL::Resource+ and +Eaco::DSL::ACL+ for details.
+    # @see DSL::Resource
+    # @see DSL::ACL
     #
     def authorize(resource_class, options = {}, &block)
       DSL::Resource.eval(resource_class, options, &block)
       DSL::ACL.eval(resource_class, options)
     end
 
-    # Entry point for the Actor designators definition.
+    ##
+    # Entry point for the {Actor} designators definition.
     #
-    # See +Eaco::DSL::Actor+ for details.
+    # @see DSL::Actor
     #
     def actor(actor_class, options = {}, &block)
       DSL::Actor.eval(actor_class, options, &block)

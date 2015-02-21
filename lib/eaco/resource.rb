@@ -1,34 +1,61 @@
 module Eaco
 
-  # A Resource is an object that can be authorized. It has an ACL, that
-  # defines the access levels of designators. Actors have many designators
-  # and the highest priority ones that matches the ACL yields the access
-  # level of the Actor to this Resource.
+  ##
+  # A Resource is an object that can be authorized. It has an {ACL}, that
+  # defines the access levels of {Designator}s. {Actor}s have many designators
+  # and the highest priority ones that matches the {ACL} yields the access
+  # level of the {Actor} to this {Resource}.
   #
-  # If there is no match between the Actor's designators and the ACL, then
-  # access is denied. Negative authorizations are not yet implemented.
+  # If there is no match between the {Actor}'s designators and the {ACL}, then
+  # access is denied.
+  #
+  # Authorized resources are defined through the DSL, see {DSL::Resource}.
+  #
+  # TODO Negative authorizations
+  #
+  # @see ACL
+  # @see Actor
+  # @see Designator
+  #
+  # @see DSL::Resource
   #
   module Resource
-    def self.included(base) # :nodoc:
+
+    # @private
+    def self.included(base)
       base.extend ClassMethods
     end
 
-    module ClassMethods # :nodoc:
-      # Returns true if the given role is valid.
+    ##
+    # Singleton methods added to authorized Resources.
+    #
+    module ClassMethods
+      ##
+      # @return [Boolean] checks whether the given +role+ is valid in the
+      # context of this Resource.
+      #
+      # @param role [Symbol] role name.
       #
       def role?(role)
         role.to_sym.in?(roles)
       end
 
-      # Checks whether the ACL and permissions defined on this object
-      # allow the given +user+ to perform the given +action+ on it, that
-      # depends on the +role+ the user has on the target, calculated from
-      # the +ACL+.
+      ##
+      # Checks whether the {ACL} and permissions defined on this Resource
+      # allow the given +actor+ to perform the given +action+ on it, that
+      # depends on the +role+ the user has on the resource, calculated from
+      # the {ACL}.
       #
-      def allows?(action, user, record)
-        return true if user.is_admin?
+      # @param action [Symbol]
+      # @param actor [Actor]
+      # @param resource [Resource]
+      #
+      # @return [Boolean]
+      #
+      def allows?(action, actor, resource)
+        return true if actor.is_admin?
 
-        role = role_of(user, record)
+        role = role_of(actor, resource)
         return false unless role
 
         perms = permissions[role]
@@ -37,10 +64,14 @@ module Eaco
         perms.include?(action)
       end
 
-      # Returns the given actor's role in the given record, or nil if no
+      ##
+      # @return [Symbol] the given +actor+ role in the given resource, or +nil+ if no
       # access is granted.
       #
-      def role_of(actor_or_designator, record)
+      # @param actor_or_designator [Actor or Designator]
+      # @param resource [Resource]
+      #
+      def role_of(actor_or_designator, resource)
         designators = if actor_or_designator.is_a?(Eaco::Designator)
           [actor_or_designator]
 
@@ -55,7 +86,7 @@ module Eaco
         end
 
         role_priority = nil
-        record.acl.each do |designator, role|
+        resource.acl.each do |designator, role|
           if designators.include?(designator)
             priority = roles_priority[role]
           end
@@ -68,24 +99,65 @@ module Eaco
 
         roles[role_priority] if role_priority
       end
+
+      ##
+      # The permissions defined for each role.
+      #
+      # @see DSL::Resource#initialize
+      #
+      def permissions
+      end
+
+      # The defined roles.
+      #
+      # @see DSL::Resource#initialize
+      #
+      def roles
+      end
+
+      # Roles' priority map keyed by role symbol.
+      #
+      # @see DSL::Resource#initialize
+      #
+      def roles_priority
+      end
+
+      # Role labels map keyed by role symbol
+      #
+      # @see DSL::Resource#initialize
+      #
+      def roles_with_labels
+      end
     end
 
-    # Returns +true+ if the given action is allowed to the given Actor
+    ##
+    # @return [Boolean] whether the given +action+ is allowed to the given +actor+.
+    #
+    # @param action [Symbol]
+    # @param actor [Actor]
     #
     def allows?(action, actor)
       self.class.allows?(action, actor, self)
     end
 
-    # Returns the role of the given +actor+
+    ##
+    # @return [Symbol] the role of the given +actor+
+    #
+    # @param actor [Actor]
     #
     def role_of(actor)
       self.class.role_of(actor, self)
     end
 
-
+    ##
     # Grants the given +designator+ access to this Resource as the given +role+.
     #
-    # See ACL#add for details.
+    # @param role [Symbol]
+    # @param designator [Variadic], see {ACL#add}
+    #
+    # @return [ACL]
+    #
+    # @see #change_acl
     #
     def grant(role, *designator)
       self.check_role!(role)
@@ -93,15 +165,28 @@ module Eaco
       change_acl {|acl| acl.add(role, *designator) }
     end
 
+    ##
     # Revokes the given +designator+ access to this Resource.
     #
-    # See ACL#del for details.
+    # @param designator [Variadic], see {ACL#del}
+    #
+    # @return [ACL]
+    #
+    # @see #change_acl
     #
     def revoke(*designator)
       change_acl {|acl| acl.del(*designator) }
     end
 
-    # Grants the given set of designators access as to this Resource as the given +role+.
+    # Grants the given set of +designators+ access as to this Resource as the
+    # given +role+.
+    #
+    # @param role [Symbol]
+    # @param designators [Array] of {Designator}, see {ACL#add}
+    #
+    # @return [ACL]
+    #
+    # @see #change_acl
     #
     def batch_grant(role, designators)
       self.check_role!(role)
@@ -115,8 +200,12 @@ module Eaco
     end
 
     protected
-      # Commenting this Ruby code is pleonastic.
-      # <3
+      ##
+      # Changes the ACL, calling the persistance setter if it changes.
+      #
+      # @yield [ACL] the current ACL or a new one if no ACL is set
+      #
+      # @return [ACL] the new ACL
       #
       def change_acl
         acl = yield self.acl.try(:dup) || self.class.acl.new
@@ -126,9 +215,12 @@ module Eaco
         return self.acl
       end
 
+      ##
       # Checks whether the given +role+ is valid for this Resource.
       #
-      # Raises +Eaco::Error+ if not valid.
+      # @param role [Symbol] the role name.
+      #
+      # @raise [Eaco::Error] if not valid.
       #
       def check_role!(role)
         unless self.class.role?(role)

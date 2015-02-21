@@ -1,16 +1,23 @@
 module Eaco
   module DSL
 
-    # Base DSL class, provides the target class, the given options, and a
-    # `target_eval` helper to do instance_eval on the target.
+    ##
+    # Base DSL class. Provides handy access to the +target+ class being
+    # manipulated, DSL-specific options, and a {#target_eval} helper to do
+    # +instance_eval+ on the +target+.
     #
-    # Nothing fancy.
+    # Nothing too fancy.
     #
     class Base
 
+      ##
       # Executes a DSL block in the context of a DSL manipulator.
       #
-      # See derived classes for details.
+      # @see DSL::ACL
+      # @see DSL::Actor
+      # @see DSL::Resource
+      #
+      # @return [Base]
       #
       def self.eval(klass, options = {}, &block)
         new(klass, options).tap do |dsl|
@@ -18,16 +25,23 @@ module Eaco
         end
       end
 
-      # The target class of the manipulation, and dsl-specifi options.
-      attr_reader :target, :options
+      # The target class of the manipulation
+      attr_reader :target
 
-      def initialize(target, options) # :nodoc:
+      # DSL-specific options
+      attr_reader :options
+
+      ##
+      # @param target [Class]
+      # @param options [Hash]
+      #
+      def initialize(target, options)
         @target, @options = target, options
       end
 
       protected
-        # Evaluates the given block in the context of the target class that is
-        # being manipulated.
+        ##
+        # Evaluates the given block in the context of the target class
         #
         def target_eval(&block)
           target.instance_eval(&block)

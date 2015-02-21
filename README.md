@@ -48,88 +48,88 @@ Or install it yourself as:
 Create `config/authorization.rb`:
 
 ```ruby
-    # Defines `Document` to be an authorized resource.
-    #
-    # Adds Document.accessible_by and Document#allows
-    #
-    authorize Document, using: :lucene do
-      roles :owner, :editor, :reader
+# Defines `Document` to be an authorized resource.
+#
+# Adds Document.accessible_by and Document#allows
+#
+authorize Document, using: :lucene do
+  roles :owner, :editor, :reader
 
-      permissions do
-        reader   :read
-        editor   reader, :edit
-        assignee editor
-        owner    editor, :destroy
-      end
-    end
+  permissions do
+    reader   :read
+    editor   reader, :edit
+    assignee editor
+    owner    editor, :destroy
+  end
+end
 
-    # Defines an actor and the sources from which the
-    # designators are harvested.
-    #
-    # Adds User#designators
-    #
-    actor User do
-      admin do |user|
-        user.admin?
-      end
+# Defines an actor and the sources from which the
+# designators are harvested.
+#
+# Adds User#designators
+#
+actor User do
+  admin do |user|
+    user.admin?
+  end
 
-      designators do
-        user       from: :id
-        group      from: :group_ids
-        department from: :department_ids
-      end
-    end
+  designators do
+    user       from: :id
+    group      from: :group_ids
+    department from: :department_ids
+  end
+end
 ```
 
 Grant reader access to a specific user:
 
 ```ruby
-    >> user
-    => #<User id:42 name:"Bob Frop">
+>> user
+=> #<User id:42 name:"Bob Frop">
 
-    >> document.grant :reader, :user, user.id
-    => #<Document::ACL "user:42" => :reader>
+>> document.grant :reader, :user, user.id
+=> #<Document::ACL "user:42" => :reader>
 
-    >> user.can? :read, d
-    => true
+>> user.can? :read, d
+=> true
 ```
 
 Grant reader access to a group:
 
 ```ruby
-    >> user
-    => #<User id:42 group_ids:[3,7,1]>
+>> user
+=> #<User id:42 group_ids:[3,7,1]>
 
-    >> document.grant :reader, :group, 3
-    => #<Document::ACL "group:3" => :reader>
+>> document.grant :reader, :group, 3
+=> #<Document::ACL "group:3" => :reader>
 
-    >> user.can? :read, d
-    => true
+>> user.can? :read, d
+=> true
 
-    >> document.allows? :read, user
-    => true
+>> document.allows? :read, user
+=> true
 ```
 
 Obtain a collection of Resources accessible by a given Actor:
 
 ```ruby
-    >> Document.accessible_by(user)
+>> Document.accessible_by(user)
 ```
 
 Check whether a controller action can be accessed by an user. Your
 `ApplicationController` must respond to `current_user` for this to work.
 
 ```ruby
-    class DocumentsController < ApplicationController
-      before_filter :find_document
+class DocumentsController < ApplicationController
+  before_filter :find_document
 
-      authorize :edit, :update, [:document, :read]
+  authorize :edit, :update, [:document, :read]
 
-      private
-        def find_document
-          @document = Document.find(:id)
-        end
+  private
+    def find_document
+      @document = Document.find(:id)
     end
+end
 ```
 
 ## Contributing

@@ -1,5 +1,6 @@
 module Eaco
 
+  ##
   # An ACL is an Hash whose keys are Designator string representations and
   # values are the role symbols defined in the Resource permissions
   # configuration.
@@ -10,11 +11,18 @@ module Eaco
   #     roles :reader, :editor
   #   end
   #
-  # See +Eaco::Resource+ and +Eaco::DSL::Resource+ for details.
+  # @see Actor
+  # @see Resource
   #
   class ACL < Hash
 
-    # Interns the role symbols from the key-value string representation.
+    ##
+    # Builds a new ACL object from the given Hash representation with strings
+    # as keys and values.
+    #
+    # @param definition [Hash] the ACL hash
+    #
+    # @return [ACL] this ACL
     #
     def initialize(definition = {})
       definition.each do |designator, role|
@@ -22,9 +30,13 @@ module Eaco
       end
     end
 
-    # Gives the given +designator+ access as the given +role+.
+    ##
+    # Gives the given Designator access as the given +role+.
     #
-    # For details on arguments, please see +identify+ below.
+    # @param role [Symbol] the role to grant
+    # @param designator [Variadic] (see {#identify})
+    #
+    # @return [ACL] this ACL
     #
     def add(role, *designator)
       identify(*designator).each do |key|
@@ -34,9 +46,14 @@ module Eaco
       self
     end
 
-    # Removes access from the given designator.
+    ##
+    # Removes access from the given Designator.
     #
-    # For details on arguments, please see +identify+ below.
+    # @param designator [Variadic] (see {#identify})
+    #
+    # @return [ACL] this ACL
+    #
+    # @see Designator
     #
     def del(*designator)
       identify(*designator).each do |key|
@@ -46,7 +63,13 @@ module Eaco
       self
     end
 
-    # Returns a +Set+ of +Designator+s having the given +role+.
+    ##
+    # @param name [Symbol] The role name
+    #
+    # @return [Set] A set of Designators having the given +role+.
+    #
+    # @see Designator
+    # @see Resource
     #
     def find_by_role(name)
       self.inject(Set.new) do |ret, (designator, role)|
@@ -54,7 +77,8 @@ module Eaco
       end
     end
 
-    # Returns a +Set+ of all +Designator+s in the ACL, regardless of their role.
+    ##
+    # @return [Set] all Designators in the ACL, regardless of their role.
     #
     def all
       self.inject(Set.new) do |ret, (designator,_)|
@@ -62,14 +86,21 @@ module Eaco
       end
     end
 
-    # Returns an +Hash+ of +Actor+s in the ACL having the given role name,
-    # with designators as keys.
+    ##
+    # Gets a map of Actors in the ACL having the given +role+.
     #
     # This is a useful starting point for an Enterprise summary page of who is
     # granted to access a resource. Given that actor resolution is dynamic and
     # handled by the application's Designators implementation, you can rely on
     # your internal organigram APIs to resolve actual people out of positions,
     # groups, department of assignment, etc.
+    #
+    # @param name [Symbol] The role name
+    #
+    # @return [Hash] keyed by designator with Set of Actors as values
+    #
+    # @see Actor
+    # @see Resource
     #
     def designators_map_for_role(name)
       find_by_role(name).inject({}) do |ret, designator|
@@ -82,7 +113,13 @@ module Eaco
       end
     end
 
-    # Returns a +Set+ of actors having the given role name.
+    ##
+    # @param name [Symbol] the role name
+    #
+    # @return [Set] Actors having the given +role+.
+    #
+    # @see Actor
+    # @see Resource
     #
     def actors_by_role(name)
       find_by_role(name).inject(Set.new) do |set, designator|
@@ -90,50 +127,61 @@ module Eaco
       end.to_a
     end
 
-    # :nodoc:
+    ##
+    # Pretty prints this ACL in your console.
+    #
     def inspect
       "#<#{self.class.name}: #{super}>"
     end
-    alias pretty_print_inspect inspect # :nodoc:
+    alias pretty_print_inspect inspect
 
-    # :nodoc:
+    ##
+    # Pretty print for +pry+.
+    #
     def pretty_inspect
       "#{self.class.name}\n#{super}"
     end
 
-    private
+    protected
 
+    ##
     # There are three ways of specifying designators:
     #
-    # * Passing an +Eaco::Designator+ instance obtained from somewhere else:
+    # * Passing an +Designator+ instance obtained from somewhere else:
     #
-    #    >> designator
-    #    => #<Eaco::Designator type:user value:42>
-    #    >> resource.acl.add :reader, designator
-    #    => #<Resource::ACL {"user:42"=>:reader}>
+    #     >> designator
+    #     => #<Designator(User) value:42>
+    #
+    #     >> resource.acl.add :reader, designator
+    #     => #<Resource::ACL {"user:42"=>:reader}>
     #
     # * Passing a designator type and an unique ID valid in the designator's
     #   namespace:
     #
-    #   >> resource.acl.add :reader, :user, 42
-    #   => #<Resource::ACL {"user:42"=>:reader}>
+    #     >> resource.acl.add :reader, :user, 42
+    #     => #<Resource::ACL {"user:42"=>:reader}>
     #
     # * Passing a designator type and an Actor instance, will add all
     #   designators of the given type owned by the Actor.
     #
-    #    >> actor
-    #    => #<User id:42 name:"Ethan Siegel">
-    #    >> actor.designators
-    #    => #<Set:{
-    #     |   #<Eaco::Designator type:user, value:42>,
-    #     |   #<Eaco::Designator type:group, value:"astrophysicists">,
-    #     |   #<Eaco::Designator type:group, value:"medium bloggers">
-    #     | }>
-    #    >> resource.acl.add :editor, :group, actor
-    #    => #<Resource::ACL {
-    #     |   "group:astrophysicists"=>:editor,
-    #     |   "group:medium bloggers"=>:editor
-    #     | }
+    #     >> actor
+    #     => #<User id:42 name:"Ethan Siegel">
+    #
+    #     >> actor.designators
+    #     => #<Set:{
+    #      |   #<Designator(User) value:42>,
+    #      |   #<Designator(Group) value:"astrophysicists">,
+    #      |   #<Designator(Group) value:"medium bloggers">
+    #      | }>
+    #
+    #     >> resource.acl.add :editor, :group, actor
+    #     => #<Resource::ACL {
+    #      |   "group:astrophysicists"=>:editor,
+    #      |   "group:medium bloggers"=>:editor
+    #      | }
+    #
+    # @param designator [Designator] the designator to grant
+    # @param actor_or_id [Actor] or [String] the actor
     #
     def identify(designator, actor_or_id = nil)
       if designator.is_a?(Eaco::Designator)
