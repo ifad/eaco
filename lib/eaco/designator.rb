@@ -62,7 +62,7 @@ module Eaco
       # @return [Array] resolved actors, application-dependant.
       #
       def resolve(designators)
-        Array.wrap(designators).inject([]) {|ret, d| ret.concat parse(d).resolve}
+        Array.new(designators||[]).inject([]) {|ret, d| ret.concat parse(d).resolve}
       end
 
       ##
@@ -107,7 +107,7 @@ module Eaco
       # @see Actor
       #
       def harvest(actor)
-        Array.wrap(actor.send(@method)).map {|value| new(value) }
+        Array.new(actor.send(@method)||[]).map {|value| new(value) }
       end
 
       ##

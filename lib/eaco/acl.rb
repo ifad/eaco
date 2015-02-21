@@ -108,7 +108,7 @@ module Eaco
 
         ret.tap do
           ret[designator] ||= Set.new
-          ret[designator].merge Array.wrap(actors)
+          ret[designator].merge Array.new(actors)
         end
       end
     end
@@ -123,7 +123,7 @@ module Eaco
     #
     def actors_by_role(name)
       find_by_role(name).inject(Set.new) do |set, designator|
-        set |= Array.wrap(designator.resolve)
+        set |= Array.new(designator.resolve)
       end.to_a
     end
 
