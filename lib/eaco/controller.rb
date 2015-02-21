@@ -78,8 +78,8 @@ module Eaco
     #
     # @return [void]
     #
-    # @raise Error if the instance variable configured in {.authorize} is not found
-    # @raise Forbidden if the +current_user+ is not granted access.
+    # @raise [Error] if the instance variable configured in {.authorize} is not found
+    # @raise [Forbidden] if the +current_user+ is not granted access.
     #
     #
     # == La Guardiana
