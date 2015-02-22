@@ -18,9 +18,10 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   [
-    ["bundler", "~> 1.6"], "rake", "byebug", "rspec",
-    "yard", "yard-rspec", "guard", "guard-rspec", "appraisal",
-    "actionpack"
+    ["bundler", "~> 1.6"],
+    "rake", "byebug", "guard", "yard", "appraisal",
+    "rspec",  "guard-rspec", "yard-rspec",
+    "cucumber", "guard-cucumber"
 
   ].each {|gem| spec.add_development_dependency *gem }
 end
