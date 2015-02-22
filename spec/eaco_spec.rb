@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 
 require 'spec_helper'
-require 'eaco'
 
 RSpec.describe Eaco do
 
