@@ -10,4 +10,14 @@ YARD::Rake::YardocTask.new
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new
 
-task default: [ :spec, :yard ]
+# Appraisal
+require 'appraisal/task'
+Appraisal::Task.new
+
+if !ENV["APPRAISAL_INITIALIZED"] && !ENV["TRAVIS"]
+  desc "Runs the appraisals and generates documentation"
+  task default: [ :appraisal, :yard ]
+else
+  desc "Runs specs"
+  task default: :spec
+end

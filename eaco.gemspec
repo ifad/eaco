@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
 
   [
     ["bundler", "~> 1.6"], "rake", "byebug", "rspec",
-    "yard", "yard-rspec", "guard", "guard-rspec",
+    "yard", "yard-rspec", "guard", "guard-rspec", "appraisal",
     "actionpack"
 
   ].each {|gem| spec.add_development_dependency *gem }
