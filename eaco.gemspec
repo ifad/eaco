@@ -21,7 +21,8 @@ Gem::Specification.new do |spec|
     ["bundler", "~> 1.6"],
     "rake", "byebug", "guard", "yard", "appraisal",
     "rspec",  "guard-rspec", "yard-rspec",
-    "cucumber", "guard-cucumber"
+    "cucumber", "guard-cucumber",
+    "database_cleaner"
 
   ].each {|gem| spec.add_development_dependency *gem }
 end
