@@ -7,6 +7,12 @@ end
 module Eaco
   module Cucumber
 
+    ##
+    # +ActiveRecord+ configuration and connection.
+    #
+    # Uses features/support/active_record.yml by default, overridable via the
+    # +EACO_AR_CONFIG+ environment variable.
+    #
     module ActiveRecord
       ##
       # Set up ActiveRecord

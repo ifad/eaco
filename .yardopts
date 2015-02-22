@@ -1,1 +1,1 @@
---protected --private --no-private --hide-void-return - README.md LICENSE.txt
+--protected --private --no-private --hide-void-return '{lib,features/support}/**/*.rb' - README.md LICENSE.txt
