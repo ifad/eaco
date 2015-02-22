@@ -120,7 +120,6 @@ RSpec.describe Eaco::ACL do
   end
 
   describe '#actors_by_role' do
-
     let(:reader)  { Eaco::Designator.new 'Pete.Raid' }
     let(:editor1) { Eaco::Designator.new 'John.Alls' }
     let(:editor2) { Eaco::Designator.new 'Bob.Prutz' }
