@@ -5,16 +5,12 @@
 .yardoc
 Gemfile.lock
 gemfiles/*.gemfile.lock
-InstalledFiles
 _yardoc
 coverage
 doc/
 lib/bundler/man
 pkg
 rdoc
-spec/reports
-test/tmp
-test/version_tmp
 tmp
 *.bundle
 *.so
