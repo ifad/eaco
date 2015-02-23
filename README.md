@@ -185,6 +185,35 @@ class DocumentsController < ApplicationController
 end
 ```
 
+## Running specs
+
+You need a running postgresql 9.4 instance.
+
+Create an user and a database:
+
+    $ sudo -u postgres psql
+
+    postgres=# CREATE ROLE eaco LOGIN;
+    CREATE ROLE
+
+    postgres=# CREATE DATABASE eaco OWNER eaco ENCODING 'utf8';
+    CREATE DATABASE
+
+    postgres=# ^D
+
+Create `features/active_record.yml` with your database configuration,
+see `features/active_record.example.yml` for an example.
+
+Run `bundle` once. This will install the base bundle.
+
+Run `appraisal` once. This will install the supported Rails versions and pg.
+
+Run `rake`. This will run the specs and cucumber features.
+
+Specs are run against the supported rails versions in turn. If you want to
+focus on a single release, use `appraisal rails-X.Y rake`, where `X.Y` can be
+`3.2`, `4.0`, `4.1` or `4.2`.
+
 ## Contributing
 
 1. Fork it ( https://github.com/ifad/eaco/fork )

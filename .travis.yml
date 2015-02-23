@@ -9,4 +9,10 @@ gemfile:
   - gemfiles/rails_4.1.gemfile
   - gemfiles/rails_4.2.gemfile
 
-script: bundle exec rake
+services:
+  - postgresql
+
+before_script:
+  - psql -c "CREATE DATABASE eaco;" -U postgres
+
+script: bundle exec rake EACO_AR_CONFIG=./features/active_record.travis.yml

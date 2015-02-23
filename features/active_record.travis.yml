@@ -1,0 +1,7 @@
+# PostgreSQL 9.4 and up is required.
+#
+adapter:  "postgresql"
+hostname: "localhost"
+database: "eaco"
+username: "postgres"
+password: ""

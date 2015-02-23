@@ -10,8 +10,9 @@ module Eaco
     ##
     # +ActiveRecord+ configuration and connection.
     #
-    # Database configuration is looked up in +features/support/active_record.yml+,
-    # logs to +features/support/active_record.log+, truncating the file at each run.
+    # Database configuration is looked up in +features/active_record.yml+ by
+    # default. Logs are sent to +features/active_record.log+, truncating the
+    # file at each run.
     #
     # Environment variables:
     #
@@ -19,6 +20,8 @@ module Eaco
     # * +VERBOSE+ log to +stderr+
     #
     module ActiveRecord
+      extend self
+
       ##
       # Looks up ActiveRecord and sets the +logger+.
       #
@@ -32,13 +35,13 @@ module Eaco
 
       ##
       # Log to stderr if +VERBOSE+ is given, else log to
-      # +features/support/active_record.log+
+      # +features/active_record.log+
       #
       # @return [IO] the log destination
       #
       def active_record_log
         @_active_record_log ||= ENV['VERBOSE'] ? $stderr :
-          'features/support/active_record.log'.tap {|f| File.open(f, "w+")}
+          'features/active_record.log'.tap {|f| File.open(f, "w+")}
       end
 
       ##
