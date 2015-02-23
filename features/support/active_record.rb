@@ -63,9 +63,9 @@ module Eaco
       # Caveat: the returned +Hash+ has a custom +.to_s+ method that formats
       # the configuration as a +pgsql://+ URL.
       #
-      # @see {.config_file}
+      # @see {#config_file}
       #
-      def config
+      def configuration
         @_config ||= YAML.load(config_file.read).tap do |conf|
           conf.symbolize_keys!
 
@@ -103,14 +103,13 @@ module Eaco
       ##
       # Establish ActiveRecord connection using the given configuration hash
       #
-      # @param config [Hash] the configuration to use, {.default_configuration}
-      #                      by default.
+      # @param config [Hash] the configuration to use, {#configuration} by default.
       #
       # @return [void]
       #
       # @raise [ActiveRecord::ActiveRecordError] if cannot connect
       #
-      def connect!(config = self.default_configuration)
+      def connect!(config = self.configuration)
         unless ENV['VERBOSE'].present?
           config = config.merge(min_messages: 'WARNING')
         end
@@ -118,7 +117,7 @@ module Eaco
       end
 
       ##
-      # Drops and recreates the database specified in the {.config}.
+      # Drops and recreates the database specified in the {#configuration}.
       #
       # TODO untangle from postgres
       #
