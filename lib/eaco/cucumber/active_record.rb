@@ -37,7 +37,7 @@ module Eaco
       # @return [IO] the log destination
       #
       def active_record_log
-        @_active_record_log ||= ENV['VERBOSE'].present? ? $stderr :
+        @_active_record_log ||= ENV['VERBOSE'] ? $stderr :
           'features/support/active_record.log'.tap {|f| File.open(f, "w+")}
       end
 
@@ -58,31 +58,23 @@ module Eaco
       alias adapter connection
 
       ##
-      # @return [Hash] the current database configuration
+      # Returns an Hash wit the database configuration.
       #
-      # Caveat: the returned +Hash+ has a custom +.to_s+ method that formats
+      # Caveat:the returned +Hash+ has a custom +.to_s+ method that formats
       # the configuration as a +pgsql://+ URL.
+      #
+      # @return [Hash] the current database configuration
       #
       # @see {#config_file}
       #
       def configuration
         @_config ||= YAML.load(config_file.read).tap do |conf|
-          conf.symbolize_keys!
-
           def conf.to_s
             'pgsql://%s:%s@%s/%s' % values_at(
               :username, :password, :hostname, :database
             )
           end
         end
-
-      rescue Errno::ENOENT => error
-        raise Eaco::Error, <<-EOF
-          File not found: #{error.message}.
-          Please define your Active Record database configuration
-          in `features/support/active_record.yml' or specify your configuration
-          file via the `EACO_AR_CONFIG' environment variable
-        EOF
       end
 
       ##
@@ -96,8 +88,20 @@ module Eaco
       ##
       # @return [String] +active_record.yml+ relative to this source file.
       #
+      # @raise [Errno::ENOENT] if the configuration file is not found.
+      #
       def default_config_file
-        File.join(File.dirname(__FILE__), '..', 'active_record.yml')
+        Pathname.new('features/active_record.yml').realpath
+
+      rescue Errno::ENOENT => error
+        raise error.class.new, <<-EOF.squeeze(' ')
+
+          #{error.message}.
+
+          Please define your Active Record database configuration in the
+          default location, or specify your configuration file location by
+          passing the `EACO_AR_CONFIG' environment variable.
+        EOF
       end
 
       ##
@@ -110,7 +114,7 @@ module Eaco
       # @raise [ActiveRecord::ActiveRecordError] if cannot connect
       #
       def connect!(config = self.configuration)
-        unless ENV['VERBOSE'].present?
+        unless ENV['VERBOSE']
           config = config.merge(min_messages: 'WARNING')
         end
         active_record.establish_connection config
