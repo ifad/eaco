@@ -19,24 +19,8 @@ require 'cucumber'
 require 'cucumber/rake/task'
 Cucumber::Rake::Task.new
 
-if !ENV["APPRAISAL_INITIALIZED"] && !ENV["TRAVIS"]
+# Our default rake task
+require 'eaco/rake'
+Eaco::Rake::DefaultTask.new
 
-  step = lambda {|msg| $stderr.puts ">>>\n>>> EACO: #{msg}\n>>>\n" }
-
-  desc "Runs the appraisals and generates documentation"
-  task :default do
-    step[ 'Running all appraisals' ]
-    pid = fork { Rake::Task[:appraisal].invoke }
-    _, status = Process.wait2(pid)
-    unless status.exitstatus == 0
-      raise "*** EACO: Appraisals failed with status #{status.exitstatus}"
-    end
-
-    step[ 'Generating documentation' ]
-    Rake::Task[:yard].invoke
-  end
-
-else
-  desc "Runs specs"
-  task default: [ :spec, :cucumber ]
-end
+# Thanks for reading.
