@@ -20,6 +20,11 @@ module Eaco
     # * +VERBOSE+ log to +stderr+
     #
     module ActiveRecord
+      autoload :Document,   'eaco/cucumber/active_record/document'   # Resource
+      autoload :User,       'eaco/cucumber/active_record/user'       # Actor
+      autoload :Department, 'eaco/cucumber/active_record/department' # Designator source
+      autoload :Position,   'eaco/cucumber/active_record/position'   # Designator source
+
       extend self
 
       ##
