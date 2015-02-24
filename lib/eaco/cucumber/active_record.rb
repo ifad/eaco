@@ -4,6 +4,8 @@ rescue LoadError
   abort "ActiveRecord requires the rails appraisal. Try `appraisal cucumber`"
 end
 
+require 'yaml'
+
 module Eaco
   module Cucumber
 
