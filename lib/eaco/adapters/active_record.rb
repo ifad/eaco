@@ -9,6 +9,7 @@ module Eaco
     #
     module ActiveRecord
       autoload :PostgresJSONb, 'eaco/adapters/active_record/postgres_jsonb'
+      autoload :Compatibility, 'eaco/adapters/active_record/compatibility'
 
       ##
       # Currently defined collection extraction strategies.
@@ -28,6 +29,8 @@ module Eaco
       # @return void
       #
       def self.included(base)
+        Compatibility.new(base).check!
+
         column = base.columns_hash.fetch('acl', nil)
 
         unless column
