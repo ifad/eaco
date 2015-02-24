@@ -12,7 +12,7 @@ module Eaco
         create_table 'documents', force: true do |t|
           t.string :name
           t.text   :contents
-          t.jsonb  :acl
+          t.column :acl, :jsonb
         end
 
         create_table 'users', force: true do |t|

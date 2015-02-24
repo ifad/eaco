@@ -117,7 +117,7 @@ module Eaco
       #
       # @param config [Hash] the configuration to use, {#configuration} by default.
       #
-      # @return [void]
+      # @return [ActiveRecord::ConnectionAdapters::ConnectionPool]
       #
       # @raise [ActiveRecord::ActiveRecordError] if cannot connect
       #
@@ -125,7 +125,17 @@ module Eaco
         unless ENV['VERBOSE']
           config = config.merge(min_messages: 'WARNING')
         end
-        active_record.establish_connection config
+
+        active_record.establish_connection(config)
+      end
+
+      ##
+      # Loads the defined {ActiveRecord.schema}
+      #
+      # @return [nil]
+      #
+      def define_schema!
+        load 'eaco/cucumber/active_record/schema.rb'
       end
 
       ##
