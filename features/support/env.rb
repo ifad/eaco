@@ -1,5 +1,9 @@
 require 'bundler/setup'
 require 'byebug'
+
+require 'coveralls'
+Coveralls.wear!
+
 require 'eaco'
 require 'eaco/cucumber'
 
