@@ -49,7 +49,7 @@ module Eaco
           end
 
           def roles
-            @_roles
+            @_roles || []
           end
 
           def roles_priority
