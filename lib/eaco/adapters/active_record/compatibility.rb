@@ -11,10 +11,18 @@ module Eaco
         autoload :V41, 'eaco/adapters/active_record/compatibility/v41.rb'
         autoload :V42, 'eaco/adapters/active_record/compatibility/v42.rb'
 
+        ##
+        # @param model [ActiveRecord::Base] the model to check
+        #
         def initialize(model)
           @model = model
         end
 
+        ##
+        # Checks whether the model is compatible. Looks up the
+        # {#support_module} and includes it.
+        #
+        # @see #support_module
         def check!
           layer = support_module
           base.instance_eval { include layer }
@@ -22,15 +30,33 @@ module Eaco
 
         private
 
+        ##
+        # @return [ActiveRecord::Base] associated with the model
+        #
         def base
           @model.base_class.superclass
         end
 
+        ##
+        # @return [String] the +ActiveRecord+ major and minor version numbers
+        #
+        # Example: "42" for 4.2
+        #
         def active_record_version
           ver = base.parent::VERSION
           [ver.const_get(:MAJOR), ver.const_get(:MINOR)].join
         end
 
+        ##
+        # Tries to look up the support module for the {#active_record_version}
+        # in the {Compatibility} namespace.
+        #
+        # @return [Module] the support module
+        #
+        # @raise [Eaco::Error] if not found.
+        #
+        # @see check!
+        #
         def support_module
           unless self.class.const_defined?(support_module_name)
             raise Eaco::Error, <<-EOF
@@ -41,6 +67,11 @@ module Eaco
           self.class.const_get support_module_name
         end
 
+        ##
+        # @return [String] "V" with {.active_record_version} appended.
+        #
+        # Example: "V32" for Rails 3.2.
+        #
         def support_module_name
           ['V', active_record_version].join
         end

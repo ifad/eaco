@@ -132,7 +132,7 @@ module Eaco
       end
 
       ##
-      # Loads the defined {ActiveRecord.schema}
+      # Loads the defined {ActiveRecord#schema}
       #
       # @return [nil]
       #
