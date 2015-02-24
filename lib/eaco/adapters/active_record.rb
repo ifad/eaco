@@ -62,7 +62,7 @@ module Eaco
       # @see ACL
       #
       def acl=(acl)
-        write_attribute acl.to_hash
+        write_attribute :acl, acl.to_hash
       end
     end
 
