@@ -3,6 +3,7 @@
 appraise 'rails-3.2' do
   gem 'rails', '~> 3.2.0'
   gem 'pg'
+  gem 'activerecord-postgres-json', require: false
 end
 
 appraise 'rails-4.0' do
