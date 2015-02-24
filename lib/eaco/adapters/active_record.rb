@@ -37,7 +37,7 @@ module Eaco
           raise Malformed, "Please define a jsonb column named `acl` on #{base}."
         end
 
-        unless column.type == :json
+        unless column.type == :json || column.type == :jsonb
           raise Malformed, "The `acl` column on #{base} must be of the json type."
         end
       end
