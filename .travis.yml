@@ -9,8 +9,8 @@ gemfile:
   - gemfiles/rails_4.1.gemfile
   - gemfiles/rails_4.2.gemfile
 
-services:
-  - postgresql
+addons:
+  postgresql: "9.4"
 
 before_script:
   - psql -c "CREATE DATABASE eaco;" -U postgres
