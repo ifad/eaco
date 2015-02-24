@@ -1,9 +1,7 @@
 require 'bundler/setup'
 require 'byebug'
+require 'eaco'
 require 'eaco/cucumber'
-
-# Connect to Active Record
-Eaco::Cucumber::ActiveRecord.connect!
 
 # Create a whole new world
 World do
