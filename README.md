@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/ifad/eaco.svg)](https://travis-ci.org/ifad/eaco) *currently writing specs*
 [![Code Climate](https://codeclimate.com/github/ifad/eaco/badges/gpa.svg)](https://codeclimate.com/github/ifad/eaco)
 [![Inline docs](http://inch-ci.org/github/ifad/eaco.svg?branch=master)](http://inch-ci.org/github/ifad/eaco/master)
+[![Gem Version](https://badge.fury.io/rb/eaco.svg)](http://badge.fury.io/rb/eaco)
 
 Eacus, the holder of the keys of Hades, is an ACL-based authorization
 framework for Ruby.
