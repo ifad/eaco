@@ -81,6 +81,16 @@ module Eaco
     def can?(action, resource)
       resource.allows?(action, self)
     end
+
+    ##
+    # Opposite of {#can?}.
+    #
+    # @param (see #can?)
+    # @return (see #can?)
+    #
+    def cannot?(*args)
+      !can?(*args)
+    end
   end
 
 end
