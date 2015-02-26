@@ -14,7 +14,7 @@ guard :rspec, version: 3, cmd: 'rspec' do
   watch('spec/spec_helper.rb') { "spec" }
 
   # When a source changes run its unit spec.
-  watch(%r{^lib/(.+)\.rb$}) {|m| "spec/#{m[1]}_spec.rb"
+  watch(%r{^lib/(.+)\.rb$}) {|m| "spec/#{m[1]}_spec.rb" }
 end
 
 guard :cucumber do
