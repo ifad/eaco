@@ -11,5 +11,5 @@ Then(/I should be able to set an ACL on it/) do
   instance.save!
   instance = @model.find(instance.id)
 
-  instance.acl == {foo: :bar} && instance.acl.class.kind_of?(Eaco::ACL)
+  instance.acl == {foo: :bar} && instance.acl.class.kind_of?(@model.acl)
 end
