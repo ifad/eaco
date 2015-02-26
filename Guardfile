@@ -22,13 +22,13 @@ guard :cucumber do
   watch(%r{^features/.+\.feature$})
 
   # When support code changes, rerun all features.
-  watch(%r{^features/support/.+$})                      { 'features' }
+  watch(%r{^features/support/.+$}) { 'features' }
 
   # When a step definition for a feature changes, rerun the corresponding feature.
   watch(%r{^features/step_definitions/(.+)_steps\.rb$}) { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'features' }
 end
 
-guard :shell do
-  # Rerun scenarios when source code changes
-  watch(%r{^lib/.+\.rb$}) { 'cucumber' }
-end
+#guard :shell do
+#  # Rerun scenarios when source code changes
+#  watch(%r{^lib/.+\.rb$}) { 'cucumber' }
+#end
