@@ -25,7 +25,7 @@ module Eaco
     # @return [ACL] this ACL
     #
     def initialize(definition = {})
-      definition.each do |designator, role|
+      (definition || {}).each do |designator, role|
         self[designator] = role.intern
       end
     end
