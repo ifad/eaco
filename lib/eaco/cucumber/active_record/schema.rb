@@ -11,7 +11,6 @@ module Eaco
       ::ActiveRecord::Schema.define(version: '2015022301') do
         create_table 'documents', force: true do |t|
           t.string :name
-          t.text   :contents
           t.column :acl, :jsonb
         end
 
