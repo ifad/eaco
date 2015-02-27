@@ -156,7 +156,13 @@ module Eaco
       # @return [String]
       #
       def fancy(msg)
-        "\n\033[1;32m>>>\n>>> EACO: \033[1;37m#{msg}\033[1;32m\n>>>\n\033[0m"
+        <<-EOF
+\033[0m
+\033[1;32m>>>
+\033[1;32m>>> EACO: \033[1;37m#{msg}
+\033[1;32m>>>
+\033[0m
+        EOF
       end
 
       ##
