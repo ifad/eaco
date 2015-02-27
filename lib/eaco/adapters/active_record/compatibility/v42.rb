@@ -4,11 +4,19 @@ module Eaco
       class Compatibility
 
         ##
-        # Rails 4.2 JSONB support module.
+        # Rails 4.2 support module.
         #
-        # Magically, this module is empty. YAY!
+        # JSONB works correctly, but we need +.scoped+ so we revive it through
+        # the {Scoped} support module.
+        #
+        # @see Scoped
         #
         module V42
+          extend ActiveSupport::Concern
+
+          included do
+            extend Scoped
+          end
         end
 
       end
