@@ -1,12 +1,12 @@
 # Eaco's Guardfile
 
 # Watch lib/ and spec/
-directories %w(lib spec)
+directories %w(lib spec features)
 
 # Clear the screen before every task
 clearing :on
 
-guard :rspec, version: 3, cmd: 'rspec' do
+guard :rspec, version: 3, cmd: 'bundle exec rspec' do
   # When single specs change, run them.
   watch(%r{^spec/.+_spec\.rb$})
 
@@ -28,7 +28,7 @@ guard :cucumber do
   watch(%r{^features/step_definitions/(.+)_steps\.rb$}) { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'features' }
 end
 
-#guard :shell do
-#  # Rerun scenarios when source code changes
-#  watch(%r{^lib/.+\.rb$}) { 'cucumber' }
-#end
+guard :shell do
+  # Rerun scenarios when source code changes
+  watch(%r{^lib/.+\.rb$}) { system 'cucumber' }
+end
