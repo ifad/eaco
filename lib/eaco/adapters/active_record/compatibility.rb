@@ -21,21 +21,16 @@ module Eaco
         end
 
         ##
-        # Checks whether this model is compatible.
-        #
-        # Looks up the {#support_module} and, if found, includes it in the
-        # target model.
+        # Checks whether the target model is compatible.
+        # Looks up the {#support_module} and includes it.
         #
         # @see #support_module
         #
-        # @return [nil]
+        # @return [void]
         #
         def check!
-          mod = support_module
-          return unless mod
-          base.instance_eval { include mod }
-
-          nil
+          layer = support_module
+          target.instance_eval { include layer }
         end
 
         private
@@ -43,7 +38,7 @@ module Eaco
         ##
         # @return [ActiveRecord::Base] associated with the model
         #
-        def base
+        def target
           @model.base_class.superclass
         end
 
@@ -53,7 +48,7 @@ module Eaco
         # Example: "42" for 4.2
         #
         def active_record_version
-          ver = base.parent::VERSION
+          ver = target.parent.const_get(:VERSION)
           [ver.const_get(:MAJOR), ver.const_get(:MINOR)].join
         end
 
@@ -61,12 +56,18 @@ module Eaco
         # Tries to look up the support module for the {#active_record_version}
         # in the {Compatibility} namespace.
         #
-        # @return [Module] the support module or nil if not required.
+        # @return [Module] the support module
+        #
+        # @raise [Eaco::Error] if not found.
         #
         # @see check!
         #
         def support_module
-          return unless self.class.const_defined?(support_module_name)
+          unless self.class.const_defined?(support_module_name)
+            raise Eaco::Error, <<-EOF
+              Unsupported Active Record version: #{active_record_version}
+            EOF
+          end
 
           self.class.const_get support_module_name
         end
