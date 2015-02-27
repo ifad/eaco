@@ -29,6 +29,7 @@ module Eaco
     # @return [nil]
     #
     def report!
+      simplecov
       Coveralls.push!
 
       nil
