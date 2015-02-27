@@ -19,13 +19,21 @@ module Eaco
         end
 
         ##
-        # Checks whether the model is compatible. Looks up the
-        # {#support_module} and includes it.
+        # Checks whether this model is compatible.
+        #
+        # Looks up the {#support_module} and, if found, includes it in the
+        # target model.
         #
         # @see #support_module
+        #
+        # @return [nil]
+        #
         def check!
-          layer = support_module
-          base.instance_eval { include layer }
+          mod = support_module
+          return unless mod
+          base.instance_eval { include mod }
+
+          nil
         end
 
         private
@@ -51,18 +59,12 @@ module Eaco
         # Tries to look up the support module for the {#active_record_version}
         # in the {Compatibility} namespace.
         #
-        # @return [Module] the support module
-        #
-        # @raise [Eaco::Error] if not found.
+        # @return [Module] the support module or nil if not required.
         #
         # @see check!
         #
         def support_module
-          unless self.class.const_defined?(support_module_name)
-            raise Eaco::Error, <<-EOF
-              Unsupported Active Record version: #{active_record_version}
-            EOF
-          end
+          return unless self.class.const_defined?(support_module_name)
 
           self.class.const_get support_module_name
         end
