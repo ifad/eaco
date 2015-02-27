@@ -102,7 +102,7 @@ module Eaco
       #
       def roles(*keys)
         target_eval do
-          @_roles = keys.flatten.freeze
+          @_roles = Set.new(keys.flatten).freeze
         end
       end
 
