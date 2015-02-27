@@ -32,6 +32,7 @@ module Eaco
           task :default do
             run_specs
             run_cucumber
+            print_coverage
           end
 
         elsif running_in_travis?
@@ -121,8 +122,19 @@ module Eaco
       # Reports coverage data
       #
       # @return [void]
+      #
       def report_coverage
         Eaco::Coverage.report!
+      end
+
+      ##
+      # Prints the current percentage of code coverage
+      #
+      # @return [void]
+      #
+      def print_coverage
+        percentage = Eaco::Coverage.percent
+        croak "Coverage: %.2f%" % percentage
       end
 
       ##

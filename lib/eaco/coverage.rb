@@ -1,4 +1,5 @@
 require 'coveralls'
+require 'simplecov'
 
 module Eaco
 
@@ -8,12 +9,14 @@ module Eaco
   # Loading this module will start collecting coverage data.
   #
   module Coverage
+    extend self
+
     ##
     # Starts collecting coverage data.
     #
     # @return [nil]
     #
-    def self.start!
+    def start!
       Coveralls.wear_merged!
 
       nil
@@ -24,10 +27,17 @@ module Eaco
     #
     # @return [nil]
     #
-    def self.report!
+    def report!
       Coveralls.push!
 
       nil
+    end
+
+    ##
+    # @return [Fixnum] the percentage of the code covered by tests
+    #
+    def percent
+      SimpleCov.result && SimpleCov.result.covered_percent
     end
   end
 
