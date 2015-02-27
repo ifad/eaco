@@ -34,6 +34,7 @@ Feature: Role-Based authorization
     When I have a confidential Document named "Supa Dupa Fly"
      And I grant Bob access to Document "Supa Dupa Fly" as a reader in quality of user
     Then Bob should be able to read Document "Supa Dupa Fly"
+     But Bob should not be able to write Document "Supa Dupa Fly"
      And Tom should not be able to read Document "Supa Dupa Fly"
 
   Scenario: Extraction of accessible Resources
