@@ -96,7 +96,7 @@ module Eaco
       #
       def admin(&block)
         target_eval do
-          @admin_logic = block
+          @_admin_logic = block
         end
       end
 
