@@ -226,6 +226,6 @@ focus on a single release, use `appraisal rails-X.Y rake`, where `X.Y` can be
 
 ## Denominazione d'Origine Controllata
 
-This software is Made in :italy:.
+This software is Made in Italy :it: :smile:.
 
 [eaco-e-telamone]: http://upload.wikimedia.org/wikipedia/commons/7/70/Aeacus_telemon.jpg "Aeacus telemon by user Ravenous at en.wikipedia.org - Public domain through Wikimedia Commons - http://commons.wikimedia.org/wiki/File:Aeacus_telemon.jpg#mediaviewer/File:Aeacus_telemon.jpg"
