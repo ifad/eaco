@@ -24,10 +24,10 @@ Then(/I should be able to set an ACL on the (\w+)/) do |model_name|
   end
 end
 
-Then(/(\w+) can see only "(.*?)" in the (\w+) authorized list/) do |actor_name, resource_names, resource_model|
+Then(/(\w+) can see (?:only)? *"(.*?)" in the (\w+) authorized list/) do |actor_name, resource_names, resource_model|
   actor = fetch_actor(actor_name)
 
-  resource_names = resource_names.split(',')
+  resource_names = resource_names.split(/,\s*/)
   resources = resource_names.map {|name| fetch_resource(resource_model, name)}
 
   resource_model = find_model(resource_model)

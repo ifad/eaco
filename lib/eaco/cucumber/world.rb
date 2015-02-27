@@ -163,7 +163,7 @@ module Eaco
       #
       # @return [Actor] the newly created {Actor} instance.
       #
-      def register_actor(model, name, admin = false)
+      def register_actor(model, name, admin: false)
         actor_model = find_model(model)
 
         actors[name] = actor_model.new.tap do |actor|

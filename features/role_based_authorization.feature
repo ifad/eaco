@@ -27,8 +27,8 @@ Feature: Role-Based authorization
        end
      end
      """
-    Given I have an User actor named Bob
-      And I have an User actor named Tom
+    Given I have an User actor named "Bob"
+      And I have an User actor named "Tom"
 
   Scenario: Discretionary access to a Resource
     When I have a confidential Document named "Supa Dupa Fly"
@@ -44,3 +44,11 @@ Feature: Role-Based authorization
      And I have a confidential Document named "For no one"
     Then Bob can see only "Strategic Plan" in the Document authorized list
      And Tom can see only "For Tom" in the Document authorized list
+
+  Scenario: Admin can see everything
+    When I have an admin User actor named "Boss"
+     And I have a confidential Document named "For Bob"
+     And I grant Bob access to Document "For Bob" as a reader in quality of user
+     And I have a confidential Document named "For no one"
+     Then Bob can see only "For Bob" in the Document authorized list
+      But Boss can see "For Bob, For no one" in the Document authorized list

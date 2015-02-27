@@ -18,6 +18,7 @@ module Eaco
         # Actor
         create_table 'users', force: true do |t|
           t.string :name
+          t.boolean :admin, default: false
         end
 
         # Designator source

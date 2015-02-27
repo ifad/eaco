@@ -2,11 +2,12 @@ Given(/I have an (\w+) actor defined as/) do |model_name, actor_definition|
   authorize_model model_name, actor_definition
 end
 
-Given(/I have an (\w+) actor named (\w+)/) do |model_name, actor_name|
+Given(/I have an (\w+) actor named "(.+?)"/) do |model_name, actor_name|
   register_actor model_name, actor_name
 end
 
-Given(/I have an admin (\w+) actor named (\w+)/) do |model_name, actor_name|
+Given(/I have an admin (\w+) actor named "(.+?)"/) do |model_name, actor_name|
+  register_actor model_name, actor_name, admin: true
 end
 
 When(/I grant (\w+) access to (\w+) "(.+?)" as a (\w+) in quality of (\w+)/) do |actor_name, resource_model, resource_name, role_name, designator|
