@@ -1,4 +1,9 @@
-require 'active_support/concern'
+begin
+  require 'active_support/concern'
+rescue LoadError
+  # This is falsely true during specs ran by Guard. FIXME.
+  abort 'Eaco::Controller requires activesupport. Please add it to Gemfile.'
+end
 
 module Eaco
 
