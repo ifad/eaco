@@ -185,7 +185,9 @@ module Eaco
       def fetch_actor(name)
         actors.fetch(name)
       rescue KeyError
+        # :nocov:
         raise "Actor '#{name}' not found in registry"
+        # :nocov:
       end
 
       ##
@@ -217,7 +219,9 @@ module Eaco
       def fetch_resource(model, name)
         resources.fetch(model).fetch(name)
       rescue KeyError
+        # :nocov:
         raise "Resource #{model} '#{resource}' not found in registry"
+        # :nocov:
       end
 
       ##
