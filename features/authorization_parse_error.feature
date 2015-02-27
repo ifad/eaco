@@ -113,3 +113,14 @@ Feature: Authorization rules error handling
      """
      The `acl` column on Grabach must be of the jsonb type
      """
+
+  Scenario: Using an unsupported ActiveRecord version
+    When I am using ActiveRecord 3.0
+     And I have a wrong authorization definition on model Document such as
+     """
+     authorize $MODEL
+     """
+    Then I should get an Eaco::Error error back saying
+     """
+     Unsupported Active Record version: 30
+     """

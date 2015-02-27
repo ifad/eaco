@@ -14,3 +14,10 @@ Then(/I should get an? (.+?) error back saying/) do |error_class, error_contents
     raise_error(error_class).
     with_message(/#{error_contents}/m)
 end
+
+When(/I am using ActiveRecord (.+?)$/) do |version|
+  version = version.sub(/\D/, '') # FIXME
+
+  allow_any_instance_of(Eaco::Adapters::ActiveRecord::Compatibility).to \
+    receive(:active_record_version).and_return(version)
+end

@@ -7,6 +7,8 @@ Eaco::Coverage.start!
 require 'eaco'
 require 'eaco/cucumber'
 
+require 'cucumber/rspec/doubles'
+
 ##
 # Create a whole new world.
 # @see {World}
