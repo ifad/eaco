@@ -108,7 +108,7 @@ module Eaco
       # @see Actor
       #
       def harvest(actor)
-        Array.new(actor.send(@method)||[]).map {|value| new(value) }
+        Array.new([actor.send(@method)].flatten).map! {|value| new(value) }
       end
 
       ##

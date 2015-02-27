@@ -188,6 +188,7 @@ module Eaco
         [designator]
 
       elsif designator && actor_or_id.respond_to?(:designators)
+        designator = designator.to_sym
         actor_or_id.designators.select {|d| d.type == designator}
 
       elsif designator.is_a?(Symbol)

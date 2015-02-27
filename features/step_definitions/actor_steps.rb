@@ -7,6 +7,7 @@ end
 Given(/I have an actor named (\w+)/) do |actor_name|
   actor = @actor_model.new
   actor.name = actor_name
+  actor.save!
 
   @actors ||= {}
   @actors[actor_name] = actor
@@ -20,8 +21,9 @@ end
 
 Then(/^(\w+) should be able to (\w+) "(.+?)"$/) do |actor_name, permission_name, resource_name|
   actor = @actors.fetch(actor_name)
+  resource = @resources.fetch(resource_name)
 
-  unless actor.can? permission_name, @resources.fetch(resource_name)
+  unless actor.can? permission_name, resource
     raise "Expected #{actor_name} to be able to #{permission_name} #{resource_name}"
   end
 end

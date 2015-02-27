@@ -25,7 +25,7 @@ module Eaco
         def accessible_by(actor)
           return scoped if actor.is_admin?
 
-          designators = actor.designators.map {|d| quote_value(d) }
+          designators = actor.designators.map {|d| quote_value(d, nil) }
 
           where("acl ?| array[#{designators.join(',')}]::varchar[]")
         end

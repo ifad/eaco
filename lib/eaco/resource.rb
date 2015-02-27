@@ -61,7 +61,7 @@ module Eaco
         perms = permissions[role]
         return false unless perms
 
-        perms.include?(action)
+        perms.include?(action.to_sym)
       end
 
       ##
@@ -112,7 +112,7 @@ module Eaco
 
       # The defined roles.
       #
-      # @return [Set]
+      # @return [Array]
       #
       # @see DSL::Resource
       #
