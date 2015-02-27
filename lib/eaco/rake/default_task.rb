@@ -143,7 +143,7 @@ module Eaco
       #
       def with_appraisal(msg)
         if appraisal
-          msg = "%s [%s]" % [msg, appraisal]
+          msg = "%s \033[1;31m[%s]" % [msg, appraisal]
         end
 
         return msg
@@ -156,7 +156,7 @@ module Eaco
       # @return [String]
       #
       def fancy(msg)
-        ">>>\n>>> EACO: #{msg}\n>>>\n"
+        "\n\033[1;32m>>>\n>>> EACO: \033[1;37m#{msg}\033[1;32m\n>>>\n\033[0m"
       end
 
       ##
