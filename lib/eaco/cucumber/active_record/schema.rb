@@ -2,6 +2,18 @@ module Eaco
   module Cucumber
     module ActiveRecord
 
+      # @!method clean
+      #
+      # Drops all tables currently instantiated in the database.
+      #
+      # @see Eaco::Cucumber::World
+      #
+      ::ActiveRecord::Base.connection.tap do |connection|
+        connection.tables.each do |table_name|
+          connection.drop_table table_name
+        end
+      end
+
       # @!method schema
       #
       # Defines the database schema for the {Eaco::Cucumber::World} scenario.

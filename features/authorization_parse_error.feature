@@ -97,3 +97,19 @@ Feature: Authorization rules error handling
      """
      .+Document.+ORM.+ActiveRecord::Base.+ use one of the available strategies: pg_jsonb
      """
+
+  Scenario: Authorizing a Resource with the wrong ACL column type
+    When I have a wrong authorization definition such as
+     """
+     class ::Grabach < ActiveRecord::Base
+       connection.create_table 'grabaches' do |t|
+         t.string :acl
+       end
+     end
+
+     authorize ::Grabach
+     """
+    Then I should get an Eaco::Error error back saying
+     """
+     The `acl` column on Grabach must be of the jsonb type
+     """
