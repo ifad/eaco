@@ -15,13 +15,8 @@ Then(/I should be able to set an ACL on the (\w+)/) do |model_name|
 
   instance = resource_model.find(instance.id)
 
-  unless instance.acl == {"foo" => :bar}
-    raise %[Expecting {"foo"=> :bar} as an ACL but found #{instance.acl.inspect}]
-  end
-
-  unless instance.acl.kind_of?(resource_model.acl)
-    raise "Expecting #{instance.acl.class} to be a #{resource_model.acl}"
-  end
+  expect(instance.acl).to eq({"foo" => :bar})
+  expect(instance.acl).to be_a(resource_model.acl)
 end
 
 Then(/(\w+) can see (?:only)? *"(.*?)" in the (\w+) authorized list/) do |actor_name, resource_names, resource_model|
@@ -31,9 +26,7 @@ Then(/(\w+) can see (?:only)? *"(.*?)" in the (\w+) authorized list/) do |actor_
   resources = resource_names.map {|name| fetch_resource(resource_model, name)}
 
   resource_model = find_model(resource_model)
-  accessible = resource_model.accessible_by(actor).to_a
+  accessible = resource_model.accessible_by(actor)
 
-  unless (accessible & resources) == resources
-    raise "Expected to have access to #{resources} but found only #{accessible}"
-  end
+  expect(accessible).to match(resources)
 end
