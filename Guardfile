@@ -1,4 +1,8 @@
 # Eaco's Guardfile
+#
+unless ENV['BUNDLE_GEMFILE'] =~ %r{gemfiles/rails}
+  abort 'specs and features require appraisal. Try `appraisal rails-4.2 guard`'
+end
 
 # Watch lib/ and spec/
 directories %w(lib spec features)
