@@ -59,8 +59,13 @@ module Eaco
       end
 
       ##
-      # @return [Symbol] the permission required to access the given action.
+      # Gets the permission required to access the given +action+, falling
+      # back on the default +:all+ action, or +nil+ if no permission is
+      # defined.
       #
+      # @return [Symbol] the required permission or nil
+      #
+      # @see {Eaco::Resource}
       # @see {Eaco::DSL::Resource}
       #
       def permission_for(action)
