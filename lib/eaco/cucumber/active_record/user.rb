@@ -13,7 +13,7 @@ module Eaco
       # @see Eaco::Cucumber::World
       #
       class User < ::ActiveRecord::Base
-        autoload :Designators, 'lib/eaco/cucumber/designators.rb'
+        autoload :Designators, 'eaco/cucumber/active_record/user/designators.rb'
 
         has_many :positions
         has_many :departments, through: :positions

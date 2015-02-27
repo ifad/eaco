@@ -194,7 +194,7 @@ module Eaco
     attr_reader :value
 
     # The instance given to {Designator#initialize}
-    attr_reader :instance
+    attr_accessor :instance
 
     ##
     # Should return an extended description for this designator. You can then
