@@ -65,8 +65,8 @@ module Eaco
       end
 
       ##
-      # @return [Symbol] the given +actor+ role in the given resource, or +nil+ if no
-      # access is granted.
+      # @return [Symbol] the given +actor+ role in the given resource, or
+      # +nil+ if no access is granted.
       #
       # @param actor_or_designator [Actor or Designator]
       # @param resource [Resource]
@@ -103,28 +103,36 @@ module Eaco
       ##
       # The permissions defined for each role.
       #
-      # @see DSL::Resource#initialize
+      # @return [Hash] the defined permissions, keyed by +role+
+      #
+      # @see DSL::Resource::Permissions
       #
       def permissions
       end
 
       # The defined roles.
       #
-      # @see DSL::Resource#initialize
+      # @return [Set]
+      #
+      # @see DSL::Resource
       #
       def roles
       end
 
       # Roles' priority map keyed by role symbol.
       #
-      # @see DSL::Resource#initialize
+      # @return [Hash]
+      #
+      # @see DSL::Resource
       #
       def roles_priority
       end
 
       # Role labels map keyed by role symbol
       #
-      # @see DSL::Resource#initialize
+      # @return [Hash]
+      #
+      # @see DSL::Resource
       #
       def roles_with_labels
       end
