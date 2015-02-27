@@ -163,12 +163,12 @@ module Eaco
       #
       # @return [Actor] the newly created {Actor} instance.
       #
-      def register_actor(model, name, admin: false)
+      def register_actor(model, name, options = {})
         actor_model = find_model(model)
 
         actors[name] = actor_model.new.tap do |actor|
           actor.name  = name
-          actor.admin = admin
+          actor.admin = options.fetch(:admin, false)
           actor.save!
         end
       end
