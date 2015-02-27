@@ -48,7 +48,7 @@ module Eaco
     # @see Designator
     #
     def designators
-      @_designators ||= Set.new.tap do |ret|
+      Set.new.tap do |ret|
         self.class.designators.each do |_, designator|
           ret.merge designator.harvest(self)
         end
