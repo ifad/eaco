@@ -189,12 +189,11 @@ module Eaco
       end
 
       ##
-      # @return [String] the current gemfile name
+      # @see {Rake::Utils.gemfile}
+      # @private
       #
       def gemfile
-        gemfile = ENV['BUNDLE_GEMFILE']
-
-        File.basename(gemfile, '.*') if gemfile
+        Rake::Utils.gemfile
       end
 
       ##

@@ -143,23 +143,21 @@ module Eaco
       protected
 
       ##
-      # Captures stdout and logs it
+      # Captures stdout emitted by the given +block+ and logs it
+      # as +info+ messages.
       #
+      # @param block [Proc]
       # @return [nil]
+      # @see {Rake::Utils.capture_stdout}
       #
-      def log_stdout
-        stdout, string = $stdout, StringIO.new
-        $stdout = string
+      def log_stdout(&block)
+        stdout = Rake::Utils.capture_stdout(&block)
 
-        yield
-
-        string.tap(&:rewind).read.split("\n").each do |line|
+        stdout.split("\n").each do |line|
           logger.info line
         end
 
         nil
-      ensure
-        $stdout = stdout
       end
     end
 
