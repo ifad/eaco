@@ -26,8 +26,17 @@ Feature: Role-Based authorization
     Given I have an actor named Bob
       And I have an actor named Tom
 
-  Scenario:
-     And I have a confidential one named "Supa Dupa Fly"
-     And I grant Bob access as a reader in quality of user
-    Then Bob should be able to read it
-     And Tom should not be able to read it
+  Scenario: Discretionary access to a Resource
+    When I have a confidential Document named "Supa Dupa Fly"
+     And I grant Bob access to "Supa Dupa Fly" as a reader in quality of user
+    Then Bob should be able to read "Supa Dupa Fly"
+     And Tom should not be able to read "Supa Dupa Fly"
+
+  Scenario: Extraction of accessible Resources
+    When I have a confidential Document named "Strategic Plan"
+     And I grant Bob access to "Strategic Plan" as a reader in quality of user
+     And I have a confidential Document named "For Tom"
+     And I grant Tom access to "For Tom" as a reader in quality of user
+     And I have a confidential Document named "For no one"
+    Then Bob can see only "Strategic Plan" in the Document authorized list
+     And Tom can see only "For Tom" in the Document authorized list

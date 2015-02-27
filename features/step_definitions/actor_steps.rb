@@ -12,19 +12,19 @@ Given(/I have an actor named (\w+)/) do |actor_name|
   @actors[actor_name] = actor
 end
 
-When(/I grant (\w+) access as a (\w+) in quality of (\w+)/) do |actor_name, role_name, designator|
+When(/I grant (\w+) access to "(.+?)" as a (\w+) in quality of (\w+)/) do |actor_name, resource_name, role_name, designator|
   actor = @actors.fetch(actor_name)
-  @resource.grant role_name, designator, actor
-  @resource.save!
+  @resources[resource_name].grant role_name, designator, actor
+  @resources[resource_name].save!
 end
 
-Then(/(\w+) should be able to (\w+) it/) do |actor_name, permission_name|
+Then(/^(\w+) should be able to (\w+) "(.+?)"$/) do |actor_name, permission_name, resource_name|
   actor = @actors.fetch(actor_name)
-  actor.can? permission_name, @resource
+  actor.can? permission_name, @resources.fetch(resource_name)
 end
 
-Then(/(\w+) should not be able to (\w+) it/) do |actor_name, permission_name|
+Then(/^(\w+) should not be able to (\w+) "(.+?)"$/) do |actor_name, permission_name, resource_name|
   actor = @actors.fetch(actor_name)
-  actor.cannot? permission_name, @resource
+  actor.cannot? permission_name, @resources.fetch(resource_name)
 end
 
