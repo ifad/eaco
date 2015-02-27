@@ -130,6 +130,22 @@ module Eaco
     # Belonging to a department is the Designator of type +:department+
     #
     class World
+
+      ##
+      # Set up the World:
+      #
+      # * Connect to ActiveRecord
+      #
+      def initialize
+        Eaco::Cucumber::ActiveRecord.connect!
+      end
+
+      ##
+      # @return [Class] a model in the {ActiveRecord} namespace.
+      #
+      def find_model(model_name)
+        Eaco::Cucumber::ActiveRecord.const_get(model_name)
+      end
     end
 
   end
