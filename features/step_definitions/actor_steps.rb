@@ -20,11 +20,16 @@ end
 
 Then(/^(\w+) should be able to (\w+) "(.+?)"$/) do |actor_name, permission_name, resource_name|
   actor = @actors.fetch(actor_name)
-  actor.can? permission_name, @resources.fetch(resource_name)
+
+  unless actor.can? permission_name, @resources.fetch(resource_name)
+    raise "Expected #{actor_name} to be able to #{permission_name} #{resource_name}"
+  end
 end
 
 Then(/^(\w+) should not be able to (\w+) "(.+?)"$/) do |actor_name, permission_name, resource_name|
   actor = @actors.fetch(actor_name)
-  actor.cannot? permission_name, @resources.fetch(resource_name)
+  unless actor.cannot? permission_name, @resources.fetch(resource_name)
+    raise "Expected #{actor_name} to not be able to #{permission_name} #{resource_name}"
+  end
 end
 
