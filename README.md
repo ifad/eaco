@@ -52,9 +52,9 @@ Create `config/authorization.rb` [(rdoc)](http://www.rubydoc.info/github/ifad/ea
 ```ruby
 # Defines `Document` to be an authorized resource.
 #
-# Adds Document.accessible_by and Document#allows
+# Adds Document.accessible_by and Document#allows?
 #
-authorize Document, using: :lucene do
+authorize Document, using: :pg_jsonb do
   roles :owner, :editor, :reader
 
   permissions do
