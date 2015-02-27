@@ -139,24 +139,6 @@ module Eaco
       def define_schema!
         load 'eaco/cucumber/active_record/schema.rb'
       end
-
-      ##
-      # Drops and recreates the database specified in the {#configuration}.
-      #
-      # TODO untangle from postgres
-      #
-      # @return [void]
-      #
-      def recreate_database!
-        database = config.fetch(:database)
-        connect! config.merge(database: :postgres) # FIXME
-
-        connection.drop_database   database
-        connection.create_database database
-        connect! config
-
-        logger.info "Connected to #{config}"
-      end
     end
 
   end
