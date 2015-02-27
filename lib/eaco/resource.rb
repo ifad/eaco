@@ -37,7 +37,7 @@ module Eaco
       # @param role [Symbol] role name.
       #
       def role?(role)
-        role.to_sym.in?(roles)
+        roles.include?(role.to_sym)
       end
 
       ##
