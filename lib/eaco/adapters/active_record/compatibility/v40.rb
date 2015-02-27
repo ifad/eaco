@@ -19,7 +19,7 @@ module Eaco
             adapter.class::OID.register_type 'jsonb', adapter.class::OID::Json.new
             adapter.send :reload_type_map
 
-            adapter.native_database_types.update(jsonb: {name: 'json'})
+            adapter.native_database_types.update(jsonb: {name: 'jsonb'})
 
             adapter.class.parent::PostgreSQLColumn.instance_eval do
               include Column
