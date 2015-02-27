@@ -141,6 +141,103 @@ module Eaco
       end
 
       ##
+      # Authorizes model with the given {DSL}
+      #
+      # @param name [String] the model name
+      # @param definition [String] the {DSL} code
+      # @see {#find_model}
+      #
+      # @return [void]
+      #
+      def authorize_model(name, definition)
+        model = find_model(name)
+
+        eval_dsl definition, model
+      end
+
+      ##
+      # Registers and persists an {Actor} instance with the given +name+.
+      #
+      # @param name [String] the {Actor} name
+      # @param admin [Boolean] is this {Actor} an admin?
+      #
+      # @return [Actor] the newly created {Actor} instance.
+      #
+      def register_actor(model, name, admin = false)
+        actor_model = find_model(model)
+
+        actors[name] = actor_model.new.tap do |actor|
+          actor.name  = name
+          actor.admin = admin
+          actor.save!
+        end
+      end
+
+      ##
+      # Fetches an {Actor} instance by name.
+      #
+      # @param name [String] the actor name
+      # @return [Actor] the registered actor name
+      # @raise [RuntimeError] if the actor is not found in the registry
+      #
+      def fetch_actor(name)
+        actors.fetch(name)
+      rescue KeyError
+        raise "Actor '#{name}' not found in registry"
+      end
+
+      ##
+      # Registers and persists {Resource} instance with the given name.
+      #
+      # @param model [String] the {Resource} model name
+      # @param resource [String] the {Resource} name
+      #
+      # @return [Resource] the newly instantiated {Resource}
+      #
+      def register_resource(model, name)
+        resource_model = find_model(model)
+
+        resource = resource_model.new.tap do |resource|
+          resource.name = name
+          resource.save!
+        end
+
+        resources[model] ||= {}
+        resources[model][name] = resource
+      end
+
+      ##
+      # Fetches a {Resource} instance by name.
+      #
+      # @param model [String] the {Resource} model name
+      # @param name [String] the {Resource} name
+      #
+      def fetch_resource(model, name)
+        resources.fetch(model).fetch(name)
+      rescue KeyError
+        raise "Resource #{model} '#{resource}' not found in registry"
+      end
+
+      ##
+      # All registered {Actor} instances.
+      #
+      # @return [Hash] actors keyed by name
+      #
+      def actors
+        @actors ||= {}
+      end
+
+      ##
+      # All registered {Resource} instances.
+      #
+      # @return [Hash] resources keyed by model name with +Hash+es
+      #                as values keyed by resource name.
+      #
+      def resources
+        @resources ||= {}
+      end
+
+      ##
       # Returns a model in the {ActiveRecord} namespace.
       #
       # Example:

@@ -1,37 +1,37 @@
-Given(/I have an (\w+) actor defined as/) do |model_name, author_definition|
-  @actor_model = find_model(model_name)
-
-  eval_dsl author_definition, @actor_model
+Given(/I have an (\w+) actor defined as/) do |model_name, actor_definition|
+  authorize_model model_name, actor_definition
 end
 
-Given(/I have an actor named (\w+)/) do |actor_name|
-  actor = @actor_model.new
-  actor.name = actor_name
-  actor.save!
-
-  @actors ||= {}
-  @actors[actor_name] = actor
+Given(/I have an (\w+) actor named (\w+)/) do |model_name, actor_name|
+  register_actor model_name, actor_name
 end
 
-When(/I grant (\w+) access to "(.+?)" as a (\w+) in quality of (\w+)/) do |actor_name, resource_name, role_name, designator|
-  actor = @actors.fetch(actor_name)
-  @resources[resource_name].grant role_name, designator, actor
-  @resources[resource_name].save!
+Given(/I have an admin (\w+) actor named (\w+)/) do |model_name, actor_name|
 end
 
-Then(/^(\w+) should be able to (\w+) "(.+?)"$/) do |actor_name, permission_name, resource_name|
-  actor = @actors.fetch(actor_name)
-  resource = @resources.fetch(resource_name)
+When(/I grant (\w+) access to (\w+) "(.+?)" as a (\w+) in quality of (\w+)/) do |actor_name, resource_model, resource_name, role_name, designator|
+  actor = fetch_actor(actor_name)
+  resource = fetch_resource(resource_model, resource_name)
+
+  resource.grant role_name, designator, actor
+  resource.save!
+end
+
+Then(/^(\w+) should be able to (\w+) (\w+) "(.+?)"$/) do |actor_name, permission_name, resource_model, resource_name|
+  actor = fetch_actor(actor_name)
+  resource = fetch_resource(resource_model, resource_name)
 
   unless actor.can? permission_name, resource
     raise "Expected #{actor_name} to be able to #{permission_name} #{resource_name}"
   end
 end
 
-Then(/^(\w+) should not be able to (\w+) "(.+?)"$/) do |actor_name, permission_name, resource_name|
-  actor = @actors.fetch(actor_name)
-  unless actor.cannot? permission_name, @resources.fetch(resource_name)
-    raise "Expected #{actor_name} to not be able to #{permission_name} #{resource_name}"
+Then(/^(\w+) should not be able to (\w+) (\w+) "(.+?)"$/) do |actor_name, permission_name, resource_model, resource_name|
+  actor = fetch_actor(actor_name)
+  resource = fetch_resource(resource_model, resource_name)
+
+  unless actor.cannot? permission_name, resource
+    raise "Expected #{actor_name} to not be able to #{permission_name} #{resource_model} #{resource_name}"
   end
 end
 

@@ -8,4 +8,4 @@ Feature: Rails integration
      """
 
   Scenario:
-    Then I should be able to set an ACL on it
+    Then I should be able to set an ACL on the Document
