@@ -137,7 +137,29 @@ module Eaco
       # @return [nil]
       #
       def define_schema!
-        load 'eaco/cucumber/active_record/schema.rb'
+        log_stdout { load 'eaco/cucumber/active_record/schema.rb' }
+      end
+
+      protected
+
+      ##
+      # Captures stdout and logs it
+      #
+      # @return [nil]
+      #
+      def log_stdout
+        stdout, string = $stdout, StringIO.new
+        $stdout = string
+
+        yield
+
+        string.tap(&:rewind).read.split("\n").each do |line|
+          logger.info line
+        end
+
+        nil
+      ensure
+        $stdout = stdout
       end
     end
 
