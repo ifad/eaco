@@ -122,7 +122,7 @@ module Eaco
       # @return [nil]
       #
       def croak(msg)
-        $stderr.puts fancy(msg)
+        $stderr.puts fancy(with_appraisal(msg))
       end
 
       ##
@@ -136,6 +136,20 @@ module Eaco
       end
 
       ##
+      # Adds the current appraisal name to msg, if present
+      #
+      # @param msg [String]
+      # @return [String]
+      #
+      def with_appraisal(msg)
+        if appraisal
+          msg = "%s [%s]" % [msg, appraisal]
+        end
+
+        return msg
+      end
+
+      ##
       # Makes +msg+ fancy.
       #
       # @param msg [String]
@@ -143,6 +157,17 @@ module Eaco
       #
       def fancy(msg)
         ">>>\n>>> EACO: #{msg}\n>>>\n"
+      end
+
+      ##
+      # @return [String] the current appraisal name, or nil
+      #
+      def appraisal
+        return unless running_appraisals?
+
+        gemfile = ENV['BUNDLE_GEMFILE']
+
+        File.basename(gemfile, '.*') if gemfile
       end
 
       ##
