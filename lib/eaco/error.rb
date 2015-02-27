@@ -5,7 +5,16 @@ module Eaco
   #
   class Error < StandardError
     # As we make use of heredoc for long error messages, squeeze subsequent
-    # spaces and remove newlines.
+    # spaces and remove newlines. If the message looks like an internal error
+    # though, newlines are preserved.
+    #
+    # Example:
+    #
+    #   raise Eaco::Error, <<-EOF
+    #     Some fancy message
+    #   end
+    #
+    # @param message [String]
     #
     def initialize(message)
       unless message =~ %r{EACO.+Error}

@@ -167,6 +167,9 @@ module Eaco
       # in a typeahead menu, for your Enterprise authorization management
       # UI... :-)
       #
+      # @param query [String] the query to search against
+      # @return [Enumerable] application {Actor}s collection
+      #
       # @raise [NotImplementedError]
       #
       def search(query)

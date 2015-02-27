@@ -4,12 +4,13 @@ module Eaco
   # An Actor is an entity whose access to Resources is discretionary,
   # depending on the Role this actor has in the ACL.
   #
-  # The role of this +Actor+ is calculated from the +Designator+ that
-  # the actor instance has, and the +ACL+ instance attached to the
-  # +Resource+.
+  # The role of this +Actor+ is calculated from the {Designator} that
+  # the actor instance has, and the {ACL} instance attached to the
+  # {Resource}.
   #
   # @see ACL
   # @see Resource
+  # @see Resource.role_of
   # @see DSL::Actor
   #
   module Actor

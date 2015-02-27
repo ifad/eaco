@@ -61,13 +61,20 @@ module Eaco
       ##
       # @return [Symbol] the permission required to access the given action.
       #
+      # @see {Eaco::DSL::Resource}
+      #
       def permission_for(action)
         authorization_permissions[action] || authorization_permissions[:all]
       end
 
       protected
         ##
-        # Permission requirements configured on this controller.
+        # Permission requirements configured on this controller, keyed by
+        # permission symbol and with role symbols as values.
+        #
+        # @return [Hash]
+        #
+        # @see {Eaco::DSL::Resource}
         #
         def authorization_permissions
           @_authorization_permissions ||= {}

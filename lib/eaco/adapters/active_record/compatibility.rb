@@ -12,6 +12,8 @@ module Eaco
         autoload :V42, 'eaco/adapters/active_record/compatibility/v42.rb'
 
         ##
+        # Memoizes the given +model+ for later {#check!} calls.
+        #
         # @param model [ActiveRecord::Base] the model to check
         #
         def initialize(model)

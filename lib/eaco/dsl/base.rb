@@ -32,6 +32,8 @@ module Eaco
       attr_reader :options
 
       ##
+      # Sets up the DSL instance target class and the options.
+      #
       # @param target [Class]
       # @param options [Hash]
       #
@@ -42,6 +44,9 @@ module Eaco
       protected
         ##
         # Evaluates the given block in the context of the target class
+        #
+        # @param block [Proc]
+        # @return [void]
         #
         def target_eval(&block)
           target.instance_eval(&block)

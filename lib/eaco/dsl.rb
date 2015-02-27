@@ -19,6 +19,10 @@ module Eaco
     ##
     # Entry point for the {Resource} authorization definition.
     #
+    # @param resource_class [Class] the application resource class
+    # @param options [Hash] options passed to {DSL::Resource} and
+    #                       and {DSL::ACL}.
+    #
     # @see DSL::Resource
     # @see DSL::ACL
     #
@@ -28,7 +32,11 @@ module Eaco
     end
 
     ##
-    # Entry point for the {Actor} designators definition.
+    # Entry point for an {Actor} definition.
+    #
+    # @param actor_class [Class] the application actor class
+    # @param options [Hash] currently unused
+    # @param block [Proc] the DSL code to eval
     #
     # @see DSL::Actor
     #

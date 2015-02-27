@@ -132,7 +132,7 @@ module Eaco
     class World
 
       ##
-      # Set up the World:
+      # Sets up the World:
       #
       # * Connect to ActiveRecord
       #
@@ -141,7 +141,14 @@ module Eaco
       end
 
       ##
-      # @return [Class] a model in the {ActiveRecord} namespace.
+      # Returns a model in the {ActiveRecord} namespace.
+      #
+      # Example:
+      #
+      #   World.find_model('Document')
+      #
+      # @param model_name [String] the model name
+      # @return [Class]
       #
       def find_model(model_name)
         Eaco::Cucumber::ActiveRecord.const_get(model_name)

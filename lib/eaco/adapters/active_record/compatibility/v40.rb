@@ -13,6 +13,9 @@ module Eaco
           # and makes jsonb mimick itself as a json - for the rest of the AR
           # machinery to work intact.
           #
+          # @param base [Class] the +ActiveRecord+ model to mangle
+          # @return [void]
+          #
           def self.included(base)
             adapter = base.connection
 
@@ -31,7 +34,11 @@ module Eaco
           #
           module Column
             ##
-            # Makes +sql_type+ return +json+ for +jsonb+ columns
+            # Makes +sql_type+ return +json+ for +jsonb+ columns. This is
+            # an hack to let the casting machinery in AR 4.0 keep working
+            # with the unsupported +jsonb+ type.
+            #
+            # @return [String] the SQL type.
             #
             def sql_type
               orig_type = super
@@ -41,7 +48,8 @@ module Eaco
             ##
             # Makes +simplified_type+ return +json+ for +jsonb+ columns
             #
-            # @return [Symbol]
+            # @param field_type [String] the database field type
+            # @return [Symbol] the simplified type
             #
             def simplified_type(field_type)
               if field_type == 'jsonb'

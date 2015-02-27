@@ -21,7 +21,7 @@ module Eaco
       autoload :Designators, 'eaco/dsl/actor/designators'
 
       ##
-      # Initializes an Actor class.
+      # Makes an application model a valid {Eaco::Actor}.
       #
       # @see Eaco::Actor
       #
@@ -79,7 +79,7 @@ module Eaco
 
       ##
       # Defines the boolean logic that determines whether an {Actor} is an
-      # admin. Usually you'll have an +admin+ method on your model, that you
+      # admin. Usually you'll have an +admin?+ method on your model, that you
       # can call from here. Or, feel free to just return +false+ to disable
       # this functionality.
       #
@@ -90,6 +90,9 @@ module Eaco
       #       user.admin?
       #     end
       #   end
+      #
+      # @param block [Proc]
+      # @return [void]
       #
       def admin(&block)
         target_eval do
