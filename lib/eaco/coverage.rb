@@ -1,5 +1,6 @@
 require 'coveralls'
 require 'simplecov'
+require 'eaco/rake'
 
 module Eaco
 
@@ -17,7 +18,7 @@ module Eaco
     # @return [nil]
     #
     def start!
-      Coveralls.wear_merged!
+      Coveralls.wear_merged!(&simplecov_configuration)
 
       nil
     end
@@ -34,10 +35,47 @@ module Eaco
     end
 
     ##
-    # @return [Fixnum] the percentage of the code covered by tests
+    # Formats coverage results using the default formatter.
     #
-    def percent
-      SimpleCov.result && SimpleCov.result.covered_percent
+    # @return [String] Coverage summary
+    #
+    def format!
+      Rake::Utils.capture_stdout do
+        result && result.format!
+      end.strip
+    end
+
+    private
+
+    ##
+    # The coverage result
+    #
+    # @return [SimpleCov::Result]
+    #
+    def result
+      simplecov.result
+    end
+
+    ##
+    # Configures simplecov using {.simplecov_configuration}
+    #
+    # @return [Class] +SimpleCov+
+    #
+    def simplecov
+      SimpleCov.configure(&simplecov_configuration)
+    end
+
+    ##
+    # Configures +SimpleCov+ to use a different directory
+    # for each different appraisal +Gemfile+.
+    #
+    # @return [Proc] a +SimpleCov+ configuration block.
+    #
+    def simplecov_configuration
+      proc do
+        gemfile = Eaco::Rake::Utils.gemfile
+        coverage_dir "coverage/#{gemfile}"
+      end
     end
   end
 
