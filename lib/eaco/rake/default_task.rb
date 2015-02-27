@@ -36,6 +36,7 @@ module Eaco
           task :default do
             run_specs
             run_cucumber
+            report_coverage
             generate_documentation
           end
 
@@ -112,6 +113,14 @@ module Eaco
       #
       def invoke(task)
         ::Rake::Task[task].invoke
+      end
+
+      ##
+      # Reports coverage data
+      #
+      # @return [void]
+      def report_coverage
+        Eaco::Coverage.report!
       end
 
       ##

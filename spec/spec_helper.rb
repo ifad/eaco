@@ -1,9 +1,6 @@
 require 'rspec'
 require 'byebug'
-
-require 'coveralls'
-Coveralls.wear!
-
+require 'eaco/coverage'
 require 'eaco'
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
