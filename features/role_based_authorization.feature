@@ -36,6 +36,8 @@ Feature: Role-Based authorization
     Then Bob should be able to read Document "Supa Dupa Fly"
      But Bob should not be able to write Document "Supa Dupa Fly"
      And Tom should not be able to read Document "Supa Dupa Fly"
+     But I revoke Bob access to Document "Supa Dupa Fly" in quality of user
+    Then Bob should not be able to read Document "Supa Dupa Fly"
 
   Scenario: Extraction of accessible Resources
     When I have a confidential Document named "Strategic Plan"

@@ -18,6 +18,14 @@ When(/I grant (\w+) access to (\w+) "(.+?)" as a (\w+) in quality of (\w+)/) do 
   resource.save!
 end
 
+When(/I revoke (\w+) access to (\w+) "(.+?)" in quality of (\w+)/) do |actor_name, resource_model, resource_name, designator|
+  actor = fetch_actor(actor_name)
+  resource = fetch_resource(resource_model, resource_name)
+
+  resource.revoke designator, actor
+  resource.save!
+end
+
 Then(/^(\w+) should be able to (\w+) (\w+) "(.+?)"$/) do |actor_name, permission_name, resource_model, resource_name|
   actor = fetch_actor(actor_name)
   resource = fetch_resource(resource_model, resource_name)
