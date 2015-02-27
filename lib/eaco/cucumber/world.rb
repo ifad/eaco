@@ -146,6 +146,21 @@ module Eaco
       def find_model(model_name)
         Eaco::Cucumber::ActiveRecord.const_get(model_name)
       end
+
+      ##
+      # Evaluates the given {Eaco::DSL} code, substituting the
+      # +$MODEL+ string with the given model name.
+      #
+      # @param code [String] the DSL code to eval
+      # @param model [Class] the model name to substitute
+      #
+      # @return [void]
+      #
+      def eval_dsl(code, model)
+        # Sub in place to print final code when running cucumber
+        code.sub! '$MODEL', model.name
+        Eaco.eval! code, '(feature)'
+      end
     end
 
   end

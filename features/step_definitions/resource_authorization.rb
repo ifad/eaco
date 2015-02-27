@@ -1,15 +1,19 @@
-When(/I authorize the (\w+) model/) do |model_name|
-  @model = Eaco::Cucumber::ActiveRecord.const_get(model_name)
+When(/I have a (\w+) resource defined as/) do |model_name, resource_definition|
+  @resource_model = find_model(model_name)
 
-  Eaco::DSL.authorize @model, using: :pg_jsonb
+  eval_dsl resource_definition, @resource_model
+end
+
+When(/I have a confidential one named "([\w\s]+)"/) do |name|
+  @resource = @resource_model.new(name: name)
 end
 
 Then(/I should be able to set an ACL on it/) do
-  instance = @model.new
+  instance = @resource_model.new
 
   instance.acl = {foo: :bar}
   instance.save!
-  instance = @model.find(instance.id)
+  instance = @resource_model.find(instance.id)
 
-  instance.acl == {foo: :bar} && instance.acl.class.kind_of?(@model.acl)
+  instance.acl == {foo: :bar} && instance.acl.class.kind_of?(@resource_model.acl)
 end
