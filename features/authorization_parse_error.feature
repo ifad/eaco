@@ -1,0 +1,99 @@
+Feature: Authorization rules error handling
+  When there's an error in the authorization rules,
+  it is reported in detail with a backtrace showing
+  where it happened.
+
+  Scenario: Giving rubbish
+    When I have a wrong authorization definition such as
+     """
+     if you give me rubbish please go elsewhere
+     """
+    Then I should get a SyntaxError error back saying
+     """
+     \(feature\):1: syntax error.+please go elsewhere
+     """
+
+  Scenario: Referencing a non-existing model
+    When I have a wrong authorization definition such as
+     """
+     authorize ::Nonexistant, using: :pg_jsonb
+     """
+    Then I should get an Eaco::Error error back saying
+     """
+     uninitialized constant Nonexistant
+     """
+
+  Scenario: Specifing a non-existing designator implementation
+    When I have a wrong authorization definition on model User such as
+     """
+     actor $MODEL do
+       designators do
+         fropper from: :sgurtz
+       end
+     end
+     """
+    Then I should get an Eaco::Error error back saying
+     """
+     Implementation .+User::Designators::Fropper for Designator fropper not found
+     """
+
+  Scenario: Badly specifying the designator options
+    When I have a wrong authorization definition on model User such as
+     """
+     actor $MODEL do
+       designators do
+         user on_the_rocks: true
+       end
+     end
+     """
+    Then I should get an Eaco::Error error back saying
+    """
+    The designator option :from is required
+    """
+
+  Scenario: Authorizing an Object with no known ORM
+    When I have a wrong authorization definition such as
+     """
+     class ::Foo
+     end
+
+     authorize Foo
+     """
+    Then I should get an Eaco::Error error back saying
+     """
+     Don't know how to persist ACLs using <Foo>'s ORM
+     """
+
+  Scenario: Authorizing an Resource with no known .accessible_by
+    When I have a wrong authorization definition such as
+     """
+     class ::Bar
+       attr_accessor :acl
+     end
+
+     authorize Bar
+     """
+    Then I should get an Eaco::Error error back saying
+     """
+     Don't know how to look up authorized records on <Bar>'s ORM
+     """
+
+  Scenario: Authorizing a Resource with a known ORM but without the acl field
+    When I have a wrong authorization definition on model Department such as
+     """
+     authorize $MODEL
+     """
+    Then I should get an Eaco::Error error back saying
+     """
+     Please define a jsonb column named `acl` on .+Department
+     """
+
+  Scenario: Authorizing a Resource with a known ORM but unknown strategy
+    When I have a wrong authorization definition on model Document such as
+     """
+     authorize $MODEL
+     """
+    Then I should get an Eaco::Error error back saying
+     """
+     .+Document.+ORM.+ActiveRecord::Base.+ use one of the available strategies: pg_jsonb
+     """

@@ -256,13 +256,13 @@ module Eaco
       # +$MODEL+ string with the given model name.
       #
       # @param code [String] the DSL code to eval
-      # @param model [Class] the model name to substitute
+      # @param model [Class] the model name to substitute (optional)
       #
       # @return [void]
       #
-      def eval_dsl(code, model)
+      def eval_dsl(code, model = nil)
         # Sub in place to print final code when running cucumber
-        code.sub! '$MODEL', model.name
+        code.sub! '$MODEL', model.name if model
         Eaco.eval! code, '(feature)'
       end
     end

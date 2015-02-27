@@ -50,7 +50,7 @@ module Eaco
       #
       def define_acl_subclass
         target_eval do
-          remove_const(:ACL) if const_defined?(:ACL)
+          remove_const(:ACL) if constants.include?(:ACL)
 
           Class.new(Eaco::ACL).tap do |acl_class|
             define_singleton_method(:acl) { acl_class }
@@ -97,7 +97,7 @@ module Eaco
           target.send(:include, adapter)
           install_authorized_collection_strategy
 
-        elsif target.respond_to?(:acl) && target.respond_to?(:acl=)
+        elsif (target.instance_methods & [:acl, :acl=]).size != 2
           raise Malformed, <<-EOF
             Don't know how to persist ACLs using <#{target}>'s ORM
             (identified as <#{orm}>). Please define an `acl' instance
