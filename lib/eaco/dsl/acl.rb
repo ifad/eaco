@@ -7,19 +7,23 @@ module Eaco
     # Block-less DSL to set up the {ACL} machinery onto an authorized {Resource}.
     #
     # * Defines an {ACL} subclass in the Resource namespace
+    #   ({#define_acl_subclass})
+    #
     # * Defines syntactic sugar on the ACL to easily retrieve {Actor}s with a
-    #   specific Role
+    #   specific Role ({#define_role_getters})
+    #
     # * Installs {ACL} objects persistance for the supported ORMs
-    # * Installs the authorized collection extraction strategy +.accessible_by+
+    #   ({#install_persistance})
+    #
+    # * Installs the authorized collection extraction strategy
+    #   +.accessible_by+ ({#install_strategy})
     #
     class ACL < Base
 
       ##
-      # Performs ACL setup on the target Resource class.
+      # Performs ACL setup on the target Resource model.
       #
-      # @see #define_acl_subclass
-      # @see #define_role_getters
-      # @see #install_persistance
+      # @return [nil]
       #
       def initialize(*)
         super
@@ -27,6 +31,9 @@ module Eaco
         define_acl_subclass
         define_role_getters
         install_persistance
+        install_strategy
+
+        nil
       end
 
       private
@@ -74,13 +81,11 @@ module Eaco
       end
 
       ##
-      # Sets up the persistance layer for ACLs (+#acl+ and +#acl=+) and the
-      # authorized collection extraction strategy (+.accessible_by+).
+      # Sets up the persistance layer for ACLs (+#acl+ and +#acl=+).
       #
-      # All these APIs can be implemented directly in your models, as
-      # long as the +acl+ accessor accepts and returns the model's ACL
-      # subclass (see {.define_acl_subclass}); and the +.accessible_by+
-      # returns an +Enumerable+ collection.
+      # These APIs can be implemented directly in your Resource model, as long
+      # as the +acl+ accessor accepts and returns the Resource model's ACL
+      # subclass (see {.define_acl_subclass})
       #
       # See each adapter for the details of the extraction strategies
       # they provide.
@@ -99,7 +104,18 @@ module Eaco
             accessor on <#{target}> that accepts and returns a <#{target.acl}>.
           EOF
         end
+      end
 
+      ##
+      # Sets up the authorized collection extraction strategy
+      # (+.accessible_by+).
+      #
+      # This API can be implemented directly in your model, as long as
+      # +.accessible_by+ returns an +Enumerable+ collection.
+      #
+      # @return [void]
+      #
+      def install_strategy
         unless target.respond_to?(:accessible_by)
           strategies = adapter ? adapter.strategies.keys : []
 
