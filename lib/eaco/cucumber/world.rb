@@ -158,8 +158,10 @@ module Eaco
       ##
       # Registers and persists an {Actor} instance with the given +name+.
       #
-      # @param name [String] the {Actor} name
-      # @param admin [Boolean] is this {Actor} an admin?
+      # @param model [String] the {Actor} model name
+      # @param name [String] the {Actor} instance name
+      # @param options [Boolean] the only supported one is +admin+, and
+      #                          specifies whether this {Actor} an admin
       #
       # @return [Actor] the newly created {Actor} instance.
       #
