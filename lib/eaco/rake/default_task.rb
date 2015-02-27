@@ -142,8 +142,8 @@ module Eaco
       # @return [String]
       #
       def with_appraisal(msg)
-        if appraisal
-          msg = "%s \033[1;31m[%s]" % [msg, appraisal]
+        if gemfile
+          msg = "%s \033[1;31m[%s]" % [msg, gemfile]
         end
 
         return msg
@@ -166,11 +166,9 @@ module Eaco
       end
 
       ##
-      # @return [String] the current appraisal name, or nil
+      # @return [String] the current gemfile name
       #
-      def appraisal
-        return unless running_appraisals?
-
+      def gemfile
         gemfile = ENV['BUNDLE_GEMFILE']
 
         File.basename(gemfile, '.*') if gemfile
