@@ -1,6 +1,9 @@
 require 'rspec'
 require 'byebug'
+
 require 'eaco/coverage'
+Eaco::Coverage.start!
+
 require 'eaco'
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration

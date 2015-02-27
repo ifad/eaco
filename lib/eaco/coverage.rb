@@ -8,7 +8,16 @@ module Eaco
   # Loading this module will start collecting coverage data.
   #
   module Coverage
-    Coveralls.wear_merged!
+    ##
+    # Starts collecting coverage data.
+    #
+    # @return [nil]
+    #
+    def self.start!
+      Coveralls.wear_merged!
+
+      nil
+    end
 
     ##
     # Reports coverage data to the remote service

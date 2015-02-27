@@ -1,3 +1,5 @@
+require 'eaco/coverage'
+
 module Eaco
   module Rake
 

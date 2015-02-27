@@ -1,6 +1,9 @@
 require 'bundler/setup'
 require 'byebug'
+
 require 'eaco/coverage'
+Eaco::Coverage.start!
+
 require 'eaco'
 require 'eaco/cucumber'
 
