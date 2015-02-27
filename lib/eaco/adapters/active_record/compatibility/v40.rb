@@ -35,7 +35,7 @@ module Eaco
             #
             def sql_type
               orig_type = super
-              orig_type == 'jsonb' ? 'json' : type
+              orig_type == 'jsonb' ? 'json' : orig_type
             end
 
             ##
