@@ -190,7 +190,7 @@ module Eaco
       # Registers and persists {Resource} instance with the given name.
       #
       # @param model [String] the {Resource} model name
-      # @param resource [String] the {Resource} name
+      # @param name [String] the {Resource} name
       #
       # @return [Resource] the newly instantiated {Resource}
       #
