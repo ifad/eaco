@@ -34,5 +34,5 @@ end
 
 guard :shell do
   # Rerun scenarios when source code changes
-  watch(%r{^lib/.+\.rb$}) { system 'cucumber' }
+  watch(%r{^lib/.+\.rb$}) { system 'cucumber -f progress' }
 end
