@@ -8,7 +8,7 @@ Feature: Authorization rules error handling
      """
      if you give me rubbish please go elsewhere
      """
-    Then I should get a SyntaxError error back saying
+    Then I should receive a DSL error SyntaxError saying
      """
      \(feature\):1: syntax error.+please go elsewhere
      """
@@ -18,7 +18,7 @@ Feature: Authorization rules error handling
      """
      authorize ::Nonexistant, using: :pg_jsonb
      """
-    Then I should get an Eaco::Error error back saying
+    Then I should receive a DSL error Eaco::Error saying
      """
      uninitialized constant Nonexistant
      """
@@ -32,7 +32,7 @@ Feature: Authorization rules error handling
        end
      end
      """
-    Then I should get an Eaco::Error error back saying
+    Then I should receive a DSL error Eaco::Error saying
      """
      Implementation .+User::Designators::Fropper for Designator fropper not found
      """
@@ -46,7 +46,7 @@ Feature: Authorization rules error handling
        end
      end
      """
-    Then I should get an Eaco::Error error back saying
+    Then I should receive a DSL error Eaco::Error saying
     """
     The designator option :from is required
     """
@@ -59,7 +59,7 @@ Feature: Authorization rules error handling
 
      authorize Foo
      """
-    Then I should get an Eaco::Error error back saying
+    Then I should receive a DSL error Eaco::Error saying
      """
      Don't know how to persist ACLs using <Foo>'s ORM
      """
@@ -73,7 +73,7 @@ Feature: Authorization rules error handling
 
      authorize Bar
      """
-    Then I should get an Eaco::Error error back saying
+    Then I should receive a DSL error Eaco::Error saying
      """
      Don't know how to look up authorized records on <Bar>'s ORM
      """
@@ -83,7 +83,7 @@ Feature: Authorization rules error handling
      """
      authorize $MODEL
      """
-    Then I should get an Eaco::Error error back saying
+    Then I should receive a DSL error Eaco::Error saying
      """
      Please define a jsonb column named `acl` on .+Department
      """
@@ -93,7 +93,7 @@ Feature: Authorization rules error handling
      """
      authorize $MODEL
      """
-    Then I should get an Eaco::Error error back saying
+    Then I should receive a DSL error Eaco::Error saying
      """
      .+Document.+ORM.+ActiveRecord::Base.+ use one of the available strategies: pg_jsonb
      """
@@ -109,7 +109,7 @@ Feature: Authorization rules error handling
 
      authorize ::Grabach
      """
-    Then I should get an Eaco::Error error back saying
+    Then I should receive a DSL error Eaco::Error saying
      """
      The `acl` column on Grabach must be of the jsonb type
      """
@@ -120,7 +120,7 @@ Feature: Authorization rules error handling
      """
      authorize $MODEL
      """
-    Then I should get an Eaco::Error error back saying
+    Then I should receive a DSL error Eaco::Error saying
      """
      Unsupported Active Record version: 30
      """

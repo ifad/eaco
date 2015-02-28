@@ -3,7 +3,7 @@ When(/I have a wrong authorization definition (?:on model (.+?))? *such as/) do 
   @definition = definition
 end
 
-Then(/I should get an? (.+?) error back saying/) do |error_class, error_contents|
+Then(/I should receive a DSL error (.+?) saying/) do |error_class, error_contents|
   error_class = error_class.constantize
 
   model = find_model(@model_name) if @model_name
