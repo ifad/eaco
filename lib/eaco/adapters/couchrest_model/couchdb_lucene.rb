@@ -58,11 +58,11 @@ module Eaco
         # @return [CouchRest::Model::Search::View] the authorized collection scope.
         #
         def accessible_by(actor)
-         return search(nil) if actor.is_admin?
+          return search(nil) if actor.is_admin?
 
-         designators = actor.designators.map {|item| '"%s"' % item }
+          designators = actor.designators.map {|item| '"%s"' % item }
 
-         search "acl:(#{designators.join(' OR ')})"
+          search "acl:(#{designators.join(' OR ')})"
         end
       end
 
