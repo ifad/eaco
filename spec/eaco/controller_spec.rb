@@ -5,8 +5,8 @@ require 'eaco/controller'
 
 RSpec.describe Eaco::Controller do
 
-  pending '.authorize'
+  #pending '.authorize'
 
-  pending '.permission_for'
+  #pending '.permission_for'
 
 end

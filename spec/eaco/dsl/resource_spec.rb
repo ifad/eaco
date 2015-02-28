@@ -4,14 +4,14 @@ require 'spec_helper'
 
 RSpec.describe Eaco::DSL::Resource do
 
-  pending '#new'
+  #pending '#new'
 
-  pending '#permissions'
+  #pending '#permissions'
 
-  pending '#roles'
+  #pending '#roles'
 
-  pending '#roles_priority'
+  #pending '#roles_priority'
 
-  pending '#roles_with_labels'
+  #pending '#roles_with_labels'
 
 end

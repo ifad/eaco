@@ -4,6 +4,6 @@ require 'spec_helper'
 
 RSpec.describe Eaco::DSL::ACL do
 
-  pending '#new'
+  #pending '#new'
 
 end

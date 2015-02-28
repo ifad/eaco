@@ -4,6 +4,6 @@ require 'spec_helper'
 
 RSpec.describe Eaco::Error do
 
-  pending '#new'
+  #pending '#new'
 
 end

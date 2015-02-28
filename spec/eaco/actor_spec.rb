@@ -4,10 +4,10 @@ require 'spec_helper'
 
 RSpec.describe Eaco::Actor do
 
-  pending '#designators'
+  #pending '#designators'
 
-  pending '#is_admin?'
+  #pending '#is_admin?'
 
-  pending '#can?'
+  #pending '#can?'
 
 end

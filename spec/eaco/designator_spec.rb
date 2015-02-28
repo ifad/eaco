@@ -4,22 +4,22 @@ require 'spec_helper'
 
 RSpec.describe Eaco::Designator do
 
-  pending '#make'
+  #pending '#make'
 
-  pending '#parse'
+  #pending '#parse'
 
-  pending '#resolve'
+  #pending '#resolve'
 
-  pending '#configure!'
+  #pending '#configure!'
 
-  pending '#harvest'
+  #pending '#harvest'
 
-  pending '#label'
+  #pending '#label'
 
-  pending '#id'
+  #pending '#id'
 
-  pending '#search'
+  #pending '#search'
 
-  pending '#new'
+  #pending '#new'
 
 end

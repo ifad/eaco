@@ -4,28 +4,28 @@ require 'spec_helper'
 
 RSpec.describe Eaco::Resource do
 
-  pending '.role?'
+  #pending '.role?'
 
-  pending '.allows?'
+  #pending '.allows?'
 
-  pending '.role_of'
+  #pending '.role_of'
 
-  pending '.permissions'
+  #pending '.permissions'
 
-  pending '.roles'
+  #pending '.roles'
 
-  pending '.roles_priority'
+  #pending '.roles_priority'
 
-  pending '.roles_with_labels'
+  #pending '.roles_with_labels'
 
-  pending '#allows?'
+  #pending '#allows?'
 
-  pending '#role_of'
+  #pending '#role_of'
 
-  pending '#grant'
+  #pending '#grant'
 
-  pending '#revoke'
+  #pending '#revoke'
 
-  pending '#batch_grant'
+  #pending '#batch_grant'
 
 end

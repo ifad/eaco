@@ -4,12 +4,12 @@ require 'spec_helper'
 
 RSpec.describe Eaco::DSL::Actor do
 
-  pending '#new'
+  #pending '#new'
 
-  pending '#designators'
+  #pending '#designators'
 
-  pending '#admin_logic'
+  #pending '#admin_logic'
 
-  pending '.find_designator'
+  #pending '.find_designator'
 
 end
