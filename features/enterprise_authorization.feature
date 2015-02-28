@@ -19,6 +19,9 @@ Feature: Role-based, flexible authorization
       authorize $MODEL, using: :pg_jsonb do
         roles :writer, :reader
 
+        role :reader, "R/O"
+        role :writer, "R/W"
+
         permissions do
           reader :read
           writer reader, :write
@@ -102,25 +105,29 @@ Feature: Role-based, flexible authorization
   Scenario: Resolving a specific user
     When I parse the Designator "user:4"
     Then it should describe itself as "User 'Steve Jobs'"
+     And it should have a label of "User"
      And it should resolve itself to
        | Steve Jobs |
 
   Scenario: Resolving the ICT Director
     When I make a Designator with "position" and "1"
     Then it should describe itself as "Director in ICT"
-    And it should resolve itself to
+     And it should have a label of "Position"
+     And it should resolve itself to
       | Dennis Ritchie |
 
   Scenario: Resolving the ICT Department
     When I parse the Designator "department:ICT"
     Then it should describe itself as "ICT"
-    And it should resolve itself to
+     And it should have a label of "Department"
+     And it should resolve itself to
       | Dennis Ritchie |
       | Rob Pike       |
 
   Scenario: Resolving all authenticated users
     When I make a Designator with "authenticated" and "Eaco::Cucumber::ActiveRecord::User"
     Then it should describe itself as "Any authenticated user"
+     And it should have a label of "Any user"
      And it should resolve itself to
        | Dennis Ritchie  |
        | Rob Pike        |
@@ -134,3 +141,9 @@ Feature: Role-based, flexible authorization
     """
     Designator not found: "foo"
     """
+
+  Scenario: Obtaining labels for roles
+    When I ask the Document the list of roles and labels
+    Then I should get the following roles and labels
+      | writer | R/W   |
+      | reader | R/O   |

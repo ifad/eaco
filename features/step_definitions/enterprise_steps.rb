@@ -45,20 +45,37 @@ Then(/it should describe itself as "(.+?)"/) do |description|
   expect(@designator.describe).to eq(description)
 end
 
+Then(/it should have a label of "(.+?)"/) do |label|
+  expect(@designator.label).to eq(label)
+end
+
 Then(/it should resolve itself to/) do |table|
   names = table.raw.flatten
 
   expect(@designator.resolve.map(&:name)).to match_array(names)
 end
 
-When(/I parse the invalid Designator "(.+?)"/) do |text|
-  @designator_text = text
+When(/I have the following designators/) do |table|
+  @designators = table.raw.flatten
 end
 
-Then(/I should receive a Designator error (.+?) saying/) do |error_class, error_contents|
-  error_class = error_class.constantize
+Then(/they should resolve to/) do |table|
+  resolved = Eaco::Designator.resolve(@designators)
+  names = table.raw.flatten
 
-  expect { Eaco::Designator.parse(@designator_text) }.to \
-    raise_error(error_class).
-    with_message(/#{error_contents}/)
+  expect(resolved.map(&:name)).to match_array(names)
+end
+
+When(/I ask the Document the list of roles and labels/) do
+  model = find_model('Document')
+
+  @roles_labels = model.roles_with_labels
+end
+
+Then(/I should get the following roles and labels/) do |table|
+  expected = table.raw.map do |role, label|
+    [role.to_sym, label]
+  end
+
+  expect(@roles_labels.to_a).to match(expected)
 end

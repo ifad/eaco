@@ -16,6 +16,8 @@ module Eaco
           # +"authenticated:User"+.
           #
           class Authenticated < Eaco::Designator
+            label "Any user"
+
             ##
             # This {Designator} description.
             #

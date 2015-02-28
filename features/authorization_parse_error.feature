@@ -23,6 +23,23 @@ Feature: Authorization rules error handling
      uninitialized constant Nonexistant
      """
 
+  Scenario: Specifying an actor class with no Designators namespace
+    When I have a wrong authorization definition such as
+    """
+    class ::Foo
+    end
+
+    actor Foo do
+      designators do
+        frobber yay: true
+      end
+    end
+    """
+    Then I should receive a DSL error Eaco::Error saying
+    """
+    Please put designators implementations in Foo::Designators
+    """
+
   Scenario: Specifing a non-existing designator implementation
     When I have a wrong authorization definition on model User such as
      """
@@ -50,6 +67,20 @@ Feature: Authorization rules error handling
     """
     The designator option :from is required
     """
+
+  Scenario: Badly specifying the permissions options
+    When I have a wrong authorization definition on model Document such as
+     """
+     authorize $MODEL do
+       permissions do
+         reader "Asdrubbale"
+       end
+     end
+     """
+    Then I should receive a DSL error Eaco::Error saying
+     """
+     Invalid reader permission definition: "Asdrubbale"
+     """
 
   Scenario: Authorizing an Object with no known ORM
     When I have a wrong authorization definition such as

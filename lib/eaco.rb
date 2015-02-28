@@ -2,7 +2,9 @@ require 'eaco/error'
 require 'eaco/version'
 
 if defined? Rails
+  # :nocov:
   require 'eaco/railtie'
+  # :nocov:
 end
 
 require 'pathname'

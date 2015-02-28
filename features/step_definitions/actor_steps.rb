@@ -30,17 +30,12 @@ Then(/^(\w+) should be able to (\w+) (\w+) "(.+?)"$/) do |actor_name, permission
   actor = fetch_actor(actor_name)
   resource = fetch_resource(resource_model, resource_name)
 
-  unless actor.can? permission_name, resource
-    raise "Expected #{actor_name} to be able to #{permission_name} #{resource_name}"
-  end
+  expect(actor.can?(permission_name, resource)).to be(true)
 end
 
 Then(/^(\w+) should not be able to (\w+) (\w+) "(.+?)"$/) do |actor_name, permission_name, resource_model, resource_name|
   actor = fetch_actor(actor_name)
   resource = fetch_resource(resource_model, resource_name)
 
-  unless actor.cannot? permission_name, resource
-    raise "Expected #{actor_name} to not be able to #{permission_name} #{resource_model} #{resource_name}"
-  end
+  expect(actor.cannot?(permission_name, resource)).to be(true)
 end
-

@@ -31,6 +31,24 @@ RSpec.describe Eaco::ACL do
       it { expect(subject).to be_a(described_class) }
       it { expect(subject).to include({designator => :reader}) }
     end
+
+    context 'when looking up designators' do
+      after { acl.add(:reader, :foo, 1) }
+
+      let(:acl) { described_class.new }
+
+      it { expect(Eaco::Designator).to receive(:make).with(:foo, 1) }
+    end
+
+    context 'when giving rubbish' do
+      subject { acl.add(:reader, 'rubbish') }
+
+      let(:acl) { described_class.new }
+
+      it { expect { subject }.to \
+           raise_error(Eaco::Error).
+           with_message(/Cannot infer designator from "rubbish"/) }
+    end
   end
 
   describe '#del' do
@@ -142,6 +160,22 @@ RSpec.describe Eaco::ACL do
     example do
       expect(subject).to eq(['John Alls', 'Robert Prutzon'])
     end
+  end
+
+  describe '#inspect' do
+    let(:acl) { described_class.new('foo' => :bar) }
+
+    subject { acl.inspect }
+
+    it { expect(subject).to eq('#<Eaco::ACL: {"foo"=>:bar}>') }
+  end
+
+  describe '#pretty_inspect' do
+    let(:acl) { described_class.new('foo' => :bar) }
+
+    subject { acl.pretty_inspect }
+
+    it { expect(subject).to eq("Eaco::ACL\n{\"foo\"=>:bar}\n") }
   end
 
 end

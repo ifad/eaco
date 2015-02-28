@@ -53,5 +53,13 @@ Feature: Role-Based authorization
      And I have a confidential Document named "For Bob"
      And I grant Bob access to Document "For Bob" as a reader in quality of user
      And I have a confidential Document named "For no one"
-     Then Bob can see only "For Bob" in the Document authorized list
-      But Boss can see "For Bob, For no one" in the Document authorized list
+    Then Bob can see only "For Bob" in the Document authorized list
+     But Boss can see "For Bob, For no one" in the Document authorized list
+
+  Scenario: Handling invalid roles
+    When I have a confidential Document named "Foo Bar"
+     And I grant Bob access to Document "Foo Bar" as an invalid role frupper in quality of zomg
+    Then I should receive a Resource error Eaco::Error saying
+    """
+    The `frupper' role is not valid for .+Document' objects. Valid roles are: `reader, writer'
+    """

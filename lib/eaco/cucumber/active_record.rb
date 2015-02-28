@@ -1,7 +1,9 @@
 begin
   require 'active_record'
 rescue LoadError
+  # :nocov:
   abort "ActiveRecord requires the rails appraisal. Try `appraisal cucumber`"
+  # :nocov:
 end
 
 require 'yaml'
@@ -59,15 +61,6 @@ module Eaco
       end
 
       ##
-      # @return [ActiveRecord::Connection] the current +ActiveRecord+ connection
-      # object.
-      #
-      def connection
-        active_record.connection
-      end
-      alias adapter connection
-
-      ##
       # Returns an Hash wit the database configuration.
       #
       # Caveat:the returned +Hash+ has a custom +.to_s+ method that formats
@@ -80,9 +73,11 @@ module Eaco
       def configuration
         @_config ||= YAML.load(config_file.read).tap do |conf|
           def conf.to_s
+            # :nocov:
             'pgsql://%s:%s@%s/%s' % values_at(
               :username, :password, :hostname, :database
             )
+            # :nocov:
           end
         end
       end
@@ -104,6 +99,7 @@ module Eaco
         Pathname.new('features/active_record.yml').realpath
 
       rescue Errno::ENOENT => error
+        # :nocov:
         raise error.class.new, <<-EOF.squeeze(' ')
 
           #{error.message}.
@@ -112,6 +108,7 @@ module Eaco
           default location, or specify your configuration file location by
           passing the `EACO_AR_CONFIG' environment variable.
         EOF
+        # :nocov:
       end
 
       ##
