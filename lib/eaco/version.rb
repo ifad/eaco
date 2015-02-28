@@ -2,6 +2,6 @@ module Eaco
 
   # Current version
   #
-  VERSION = '0.6.1.dev'
+  VERSION = '0.7.0'
 
 end
