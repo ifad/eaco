@@ -25,7 +25,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "appraisal"
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "guard-rspec"
-  spec.add_development_dependency "yard-rspec"
   spec.add_development_dependency "cucumber"
   spec.add_development_dependency "guard-cucumber"
   spec.add_development_dependency "yard-cucumber"
