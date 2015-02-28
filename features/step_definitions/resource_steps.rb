@@ -28,5 +28,5 @@ Then(/(\w+) can see (?:only)? *"(.*?)" in the (\w+) authorized list/) do |actor_
   resource_model = find_model(resource_model)
   accessible = resource_model.accessible_by(actor)
 
-  expect(accessible).to match(resources)
+  expect(accessible).to match_array(resources)
 end
