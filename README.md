@@ -11,10 +11,12 @@ framework for Ruby.
 
 ![Eaco e Telamone][eaco-e-telamone]
 
+*"Aeacus telemon by user Ravenous at en.wikipedia.org - Public domain through Wikimedia Commons - http://commons.wikimedia.org/wiki/File:Aeacus_telemon.jpg"*
+
 ## Design
 
-Eaco provides your context's Resources discretionary access by an Actor.
-Access to the Resource is determined using an ACL.
+Eaco provides your application's Resources discretionary access.
+Access to the Resource is determined matching an ACL against an Actor.
 
 Different Actors can have different levels of access to the same Resource,
 depending on their role as determined by the ACL.
@@ -22,24 +24,23 @@ depending on their role as determined by the ACL.
 To each role are granted a set of possible abilities, and access is verified
 by checking whether a given actor can perform a specific ability.
 
-Actors are described by their Designators, a pluggable mechanism to be
-implemented in your application.
-
-Each Actor has many designators that describe either its identity or its
-belonging to a group or occupying a position in a department.
+Actors are described by their Designators, a pluggable mechanism whose details
+are up to your application. For instance, an Actor can have many designators
+that describe either its identity or its belonging to a group or occupying a
+position in a department.
 
 Designators are Ruby classes that can embed any sort of custom behaviour that
 your application requires.
 
 ACLs are hashes with designators as keys and roles as values. Extracting
 authorized collections requires only an hash key lookup mechanism in your
-database. Adapters are provided for PG's jsonb and for CouchDB-Lucene.
+database. Adapters are provided for PG's +jsonb+ and for CouchDB-Lucene.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'eaco', github: 'ifad/eaco'
+    gem 'eaco'
 
 And then execute:
 
@@ -89,6 +90,7 @@ with an ACL [(rdoc)](http://www.rubydoc.info/github/ifad/eaco/master/Eaco/ACL):
 # An example ACL
 >> document = Document.first
 => #<Document id:42 name:"President's report for loans.docx" [...]>
+
 >> document.acl
 => #<Document::ACL {"user:10" => :owner, "group:reviewers" => :reader}>
 ```
@@ -99,6 +101,7 @@ and an Actor [(rdoc)](http://www.rubydoc.info/github/ifad/eaco/master/Eaco/Actor
 # An example Actor
 >> user = User.find(10)
 => #<User id:10 name:"Bob Fropp" group_ids:['employees'], tags:['english']>
+
 >> user.designators
 => #<Set{ #<Designator(User) value:10>, #<Designator(Group) value:"employees">, #<Designator(Tag) value:"english"> }
 ```
@@ -164,25 +167,27 @@ Grant reader access to a group:
 => true
 ```
 
-Obtain a collection of Resources accessible by a given Actor [(rdoc)](http://www.rubydoc.info/github/ifad/eaco/master/Eaco/Adapters):
+Obtain a collection of Resources accessible by a given Actor
+[(rdoc)](http://www.rubydoc.info/github/ifad/eaco/master/Eaco/Adapters):
 
 ```ruby
 >> Document.accessible_by(user)
 ```
 
 Check whether a controller action can be accessed by an user. Your
-`ApplicationController` must respond to `current_user` for this to work.
+Controller must respond to `current_user` for this to work.
 [(rdoc)](http://www.rubydoc.info/github/ifad/eaco/master/Eaco/Controller)
 
 ```ruby
 class DocumentsController < ApplicationController
   before_filter :find_document
 
-  authorize :edit, :update, [:document, :read]
+  authorize :show, [:document, :read]
+  authorize :edit, [:document, :edit]
 
   private
     def find_document
-      @document = Document.find(:id)
+      @document = Document.find(params[:id])
     end
 end
 ```
@@ -208,9 +213,9 @@ see `features/active_record.example.yml` for an example.
 
 Run `bundle` once. This will install the base bundle.
 
-Run `appraisal` once. This will install the supported Rails versions and pg.
+Run `appraisal` once. This will install the supported Rails versions and +pg+.
 
-Run `rake`. This will run the specs and cucumber features.
+Run `rake`. This will run the specs and cucumber features and report coverage.
 
 Specs are run against the supported rails versions in turn. If you want to
 focus on a single release, use `appraisal rails-X.Y rake`, where `X.Y` can be
@@ -228,4 +233,4 @@ focus on a single release, use `appraisal rails-X.Y rake`, where `X.Y` can be
 
 This software is Made in Italy :it: :smile:.
 
-[eaco-e-telamone]: http://upload.wikimedia.org/wikipedia/commons/7/70/Aeacus_telemon.jpg "Aeacus telemon by user Ravenous at en.wikipedia.org - Public domain through Wikimedia Commons - http://commons.wikimedia.org/wiki/File:Aeacus_telemon.jpg#mediaviewer/File:Aeacus_telemon.jpg"
+[eaco-e-telamone]: http://upload.wikimedia.org/wikipedia/commons/7/70/Aeacus_telemon.jpg
