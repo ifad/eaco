@@ -108,7 +108,9 @@ module Eaco
       # @see Actor
       #
       def harvest(actor)
-        Array.new([actor.send(@method)].flatten).map! {|value| new(value) }
+        list = actor.send(@method)
+        list = list.to_a if list.respond_to?(:to_a)
+        Array.new([list]).flatten.map! {|value| new(value) }
       end
 
       ##
