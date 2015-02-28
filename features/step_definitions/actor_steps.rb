@@ -18,6 +18,14 @@ When(/I grant (\w+) access to (\w+) "(.+?)" as a (\w+) in quality of (\w+)/) do 
   resource.save!
 end
 
+When(/I grant access to (\w+) "(.+?)" to the following designators as (\w+)/) do |resource_model, resource_name, role, table|
+  resource = fetch_resource(resource_model, resource_name)
+  designators = table.raw.flatten.map {|d| Eaco::Designator.parse(d) }
+
+  resource.batch_grant role, designators
+  resource.save!
+end
+
 When(/I revoke (\w+) access to (\w+) "(.+?)" in quality of (\w+)/) do |actor_name, resource_model, resource_name, designator|
   actor = fetch_actor(actor_name)
   resource = fetch_resource(resource_model, resource_name)

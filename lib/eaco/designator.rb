@@ -175,7 +175,9 @@ module Eaco
       # @raise [NotImplementedError]
       #
       def search(query)
+        # :nocov:
         raise NotImplementedError
+        # :nocov:
       end
     end
 
@@ -224,7 +226,9 @@ module Eaco
     # @raise [NotImplementedError]
     #
     def resolve
+      # :nocov:
       raise NotImplementedError
+      # :nocov:
     end
 
     ##

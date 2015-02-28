@@ -9,6 +9,8 @@ module Eaco
     # @see ACL
     # @see CouchDBLucene
     #
+    # :nocov: because there are too many moving parts here and anyway we are
+    # going to deprecate this in favour of jsonb
     module CouchrestModel
       autoload :CouchDBLucene, 'eaco/adapters/couchrest_model/couchdb_lucene'
 
@@ -32,6 +34,7 @@ module Eaco
         end
       end
     end
+    # :nocov:
 
   end
 end

@@ -2,7 +2,7 @@ begin
   require 'active_support/concern'
 rescue LoadError
   # :nocov: This is falsely true during specs ran by Guard. FIXME.
-  abort 'Eaco::Controller requires activesupport. Please add it to Gemfile.'
+  abort 'Eaco::Controller requires actioncontroller. Please add it to Gemfile.'
   # :nocov:
 end
 
@@ -86,6 +86,8 @@ module Eaco
           @_authorization_permissions ||= {}
         end
     end
+
+    protected
 
     ##
     # Asks Eaco whether thou shalt pass or not.

@@ -1,7 +1,7 @@
 # Eaco
 
 [![Build Status](https://travis-ci.org/ifad/eaco.svg)](https://travis-ci.org/ifad/eaco)
-[![Coverage Status](https://coveralls.io/repos/ifad/eaco/badge.svg)](https://coveralls.io/r/ifad/eaco) (*currently writing specs*)
+[![Coverage Status](https://coveralls.io/repos/ifad/eaco/badge.svg)](https://coveralls.io/r/ifad/eaco)
 [![Code Climate](https://codeclimate.com/github/ifad/eaco/badges/gpa.svg)](https://codeclimate.com/github/ifad/eaco)
 [![Inline docs](http://inch-ci.org/github/ifad/eaco.svg?branch=master)](http://inch-ci.org/github/ifad/eaco)
 [![Gem Version](https://badge.fury.io/rb/eaco.svg)](http://badge.fury.io/rb/eaco)

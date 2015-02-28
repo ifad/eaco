@@ -48,6 +48,8 @@ module Eaco
       # @see Actor
       # @see Resource
       #
+      # :nocov: because there are too many moving parts here and anyway we are
+      # going to deprecate this in favour of jsonb
       module CouchDBLucene
 
         ##
@@ -65,6 +67,7 @@ module Eaco
           search "acl:(#{designators.join(' OR ')})"
         end
       end
+      # :nocov:
 
     end
   end

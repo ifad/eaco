@@ -220,7 +220,7 @@ module Eaco
         resources.fetch(model).fetch(name)
       rescue KeyError
         # :nocov:
-        raise "Resource #{model} '#{resource}' not found in registry"
+        raise "Resource #{model} '#{name}' not found in registry"
         # :nocov:
       end
 
@@ -241,6 +241,22 @@ module Eaco
       #
       def resources
         @resources ||= {}
+      end
+
+      ##
+      # Checks the given block on the given set of +Document+
+      #
+      # @param names [String] the document names, separated by +,+
+      # @param block [Proc] the code to run on each +Document+
+      #
+      # @return [void]
+      #
+      # @see Eaco::Cucumber::ActiveRecord::Document
+      #
+      def check_documents(names, &block)
+        model = find_model('Document')
+        names = names.split(/,\s*/)
+        model.where(name: names).each(&block)
       end
 
       ##

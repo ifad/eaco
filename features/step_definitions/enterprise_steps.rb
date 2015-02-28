@@ -5,22 +5,14 @@ When(/I am "(.+?)"$/) do |user_name|
 end
 
 Then(/I can (\w+) the Documents? "(.+?)" being a (\w+)$/) do |permission, document_names, role|
-  model = find_model('Document')
-  names = document_names.split(/,\s*/)
-  documents = model.where(name: names)
-
-  documents.each do |document|
+  check_documents document_names do |document|
     expect(@current_user.can?(permission, document)).to eq(true)
     expect(document.role_of(@current_user)).to eq(role.intern)
   end
 end
 
 Then(/I can not (\w+) the Documents? "(.+?)" *(?:being a (\w+))?$/) do |permission, document_names, role|
-  model = find_model('Document')
-  names = document_names.split(/,\s*/)
-  documents = model.where(name: names)
-
-  documents.each do |document|
+  check_documents document_names do |document|
     expect(@current_user.cannot?(permission, document)).to eq(true)
     expect(document.role_of(@current_user)).to eq(role ? role.intern : nil)
   end
@@ -41,8 +33,18 @@ When(/I parse the Designator "(.+?)"/) do |text|
   @designator = Eaco::Designator.parse(text)
 end
 
+When(/I have a plain object as a Designator/) do
+  @designator = Object.new
+end
+
 Then(/it should describe itself as "(.+?)"/) do |description|
   expect(@designator.describe).to eq(description)
+end
+
+Then(/it should serialize to JSON as (.+?)$/) do |json|
+  json = MultiJson.load(json).symbolize_keys
+
+  expect(@designator.as_json).to eq(json)
 end
 
 Then(/it should have a label of "(.+?)"/) do |label|
@@ -64,6 +66,24 @@ Then(/they should resolve to/) do |table|
   names = table.raw.flatten
 
   expect(resolved.map(&:name)).to match_array(names)
+end
+
+Then(/its role on the Documents? "(.+?)" should be (\w+)/) do |document_names, role|
+  role = role == 'nil' ? nil : role.intern
+
+  check_documents document_names do |document|
+    expect(document.role_of(@designator)).to eq(role)
+  end
+end
+
+Then(/its role on the Documents? "(.+?)" should give an (.+?) error saying/) do |document_names, error_class, error_contents|
+  error_class = error_class.constantize
+
+  check_documents document_names do |document|
+    expect { document.role_of(@designator) }.to \
+      raise_error(error_class).
+      with_message(/#{error_contents}/)
+  end
 end
 
 When(/I ask the Document the list of roles and labels/) do
