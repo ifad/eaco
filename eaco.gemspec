@@ -17,12 +17,17 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  [
-    ["bundler", "~> 1.6"],
-    "rake", "byebug", "guard", "yard", "appraisal",
-    "rspec",  "guard-rspec", "yard-rspec",
-    "cucumber", "guard-cucumber", "coveralls",
-    "guard-shell"
-
-  ].each {|gem| spec.add_development_dependency *gem }
+  spec.add_development_dependency "bundler", "~> 1.6"
+  spec.add_development_dependency "rake"
+  spec.add_development_dependency "byebug"
+  spec.add_development_dependency "guard"
+  spec.add_development_dependency "yard"
+  spec.add_development_dependency "appraisal"
+  spec.add_development_dependency "rspec"
+  spec.add_development_dependency "guard-rspec"
+  spec.add_development_dependency "yard-rspec"
+  spec.add_development_dependency "cucumber"
+  spec.add_development_dependency "guard-cucumber"
+  spec.add_development_dependency "coveralls"
+  spec.add_development_dependency "guard-shell"
 end
