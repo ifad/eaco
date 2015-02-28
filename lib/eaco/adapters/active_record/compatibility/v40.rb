@@ -27,6 +27,8 @@ module Eaco
             adapter.class.parent::PostgreSQLColumn.instance_eval do
               include Column
             end
+
+            base.extend Scoped
           end
 
           ##
