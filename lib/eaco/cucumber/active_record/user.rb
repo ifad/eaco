@@ -17,6 +17,15 @@ module Eaco
 
         has_many :positions
         has_many :departments, through: :positions
+
+        ##
+        # The {Department} names this User has a {Position} in.
+        #
+        # @return [Array] the {Department} names as +String+s.
+        #
+        def department_names
+          departments.to_set(&:name)
+        end
       end
 
     end

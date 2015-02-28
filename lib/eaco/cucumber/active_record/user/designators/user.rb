@@ -16,6 +16,8 @@ module Eaco
           #
           class User < Eaco::Designator
             ##
+            # This {Designator} description
+            #
             # @return [String] the {User}'s name.
             #
             def describe(*)
@@ -23,6 +25,8 @@ module Eaco
             end
 
             ##
+            # {User}s matching this designator.
+            #
             # @return [Array] this very {User} wrapped in an +Array+.
             #
             def resolve

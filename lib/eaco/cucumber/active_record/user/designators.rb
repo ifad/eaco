@@ -9,7 +9,10 @@ module Eaco
         # @see World
         #
         module Designators
-          autoload :User, 'eaco/cucumber/active_record/user/designators/user.rb'
+          autoload :Authenticated, 'eaco/cucumber/active_record/user/designators/authenticated.rb'
+          autoload :Department,    'eaco/cucumber/active_record/user/designators/department.rb'
+          autoload :Position,      'eaco/cucumber/active_record/user/designators/position.rb'
+          autoload :User,          'eaco/cucumber/active_record/user/designators/user.rb'
         end
 
       end

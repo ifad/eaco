@@ -35,12 +35,13 @@ module Eaco
 
         # Designator source
         create_table 'departments', force: true do |t|
-          t.string :abbr
+          t.string :name
         end
+        add_index :departments, :name, unique: true
 
         # Designator source
         create_table 'positions', force: true do |t|
-          t.string :job_title
+          t.string :name
 
           t.references :user
           t.references :department

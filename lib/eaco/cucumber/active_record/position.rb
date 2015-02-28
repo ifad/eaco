@@ -14,6 +14,8 @@ module Eaco
       class Position < ::ActiveRecord::Base
         belongs_to :user
         belongs_to :department
+
+        validates :user, :department, presence: :true
       end
 
     end
