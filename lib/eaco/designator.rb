@@ -63,7 +63,7 @@ module Eaco
       # @return [Array] resolved actors, application-dependant.
       #
       def resolve(designators)
-        Array.new(designators||[]).inject([]) {|ret, d| ret.concat parse(d).resolve}
+        Array.new(designators||[]).inject(Set.new) {|ret, d| ret.merge parse(d).resolve}
       end
 
       ##

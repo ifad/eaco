@@ -135,6 +135,16 @@ Feature: Role-based, flexible authorization
        | Steve Jobs      |
        | Tim Berners-Lee |
 
+  Scenario: Resolving different designators
+    When I have the following designators
+      | department:ICT |
+      | position:3     |
+      | user:1         |
+    Then they should resolve to
+      | Dennis Ritchie  |
+      | Rob Pike        |
+      | William Gates   |
+
   Scenario: Resolving an invalid designator
     When I parse the invalid Designator "foo:on the rocks"
     Then I should receive a Designator error Eaco::Error saying
