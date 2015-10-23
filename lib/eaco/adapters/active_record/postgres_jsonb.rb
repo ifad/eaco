@@ -27,7 +27,9 @@ module Eaco
 
           designators = actor.designators.map {|d| quote_value(d, nil) }
 
-          where("acl ?| array[#{designators.join(',')}]::varchar[]")
+          column = "#{connection.quote_table_name(table_name)}.acl"
+
+          where("#{column} ?| array[#{designators.join(',')}]::varchar[]")
         end
       end
 
