@@ -50,7 +50,7 @@ module Eaco
       #
       def define_acl_subclass
         target_eval do
-          remove_const(:ACL) if constants.include?(:ACL)
+          remove_const(:ACL) if const_defined?(:ACL, false)
 
           Class.new(Eaco::ACL).tap do |acl_class|
             define_singleton_method(:acl) { acl_class }
