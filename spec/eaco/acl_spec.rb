@@ -171,6 +171,8 @@ RSpec.describe Eaco::ACL do
   end
 
   describe '#pretty_inspect' do
+    require 'pp'
+
     let(:acl) { described_class.new('foo' => :bar) }
 
     subject { acl.pretty_inspect }
