@@ -31,6 +31,8 @@ module Eaco
       def self.included(base)
         Compatibility.new(base).check!
 
+        return unless base.table_exists?
+
         column = base.columns_hash.fetch('acl', nil)
 
         unless column
