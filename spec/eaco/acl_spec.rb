@@ -54,16 +54,16 @@ RSpec.describe Eaco::ACL do
   describe '#del' do
     let(:designator) { Eaco::Designator.new 'test' }
 
-    subject { acl.del(designator) }
+    before { acl.del(designator) }
 
     context 'when removing non-existing permissions' do
       let(:acl) { described_class.new }
-      it { expect(subject).to eq({}) }
+      it { expect(acl).to eq({}) }
     end
 
     context 'when removing existing permissions' do
       let(:acl) { described_class.new(designator => :editor) }
-      it { expect(subject).to eq({}) }
+      it { expect(acl).to eq({}) }
     end
   end
 
