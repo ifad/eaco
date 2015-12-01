@@ -57,9 +57,8 @@ module Eaco
     #
     def del(*designator)
       identify(*designator).each do |key|
-        self.delete(key)
+        self.delete(key.to_s)
       end
-
       self
     end
 
