@@ -6,7 +6,7 @@
 [![Inline docs](http://inch-ci.org/github/ifad/eaco.svg?branch=master)](http://inch-ci.org/github/ifad/eaco)
 [![Gem Version](https://badge.fury.io/rb/eaco.svg)](http://badge.fury.io/rb/eaco)
 
-Eacus, the holder of the keys of Hades, is an ACL-based authorization
+Eacus, the holder of the keys of Hades, is an Attribute-Based Access Control ([ABAC](https://en.wikipedia.org/wiki/Attribute-based_access_control)) authorization
 framework for Ruby.
 
 ![Eaco e Telamone][eaco-e-telamone]
@@ -15,22 +15,30 @@ framework for Ruby.
 
 ## Design
 
-Eaco provides your application's Resources discretionary access.
-Access to the Resource is determined matching an ACL against an Actor.
+Eaco provides your application's Resources discretionary access based on attributes.
+Access to a Resource by an Actor is determined by checking whether the Actor owns
+the security attributes (Designators) required by the Resource.
 
-Different Actors can have different levels of access to the same Resource,
-depending on their role as determined by the ACL.
+Each Resource protected by Eaco has an ACL attached. ACLs define which security
+attribute grant access to the Resource, and at which level. The level of access
+is expressed in terms of roles. Roles are scoped per Resource types.
 
-To each role are granted a set of possible abilities, and access is verified
-by checking whether a given actor can perform a specific ability.
+Each Role then describes a set of abilities that it can perform. In your code,
+you check directly whether an Actor has a specific ability on a Resource, and
+all the indirection is then evaluated by Eaco.
 
-Actors are described by their Designators, a pluggable mechanism whose details
-are up to your application. For instance, an Actor can have many designators
-that describe either its identity or its belonging to a group or occupying a
-position in a department.
+## Designators
+
+Security attributes are extracted out of Actors through the Designators framework,
+a pluggable mechanism whose details are up to your application.
+
+An Actor can have many designators,  that describe its identity or its belonging
+to a group or occupying a position in a department.
 
 Designators are Ruby classes that can embed any sort of custom behaviour that
 your application requires.
+
+## ACLS
 
 ACLs are hashes with designators as keys and roles as values. Extracting
 authorized collections requires only an hash key lookup mechanism in your
