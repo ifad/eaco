@@ -25,7 +25,7 @@ module Eaco
         def accessible_by(actor)
           return scoped if actor.is_admin?
 
-          designators = actor.designators.map {|d| quote_value(d, nil) }
+          designators = actor.designators.map {|d| sanitize(d) }
 
           column = "#{connection.quote_table_name(table_name)}.acl"
 
