@@ -24,7 +24,7 @@ module Eaco
         end
 
         ##
-        # Checks whether the target model is compatible.
+        # Checks whether ActiveRecord::Base is compatible.
         # Looks up the {#support_module} and includes it.
         #
         # @see #support_module
@@ -33,22 +33,10 @@ module Eaco
         #
         def check!
           layer = support_module
-          target.instance_eval { include layer }
+          ::ActiveRecord::Base.instance_eval { include layer }
         end
 
         private
-
-        ##
-        # @return [ActiveRecord::Base] associated with the model
-        #
-        def target
-          target = @model.base_class.superclass
-          if target == ApplicationRecord
-            target.superclass
-          else
-            target
-          end
-        end
 
         ##
         # @return [String] the +ActiveRecord+ major and minor version numbers
@@ -56,8 +44,10 @@ module Eaco
         # Example: "42" for 4.2
         #
         def active_record_version
-          ver = target.parent.const_get(:VERSION)
-          [ver.const_get(:MAJOR), ver.const_get(:MINOR)].join
+          [
+            ::ActiveRecord::VERSION::MAJOR,
+            ::ActiveRecord::VERSION::MINOR
+          ].join
         end
 
         ##
