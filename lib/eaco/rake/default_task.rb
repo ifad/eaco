@@ -40,7 +40,6 @@ module Eaco
             run_specs
             run_cucumber
             report_coverage
-            generate_documentation
           end
 
         else
