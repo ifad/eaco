@@ -41,7 +41,12 @@ module Eaco
         # @return [ActiveRecord::Base] associated with the model
         #
         def target
-          @model.base_class.superclass
+          target = @model.base_class.superclass
+          if target == ApplicationRecord
+            target.superclass
+          else
+            target
+          end
         end
 
         ##

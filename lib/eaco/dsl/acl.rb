@@ -168,7 +168,12 @@ module Eaco
       #
       def orm
         if target.respond_to?(:base_class)
-          target.base_class.superclass # Active Record
+          orm = target.base_class.superclass # Active Record
+          if orm == ApplicationRecord
+            orm.superclass
+          else
+            orm
+          end
         else
           target.superclass # Naive
         end
