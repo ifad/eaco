@@ -167,13 +167,8 @@ module Eaco
       # @return [Class] the ORM base class.
       #
       def orm
-        if target.respond_to?(:base_class)
-          orm = target.base_class.superclass # Active Record
-          if orm == ApplicationRecord
-            orm.superclass
-          else
-            orm
-          end
+        if defined?(ActiveRecord::Base) && target.ancestors.include?(ActiveRecord::Base)
+          ActiveRecord::Base
         else
           target.superclass # Naive
         end
