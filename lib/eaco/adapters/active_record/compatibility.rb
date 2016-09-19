@@ -10,6 +10,7 @@ module Eaco
         autoload :V40, 'eaco/adapters/active_record/compatibility/v40.rb'
         autoload :V41, 'eaco/adapters/active_record/compatibility/v41.rb'
         autoload :V42, 'eaco/adapters/active_record/compatibility/v42.rb'
+        autoload :V50, 'eaco/adapters/active_record/compatibility/v50.rb'
 
         autoload :Scoped, 'eaco/adapters/active_record/compatibility/scoped.rb'
 
