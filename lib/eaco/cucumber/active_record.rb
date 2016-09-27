@@ -95,11 +95,13 @@ module Eaco
       #
       # @raise [Errno::ENOENT] if the configuration file is not found.
       #
+      # :nocov:
+      # This isn't ran by Travis as we set EACO_AR_CONFIG, so Coveralls raises
+      # a false positive.
       def default_config_file
         Pathname.new('features/active_record.yml').realpath
 
       rescue Errno::ENOENT => error
-        # :nocov:
         raise error.class.new, <<-EOF.squeeze(' ')
 
           #{error.message}.
@@ -108,8 +110,8 @@ module Eaco
           default location, or specify your configuration file location by
           passing the `EACO_AR_CONFIG' environment variable.
         EOF
-        # :nocov:
       end
+      # :nocov:
 
       ##
       # Establish ActiveRecord connection using the given configuration hash
