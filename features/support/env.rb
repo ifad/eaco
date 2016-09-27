@@ -1,4 +1,5 @@
 require 'bundler/setup'
+require 'rails'
 require 'byebug'
 
 require 'eaco/coverage'

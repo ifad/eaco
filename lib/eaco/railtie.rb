@@ -18,6 +18,7 @@ module Eaco
     # @!method parse_rules
     #
     initializer 'eaco.parse_rules' do
+      # :nocov:
       Eaco.parse_default_rules_file!
 
       unless Rails.configuration.cache_classes
@@ -25,6 +26,7 @@ module Eaco
           Eaco.parse_default_rules_file!
         end
       end
+      # :nocov:
     end
 
     ##
@@ -33,6 +35,7 @@ module Eaco
     # @!method install_controller_runtime
     #
     initializer 'eaco.install_controller_runtime' do
+      # :nocov:
       ActiveSupport.on_load :action_controller do
 
         ActionController::Base.instance_eval do
@@ -40,6 +43,7 @@ module Eaco
         end
 
       end
+      # :nocov:
     end
   end
 

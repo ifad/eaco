@@ -10,6 +10,7 @@ module Eaco
         autoload :V40, 'eaco/adapters/active_record/compatibility/v40.rb'
         autoload :V41, 'eaco/adapters/active_record/compatibility/v41.rb'
         autoload :V42, 'eaco/adapters/active_record/compatibility/v42.rb'
+        autoload :V50, 'eaco/adapters/active_record/compatibility/v50.rb'
 
         autoload :Scoped, 'eaco/adapters/active_record/compatibility/scoped.rb'
 
@@ -23,7 +24,7 @@ module Eaco
         end
 
         ##
-        # Checks whether the target model is compatible.
+        # Checks whether ActiveRecord::Base is compatible.
         # Looks up the {#support_module} and includes it.
         #
         # @see #support_module
@@ -32,17 +33,10 @@ module Eaco
         #
         def check!
           layer = support_module
-          target.instance_eval { include layer }
+          ::ActiveRecord::Base.instance_eval { include layer }
         end
 
         private
-
-        ##
-        # @return [ActiveRecord::Base] associated with the model
-        #
-        def target
-          @model.base_class.superclass
-        end
 
         ##
         # @return [String] the +ActiveRecord+ major and minor version numbers
@@ -50,8 +44,10 @@ module Eaco
         # Example: "42" for 4.2
         #
         def active_record_version
-          ver = target.parent.const_get(:VERSION)
-          [ver.const_get(:MAJOR), ver.const_get(:MINOR)].join
+          [
+            ::ActiveRecord::VERSION::MAJOR,
+            ::ActiveRecord::VERSION::MINOR
+          ].join
         end
 
         ##
