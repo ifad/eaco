@@ -14,6 +14,7 @@ When(/I invoke the Controller "(.+?)" action with query string "(.+?)"$/) do |ac
 
   @controller.current_user = @current_user
 
+  #:nocov:
   if Rails::VERSION::MAJOR < 5
     @controller.request = ActionDispatch::TestRequest.new('QUERY_STRING' => query).tap do |request|
       request.params.update('action' => @action_name)
@@ -23,6 +24,7 @@ When(/I invoke the Controller "(.+?)" action with query string "(.+?)"$/) do |ac
       request.action = @action_name
     end
   end
+  #:nocov:
 
   @controller.response = ActionDispatch::TestResponse.new
 end
