@@ -112,7 +112,7 @@ Feature: Authorization rules error handling
   Scenario: Authorizing a Resource with a known ORM but without the acl field
     When I have a wrong authorization definition on model Department such as
      """
-     authorize $MODEL
+     authorize $MODEL, using: :pg_jsonb
      """
     Then I should receive a DSL error Eaco::Error saying
      """
@@ -126,7 +126,7 @@ Feature: Authorization rules error handling
      """
     Then I should receive a DSL error Eaco::Error saying
      """
-     .+Document.+ORM.+ActiveRecord::Base.+ use one of the available strategies: pg_jsonb
+     .+Document.+ORM.+ActiveRecord::Base.+ use one of the available strategies: pg_jsonb, mysql_json
      """
 
   Scenario: Authorizing a Resource with the wrong ACL column type
@@ -138,7 +138,7 @@ Feature: Authorization rules error handling
        end
      end
 
-     authorize ::Grabach
+     authorize ::Grabach, using: :pg_jsonb
      """
     Then I should receive a DSL error Eaco::Error saying
      """

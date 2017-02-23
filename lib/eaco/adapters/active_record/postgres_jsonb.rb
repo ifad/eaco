@@ -13,6 +13,7 @@ module Eaco
       # @see Resource
       #
       module PostgresJSONb
+        autoload :Compatibility, 'eaco/adapters/active_record/postgres_jsonb/compatibility'
 
         ##
         # Uses the json key existance operator +?|+ to check whether one of the
@@ -30,6 +31,26 @@ module Eaco
           column = "#{connection.quote_table_name(table_name)}.acl"
 
           where("#{column} ?| array[#{designators.join(',')}]::varchar[]")
+        end
+
+        ##
+        # Checks whether the model's AR version is supported and the ACL
+        # data structure fulfills the ACL persistance requirements.
+        #
+        def self.validate!(model)
+          Compatibility.new(model).check!
+
+          return unless model.table_exists?
+
+          column = model.columns_hash.fetch('acl', nil)
+
+          unless column
+            raise Malformed, "Please define a jsonb column named `acl` on #{model}."
+          end
+
+          unless column.type == :json || column.type == :jsonb
+            raise Malformed, "The `acl` column on #{model} must be of the jsonb type."
+          end
         end
       end
 

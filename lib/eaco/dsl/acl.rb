@@ -143,9 +143,15 @@ module Eaco
       # @return [void]
       #
       def install_authorized_collection_strategy
-        if adapter && (strategy = adapter.strategies[ options.fetch(:using, nil) ])
-          target.extend strategy
-        end
+        strategy = options.fetch(:using, nil)
+        return unless adapter && strategy
+
+        strategy = adapter.strategies[strategy]
+        return unless strategy
+
+        strategy.validate!(target)
+
+        target.extend strategy
       end
 
       ##
