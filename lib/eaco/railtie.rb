@@ -22,8 +22,10 @@ module Eaco
       Eaco.parse_default_rules_file!
 
       unless Rails.configuration.cache_classes
-        ActionDispatch::Reloader.to_prepare do
-          Eaco.parse_default_rules_file!
+        if defined? ActiveSupport::Reloader
+          ActiveSupport::Reloader.to_prepare { Eaco.parse_default_rules_file! }
+        else
+          ActionDispatch::Reloader.to_prepare { Eaco.parse_default_rules_file! }
         end
       end
       # :nocov:
