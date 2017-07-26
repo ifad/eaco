@@ -61,10 +61,10 @@ module Eaco
       end
 
       ##
-      # Returns an Hash wit the database configuration.
+      # Returns an Hash with the database configuration.
       #
-      # Caveat:the returned +Hash+ has a custom +.to_s+ method that formats
-      # the configuration as a +pgsql://+ URL.
+      # Caveat: the returned +Hash+ has a custom +.to_s+ method that formats
+      # the configuration as an URI.
       #
       # @return [Hash] the current database configuration
       #
@@ -74,8 +74,8 @@ module Eaco
         @_config ||= YAML.load(config_file.read).tap do |conf|
           def conf.to_s
             # :nocov:
-            'pgsql://%s:%s@%s/%s' % values_at(
-              :username, :password, :hostname, :database
+            '%s://%s:%s@%s/%s' % values_at(
+              :adapter, :username, :password, :hostname, :database
             )
             # :nocov:
           end
