@@ -45,9 +45,13 @@ module Eaco
             raise Malformed, "Please define a json column named `acl` on #{model}."
           end
 
-          unless column.type == :json
-            raise Malformed, "The `acl` column on #{model} must be of the JSON type."
+          unless column.type == required_column_type
+            raise Malformed, "The `acl` column on #{model} must be of the JSON type - found: #{column.type}."
           end
+        end
+
+        def self.required_column_type
+          :json
         end
       end
 
