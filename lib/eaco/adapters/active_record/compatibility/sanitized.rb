@@ -12,7 +12,7 @@ module Eaco
           # Just returns +ActiveRecord::Base.connection.quote+.
           #
           def sanitize(d)
-            ::ActiveRecord::Base.connection.quote(d)
+            self.connection.quote(d)
           end
         end
 
