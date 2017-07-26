@@ -86,21 +86,14 @@ module Eaco
       # @return [Pathname] the currently configured configuration file. Override
       #                    using the +EACO_AR_CONFIG' envinronment variable.
       #
-      def config_file
-        Pathname.new(ENV['EACO_AR_CONFIG'] || default_config_file)
-      end
-
-      ##
-      # @return [String] +active_record.yml+ relative to this source file.
-      #
       # @raise [Errno::ENOENT] if the configuration file is not found.
       #
-      # :nocov:
+      def config_file
+        Pathname.new(ENV['EACO_AR_CONFIG'] || default_config_file)
+
       # This isn't ran by Travis as we set EACO_AR_CONFIG, so Coveralls raises
       # a false positive.
-      def default_config_file
-        Pathname.new('features/active_record.yml').realpath
-
+      # :nocov:
       rescue Errno::ENOENT => error
         raise error.class.new, <<-EOF.squeeze(' ')
 
@@ -110,8 +103,32 @@ module Eaco
           default location, or specify your configuration file location by
           passing the `EACO_AR_CONFIG' environment variable.
         EOF
-      end
       # :nocov:
+      end
+
+      ##
+      # @return [String] the appropriate +active_record.yml+ configuration
+      # depending on the currently running appraisal.
+      #
+      def default_config_file
+        path = 'features/active_record.%s.yml' % currently_tested_database_engine
+        Pathname.new(path).realpath
+      end
+
+      ##
+      # @return [Symbol] either :mysql or :pgsql depending on the value of
+      # the +BUNDLE_GEMFILE+ environment variable, telling us which is the
+      # database adapter currently being tested.
+      #
+      def currently_tested_database_engine
+        return unless (gemfile = ENV['BUNDLE_GEMFILE'])
+
+        if gemfile =~ /_mysql.gemfile$/
+          :mysql
+        elsif gemfile =~ /_pg.gemfile$/
+          :pgsql
+        end
+      end
 
       ##
       # Establish ActiveRecord connection using the given configuration hash

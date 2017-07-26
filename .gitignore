@@ -8,7 +8,8 @@ gemfiles/*.gemfile.lock
 _yardoc
 coverage
 doc/
-features/active_record.yml
+features/active_record.mysql.yml
+features/active_record.pgsql.yml
 features/active_record.log
 lib/bundler/man
 pkg
