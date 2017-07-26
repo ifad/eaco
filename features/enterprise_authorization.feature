@@ -199,7 +199,11 @@ Feature: Role-based, flexible authorization
   Scenario: Authorizing a controller
     When I have an authorized Controller defined as
     """
-      before_filter :find_document
+      if ActionPack::VERSION::MAJOR == 5
+        before_action :find_document
+      else
+        before_filter :find_document
+      end
 
       authorize :show, [:document, :read ]
       authorize :edit, [:document, :write]
