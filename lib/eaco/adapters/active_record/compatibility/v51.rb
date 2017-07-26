@@ -9,9 +9,11 @@ module Eaco
         # JSONB works correctly, but we need +.scoped+ so we revive it through
         # the {Scoped} support module.
         #
+        # @see Scoped
+        #
         # Sanitize has dissapeared in favour of quote.
         #
-        # @see Scoped
+        # @see Sanitized
         #
         module V51
           extend ActiveSupport::Concern
