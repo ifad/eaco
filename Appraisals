@@ -1,4 +1,4 @@
-# Test against 3.2 -> 4.2
+# Test against 3.2 -> 5.1
 #
 appraise 'rails-3.2' do
   gem 'rails', '~> 3.2.0'
