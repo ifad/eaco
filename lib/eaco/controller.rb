@@ -54,7 +54,12 @@ module Eaco
         actions.each {|action| authorization_permissions.update(action => target)}
 
         @_eaco_filter_installed ||= begin
-          before_filter :confront_eaco
+          if ActionPack::VERSION::MAJOR == 5
+            before_action :confront_eaco
+          else
+            before_filter :confront_eaco
+          end
+
           true
         end
       end
