@@ -9,11 +9,13 @@ gemfile:
   - gemfiles/rails_4.1.gemfile
   - gemfiles/rails_4.2.gemfile
   - gemfiles/rails_5.0.gemfile
+  - gemfiles/rails_5.1.gemfile
 
 matrix:
   exclude:
     - rvm: 2.1
       gemfile: gemfiles/rails_5.0.gemfile
+      gemfile: gemfiles/rails_5.1.gemfile
 
 sudo: false
 
