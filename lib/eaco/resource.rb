@@ -136,13 +136,14 @@ module Eaco
       self.class.allows?(action, actor, self)
     end
 
+
     ##
-    # @return [Symbol] the role of the given +actor+
+    # @return [Array] list of roles for the given +actor+
     #
     # @param actor [Actor]
     #
-    def role_of(actor)
-      self.class.role_of(actor, self)
+    def roles_of(actor)
+      self.class.roles_of(actor, self)
     end
 
     ##

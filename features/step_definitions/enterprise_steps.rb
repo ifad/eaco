@@ -7,14 +7,20 @@ end
 Then(/I can (\w+) the Documents? "(.+?)" being a (\w+)$/) do |permission, document_names, role|
   check_documents document_names do |document|
     expect(@current_user.can?(permission, document)).to eq(true)
-    expect(document.role_of(@current_user)).to eq(role.intern)
+    expect(document.roles_of(@current_user)).to include(role.intern)
   end
 end
 
 Then(/I can not (\w+) the Documents? "(.+?)" *(?:being a (\w+))?$/) do |permission, document_names, role|
   check_documents document_names do |document|
     expect(@current_user.cannot?(permission, document)).to eq(true)
-    expect(document.role_of(@current_user)).to eq(role ? role.intern : nil)
+
+    roles = document.roles_of(@current_user)
+    if role
+      expect(roles).to include(role.intern)
+    else
+      expect(roles).to be_empty
+    end
   end
 end
 
@@ -72,7 +78,12 @@ Then(/its role on the Documents? "(.+?)" should be (\w+)/) do |document_names, r
   role = role == 'nil' ? nil : role.intern
 
   check_documents document_names do |document|
-    expect(document.role_of(@designator)).to eq(role)
+    roles = document.roles_of(@designator)
+    if role
+      expect(roles).to include(role)
+    else
+      expect(roles).to be_empty
+    end
   end
 end
 
@@ -80,7 +91,7 @@ Then(/its role on the Documents? "(.+?)" should give an (.+?) error saying/) do 
   error_class = error_class.constantize
 
   check_documents document_names do |document|
-    expect { document.role_of(@designator) }.to \
+    expect { document.roles_of(@designator) }.to \
       raise_error(error_class).
       with_message(/#{error_contents}/)
   end

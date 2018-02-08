@@ -187,7 +187,7 @@ Feature: Role-based, flexible authorization
     When I have a plain object as a Designator
     Then its role on the Document "ICT Status Report" should give an Eaco::Error error saying
     """
-    role_of expects .+Object.+ to be a Designator or to .+respond_to.+:designators
+    roles_of expects .+Object.+ to be a Designator or to .+respond_to.+:designators
     """
 
   Scenario: Obtaining labels for roles
