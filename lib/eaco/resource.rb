@@ -60,8 +60,8 @@ module Eaco
         return false if roles.empty?
 
         perms = roles.flat_map do |role|
-          permissions[role]
-        end.uniq
+          permissions[role].to_a
+        end.compact.uniq
 
         perms.include?(action.to_sym)
       end
