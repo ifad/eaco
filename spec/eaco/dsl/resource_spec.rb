@@ -10,8 +10,6 @@ RSpec.describe Eaco::DSL::Resource do
 
   #pending '#roles'
 
-  #pending '#roles_priority'
-
   #pending '#roles_with_labels'
 
 end

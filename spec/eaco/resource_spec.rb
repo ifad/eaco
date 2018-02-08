@@ -8,13 +8,9 @@ RSpec.describe Eaco::Resource do
 
   #pending '.allows?'
 
-  #pending '.role_of'
-
   #pending '.permissions'
 
   #pending '.roles'
-
-  #pending '.roles_priority'
 
   #pending '.roles_with_labels'
 

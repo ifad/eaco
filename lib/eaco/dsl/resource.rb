@@ -52,12 +52,6 @@ module Eaco
             @_roles || []
           end
 
-          def roles_priority
-            @_roles_priority ||= {}.tap do |priorities|
-              roles.each_with_index {|role, idx| priorities[role] = idx }
-            end.freeze
-          end
-
           def roles_with_labels
             @_roles_with_labels ||= roles.inject({}) do |labels, role|
               labels.update(role => role.to_s.humanize)
@@ -67,7 +61,6 @@ module Eaco
           # Reset memoizations when this method is called on the target class,
           # so that reloading the authorizations configuration file will
           # refresh the models' configuration.
-          @_roles_priority = nil
           @_roles_with_labels = nil
         end
       end
@@ -90,8 +83,6 @@ module Eaco
       #     authorize Foobar do
       #       roles :owner, :editor, :reader
       #     end
-      #
-      # Roles defined first have higher priority.
       #
       # If the same user is at the same time +reader+ and +editor+, the
       # resulting role is +editor+.
