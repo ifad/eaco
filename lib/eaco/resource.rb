@@ -43,7 +43,7 @@ module Eaco
       ##
       # Checks whether the {ACL} and permissions defined on this Resource
       # allow the given +actor+ to perform the given +action+ on it, that
-      # depends on the +role+ the user has on the resource, calculated from
+      # depends on the +roles+ the user has on the resource, calculated from
       # the {ACL}.
       #
       # @param action [Symbol]
@@ -55,11 +55,13 @@ module Eaco
       def allows?(action, actor, resource)
         return true if actor.is_admin?
 
-        role = role_of(actor, resource)
-        return false unless role
+        roles = roles_of(actor, resource)
 
-        perms = permissions[role]
-        return false unless perms
+        return false if roles.empty?
+
+        perms = roles.flat_map do |role|
+          permissions[role]
+        end.uniq
 
         perms.include?(action.to_sym)
       end
@@ -99,6 +101,33 @@ module Eaco
 
         roles[role_priority] if role_priority
       end
+
+      def roles_of(actor_or_designator, resource)
+        designators = if actor_or_designator.is_a?(Eaco::Designator)
+          [actor_or_designator]
+
+        elsif actor_or_designator.respond_to?(:designators)
+          actor_or_designator.designators
+
+        else
+          raise Error, <<-EOF
+            #{__method__} expects #{actor_or_designator.inspect}
+            to be a Designator or to `respond_to?(:designators)`
+          EOF
+        end
+
+        roles = []
+
+        resource.acl.each do |designator, role|
+          if designators.include?(designator)
+            roles << role
+          end
+        end
+
+        roles
+      end
+
+
 
       ##
       # The permissions defined for each role.
