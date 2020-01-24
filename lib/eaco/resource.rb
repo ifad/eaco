@@ -3,8 +3,8 @@ module Eaco
   ##
   # A Resource is an object that can be authorized. It has an {ACL}, that
   # defines the access levels of {Designator}s. {Actor}s have many designators
-  # and the highest priority ones that matches the {ACL} yields the access
-  # level of the {Actor} to this {Resource}.
+  # and those that match the {ACL} yield the access level of the {Actor} to
+  # this {Resource}.
   #
   # If there is no match between the {Actor}'s designators and the {ACL}, then
   # access is denied.
@@ -43,7 +43,7 @@ module Eaco
       ##
       # Checks whether the {ACL} and permissions defined on this Resource
       # allow the given +actor+ to perform the given +action+ on it, that
-      # depends on the +role+ the user has on the resource, calculated from
+      # depends on the +roles+ the user has on the resource, calculated from
       # the {ACL}.
       #
       # @param action [Symbol]
@@ -55,23 +55,24 @@ module Eaco
       def allows?(action, actor, resource)
         return true if actor.is_admin?
 
-        role = role_of(actor, resource)
-        return false unless role
+        roles = roles_of(actor, resource)
 
-        perms = permissions[role]
-        return false unless perms
+        return false if roles.empty?
+
+        perms = roles.flat_map do |role|
+          permissions[role].to_a
+        end.compact.uniq
 
         perms.include?(action.to_sym)
       end
 
       ##
-      # @return [Symbol] the given +actor+ role in the given resource, or
-      # +nil+ if no access is granted.
+      # @return [Array] the given +actor+ roles in the given resource
       #
       # @param actor_or_designator [Actor or Designator]
       # @param resource [Resource]
       #
-      def role_of(actor_or_designator, resource)
+      def roles_of(actor_or_designator, resource)
         designators = if actor_or_designator.is_a?(Eaco::Designator)
           [actor_or_designator]
 
@@ -85,19 +86,15 @@ module Eaco
           EOF
         end
 
-        role_priority = nil
+        roles = []
+
         resource.acl.each do |designator, role|
           if designators.include?(designator)
-            priority = roles_priority[role]
-          end
-
-          if priority && (role_priority.nil? || priority < role_priority)
-            role_priority = priority
-            break if role_priority == 0
+            roles << role
           end
         end
 
-        roles[role_priority] if role_priority
+        roles
       end
 
       ##
@@ -117,15 +114,6 @@ module Eaco
       # @see DSL::Resource
       #
       def roles
-      end
-
-      # Roles' priority map keyed by role symbol.
-      #
-      # @return [Hash]
-      #
-      # @see DSL::Resource
-      #
-      def roles_priority
       end
 
       # Role labels map keyed by role symbol
@@ -148,13 +136,14 @@ module Eaco
       self.class.allows?(action, actor, self)
     end
 
+
     ##
-    # @return [Symbol] the role of the given +actor+
+    # @return [Array] list of roles for the given +actor+
     #
     # @param actor [Actor]
     #
-    def role_of(actor)
-      self.class.role_of(actor, self)
+    def roles_of(actor)
+      self.class.roles_of(actor, self)
     end
 
     ##

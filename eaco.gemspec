@@ -35,5 +35,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "coveralls"
   spec.add_development_dependency "guard-shell"
   spec.add_development_dependency "rails"
-  spec.add_development_dependency "pg"
+  spec.add_development_dependency "pg", "~> 0.21"
 end

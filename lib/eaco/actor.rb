@@ -10,7 +10,7 @@ module Eaco
   #
   # @see ACL
   # @see Resource
-  # @see Resource.role_of
+  # @see Resource.roles_of
   # @see DSL::Actor
   #
   module Actor

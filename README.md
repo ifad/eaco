@@ -127,14 +127,14 @@ you can check if the Actor can perform a specific action on the Resource:
 and which access level (`role`) the Actor has for this Resource:
 
 ```ruby
->> document.role_of user
-=> :owner
+>> document.roles_of user
+=> [:owner]
 
 >> boss = User.find_by_group('reviewer').first
 => #<User id:42 name:"Jake Leister" group_ids:['reviewers', 'bosses']>
 
->> document.role_of boss
-=> :reader
+>> document.roles_of boss
+=> [:reader]
 
 >> boss.can? :read, document
 => true
