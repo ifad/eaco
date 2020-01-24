@@ -1,4 +1,4 @@
-# Test against 3.2 -> 5.1
+# Test against 3.2 -> 5.2
 #
 appraise 'rails-3.2' do
   gem 'rails', '~> 3.2.0'
@@ -29,4 +29,9 @@ end
 appraise 'rails-5.1' do
   gem 'rails', '~> 5.1.0'
   gem 'pg', '~> 0.21'
+end
+
+appraise 'rails-5.2' do
+  gem 'rails', '~> 5.2.0'
+  gem 'pg'
 end
