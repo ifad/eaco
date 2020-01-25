@@ -13,6 +13,7 @@ module Eaco
         autoload :V50, 'eaco/adapters/active_record/compatibility/v50.rb'
         autoload :V51, 'eaco/adapters/active_record/compatibility/v51.rb'
         autoload :V52, 'eaco/adapters/active_record/compatibility/v52.rb'
+        autoload :V60, 'eaco/adapters/active_record/compatibility/v60.rb'
 
         autoload :Scoped,    'eaco/adapters/active_record/compatibility/scoped.rb'
         autoload :Sanitized, 'eaco/adapters/active_record/compatibility/sanitized.rb'
