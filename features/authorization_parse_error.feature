@@ -6,11 +6,11 @@ Feature: Authorization rules error handling
   Scenario: Giving rubbish
     When I have a wrong authorization definition such as
      """
-     if you give me rubbish please go elsewhere
+     1=1
      """
     Then I should receive a DSL error SyntaxError saying
      """
-     \(feature\):1: syntax error.+please go elsewhere
+     \(feature\):1: syntax error, unexpected '=', expecting end-of-input
      """
 
   Scenario: Referencing a non-existing model
