@@ -30,6 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "yard-cucumber"
   spec.add_development_dependency "coveralls"
   spec.add_development_dependency "guard-shell"
+  spec.add_development_dependency "multi_json"
   spec.add_development_dependency "rails"
   spec.add_development_dependency "pg"
 end

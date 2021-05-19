@@ -1,6 +1,7 @@
 require 'bundler/setup'
 require 'rails'
 require 'byebug'
+require 'multi_json'
 
 require 'eaco/coverage'
 Eaco::Coverage.start!
