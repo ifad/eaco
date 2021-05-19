@@ -76,6 +76,7 @@ module Eaco
       proc do
         gemfile = Eaco::Rake::Utils.gemfile
         coverage_dir "coverage/#{gemfile}"
+        add_filter ['/features', '/spec']
       end
     end
   end
