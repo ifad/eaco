@@ -3,5 +3,5 @@
 adapter:  "postgresql"
 hostname: "localhost"
 database: "eaco"
-username: "postgres"
+username: "runner"
 password: ""
