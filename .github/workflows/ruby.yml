@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         ruby-version: ['2.1', '2.2', '2.3', '2.4', '2.5', '2.6', '3.0', '3.1']
-        gemfile: ['rails_3.2', 'rails_4.0', 'rails_4.1', 'rails_4.2', 'rails_5.0', 'rails_5.1', 'rails_5.2', 'rails_6.0', 'rails_6.1', 'rails_7.0', 'rails_7.1', 'rails_7.2']
+        gemfile: ['rails_3.2', 'rails_4.0', 'rails_4.1', 'rails_4.2', 'rails_5.0', 'rails_5.1', 'rails_5.2', 'rails_6.0', 'rails_6.1']
 
         exclude:
           - ruby-version: '2.1'
@@ -30,23 +30,11 @@ jobs:
             gemfile: rails_6.0
           - ruby-version: '2.1'
             gemfile: rails_6.1
-          - ruby-version: '2.1'
-            gemfile: rails_7.0
-          - ruby-version: '2.1'
-            gemfile: rails_7.1
-          - ruby-version: '2.1'
-            gemfile: rails_7.2
 
           - ruby-version: '2.2'
             gemfile: rails_6.0
           - ruby-version: '2.2'
             gemfile: rails_6.1
-          - ruby-version: '2.2'
-            gemfile: rails_7.0
-          - ruby-version: '2.2'
-            gemfile: rails_7.1
-          - ruby-version: '2.2'
-            gemfile: rails_7.2
 
           - ruby-version: '2.3'
             gemfile: rails_4.0
@@ -56,12 +44,6 @@ jobs:
             gemfile: rails_6.0
           - ruby-version: '2.3'
             gemfile: rails_6.1
-          - ruby-version: '2.3'
-            gemfile: rails_7.0
-          - ruby-version: '2.3'
-            gemfile: rails_7.1
-          - ruby-version: '2.3'
-            gemfile: rails_7.2
 
           - ruby-version: '2.4'
             gemfile: rails_3.2
@@ -73,12 +55,6 @@ jobs:
             gemfile: rails_6.0
           - ruby-version: '2.4'
             gemfile: rails_6.1
-          - ruby-version: '2.4'
-            gemfile: rails_7.0
-          - ruby-version: '2.4'
-            gemfile: rails_7.1
-          - ruby-version: '2.4'
-            gemfile: rails_7.2
 
           - ruby-version: '2.5'
             gemfile: rails_3.2
@@ -88,12 +64,6 @@ jobs:
             gemfile: rails_4.1
           - ruby-version: '2.5'
             gemfile: rails_4.2
-          - ruby-version: '2.5'
-            gemfile: rails_7.0
-          - ruby-version: '2.5'
-            gemfile: rails_7.1
-          - ruby-version: '2.5'
-            gemfile: rails_7.2
 
           - ruby-version: '2.6'
             gemfile: rails_3.2
@@ -103,12 +73,6 @@ jobs:
             gemfile: rails_4.1
           - ruby-version: '2.6'
             gemfile: rails_4.2
-          - ruby-version: '2.6'
-            gemfile: rails_7.0
-          - ruby-version: '2.6'
-            gemfile: rails_7.1
-          - ruby-version: '2.6'
-            gemfile: rails_7.2
 
           - ruby-version: '2.7'
             gemfile: rails_3.2
@@ -139,8 +103,6 @@ jobs:
             gemfile: rails_5.1
           - ruby-version: '3.0'
             gemfile: rails_5.2
-          - ruby-version: '3.0'
-            gemfile: rails_7.2
 
           - ruby-version: '3.1'
             gemfile: rails_3.2
@@ -165,6 +127,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
+
+      - uses: ankane/setup-postgres@v1
+        with:
+          postgres-version: 12
+          database: eaco
 
       - name: Decide RubyGems
         id: setup-params
@@ -195,4 +162,8 @@ jobs:
 
       - name: Run specs
         run: |
-          bundle exec rake spec
+          bundle exec spec
+
+      - name: Run Cucumber features
+        run: |
+          bundle exec cucumber -f pretty

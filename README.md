@@ -227,8 +227,7 @@ Run `rake`. This will run the specs and cucumber features and report coverage.
 
 Specs are run against the supported rails versions in turn. If you want to
 focus on a single release, use `appraisal rails-X.Y rake`, where `X.Y` can be
-`3.2`, `4.0`, `4.1`, `4.2`, `5.0`, `5.1`, `5.2`, `6.0`, `6.1`, `7.0`, `7.1`,
-or `7.2`.
+`3.2`, `4.0`, `4.1`, `4.2`, `5.0`, `5.1`, `5.2`, `6.0`, and `6.1`.
 
 ## Contributing
 
