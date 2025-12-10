@@ -71,8 +71,8 @@ module Eaco
       #
       # @return [Symbol] the required permission or nil
       #
-      # @see {Eaco::Resource}
-      # @see {Eaco::DSL::Resource}
+      # @see Eaco::Resource
+      # @see Eaco::DSL::Resource
       #
       def permission_for(action)
         authorization_permissions[action] || authorization_permissions[:all]
@@ -85,7 +85,7 @@ module Eaco
         #
         # @return [Hash]
         #
-        # @see {Eaco::DSL::Resource}
+        # @see Eaco::DSL::Resource
         #
         def authorization_permissions
           @_authorization_permissions ||= {}
@@ -156,7 +156,7 @@ module Eaco
     #                                       /_'O\||
     #                                    .-'___/(__)
     #
-    #                                    http://ascii.co.uk/art/guardiana
+    #                                    https://ascii.co.uk/art/guardiana
     #
     def confront_eaco
       action = params[:action].intern

@@ -198,7 +198,7 @@ module Eaco
 
     protected
       ##
-      # Changes the ACL, calling the persistance setter if it changes.
+      # Changes the ACL, calling the persistence setter if it changes.
       #
       # @yield [ACL] the current ACL or a new one if no ACL is set
       #

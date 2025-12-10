@@ -15,7 +15,7 @@ module Eaco
       module PostgresJSONb
 
         ##
-        # Uses the json key existance operator +?|+ to check whether one of the
+        # Uses the json key existence operator +?|+ to check whether one of the
         # +Actor+'s +Designator+ instances exist as keys in the +ACL+ objects.
         #
         # @param actor [Actor]

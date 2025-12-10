@@ -29,9 +29,9 @@ RSpec.describe Eaco do
     end
 
     context 'when the file does not exist' do
-      let(:file) { Pathname('/nonexistant') }
+      let(:file) { Pathname('/nonexistent') }
 
-      it { expect { subject }.to raise_error(Eaco::Malformed, /Please create \/nonexistant/) }
+      it { expect { subject }.to raise_error(Eaco::Malformed, /Please create \/nonexistent/) }
     end
   end
 

@@ -11,7 +11,7 @@ module Eaco
         #
         # @see Scoped
         #
-        # Sanitize has dissapeared in favour of quote.
+        # Sanitize has disappeared in favour of quote.
         #
         # @see Sanitized
         #

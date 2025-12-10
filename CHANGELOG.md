@@ -2,8 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
-project adheres to [Semantic Versioning](http://semver.org/)
+The format is based on [Keep a Changelog](https://keepachangelog.com/) and this
+project adheres to [Semantic Versioning](https://semver.org/)
+
+## Unreleased
+
+### Fixed
+* Fix YARD documentation warnings:
+  - Remove curly braces from `@see` tags (causes rendering issues)
+  - Use fully-qualified constant names for `ACL#find_by_role` references (`Eaco::ACL#find_by_role`)
 
 ## 1.1.1 - 2017-03-08
 
