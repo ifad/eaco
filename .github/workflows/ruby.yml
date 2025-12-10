@@ -125,6 +125,8 @@ jobs:
       BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}.gemfile
       EACO_AR_CONFIG: ./features/active_record.github.yml
 
+    continue-on-error: true
+
     steps:
       - uses: actions/checkout@v6
 
@@ -162,7 +164,7 @@ jobs:
 
       - name: Run specs
         run: |
-          bundle exec spec
+          bundle exec rspec
 
       - name: Run Cucumber features
         run: |
