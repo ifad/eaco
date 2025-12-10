@@ -16,9 +16,9 @@ jobs:
 
     strategy:
       matrix:
-        ruby-version: ['3.1']
-        gemfile: [rails_6.1]
-        postgres-version: ['12']
+        ruby-version: ['3.2', '3.3', '3.4']
+        gemfile: [rails_7.0, rails_7.1, rails_7.2, rails_8.0, rails_8.1]
+        postgres-version: [12, 13, 14, 15, 16, 17, 18]
 
         include:
           - ruby-version: '2.1'
@@ -60,6 +60,12 @@ jobs:
             gemfile: rails_3.2
             postgres-version: 10
           - ruby-version: '2.3'
+            gemfile: rails_4.0
+            postgres-version: 12
+          - ruby-version: '2.3'
+            gemfile: rails_4.1
+            postgres-version: 12
+          - ruby-version: '2.3'
             gemfile: rails_4.2
             postgres-version: 12
           - ruby-version: '2.3'
@@ -73,6 +79,12 @@ jobs:
             postgres-version: 12
 
           - ruby-version: '2.4'
+            gemfile: rails_4.0
+            postgres-version: 12
+          - ruby-version: '2.4'
+            gemfile: rails_4.1
+            postgres-version: 12
+          - ruby-version: '2.4'
             gemfile: rails_4.2
             postgres-version: 12
           - ruby-version: '2.4'
@@ -102,12 +114,6 @@ jobs:
             postgres-version: 12
 
           - ruby-version: '2.6'
-            gemfile: rails_5.0
-            postgres-version: 12
-          - ruby-version: '2.6'
-            gemfile: rails_5.1
-            postgres-version: 12
-          - ruby-version: '2.6'
             gemfile: rails_5.2
             postgres-version: 12
           - ruby-version: '2.6'
@@ -118,13 +124,16 @@ jobs:
             postgres-version: 12
 
           - ruby-version: '2.7'
-            gemfile: rails_5.2
-            postgres-version: 12
-          - ruby-version: '2.7'
             gemfile: rails_6.0
             postgres-version: 12
           - ruby-version: '2.7'
             gemfile: rails_6.1
+            postgres-version: 12
+          - ruby-version: '2.7'
+            gemfile: rails_7.0
+            postgres-version: 12
+          - ruby-version: '2.7'
+            gemfile: rails_7.1
             postgres-version: 12
 
           - ruby-version: '3.0'
@@ -132,6 +141,22 @@ jobs:
             postgres-version: 12
           - ruby-version: '3.0'
             gemfile: rails_6.1
+            postgres-version: 12
+          - ruby-version: '3.0'
+            gemfile: rails_7.0
+            postgres-version: 12
+          - ruby-version: '3.0'
+            gemfile: rails_7.1
+            postgres-version: 12
+
+          - ruby-version: '3.1'
+            gemfile: rails_7.0
+            postgres-version: 12
+          - ruby-version: '3.1'
+            gemfile: rails_7.1
+            postgres-version: 12
+          - ruby-version: '3.1'
+            gemfile: rails_7.2
             postgres-version: 12
 
     env:
@@ -139,7 +164,7 @@ jobs:
       EACO_AR_CONFIG: ./features/active_record.github.yml
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v8
 
       - uses: ankane/setup-postgres@v1
         with:
