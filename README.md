@@ -1,17 +1,17 @@
 # Eaco
 
 [![Ruby specs](https://github.com/ifad/eaco/actions/workflows/ruby.yml/badge.svg)](https://github.com/ifad/eaco/actions/workflows/ruby.yml)
-[![Coverage Status](https://coveralls.io/repos/ifad/eaco/badge.svg)](https://coveralls.io/r/ifad/eaco)
-[![Code Climate](https://codeclimate.com/github/ifad/eaco/badges/gpa.svg)](https://codeclimate.com/github/ifad/eaco)
-[![Inline docs](http://inch-ci.org/github/ifad/eaco.svg?branch=master)](http://inch-ci.org/github/ifad/eaco)
-[![Gem Version](https://badge.fury.io/rb/eaco.svg)](http://badge.fury.io/rb/eaco)
+[![Coverage Status](https://coveralls.io/repos/ifad/eaco/badge.svg)](https://coveralls.io/github/ifad/eaco)
+[![Maintainability](https://qlty.sh/gh/ifad/projects/eaco/maintainability.svg)](https://qlty.sh/gh/ifad/projects/eaco)
+[![Inline docs](https://inch-ci.org/github/ifad/eaco.svg?branch=master)](https://inch-ci.org/github/ifad/eaco)
+[![Gem Version](https://badge.fury.io/rb/eaco.svg)](https://badge.fury.io/rb/eaco)
 
 Eacus, the holder of the keys of Hades, is an Attribute-Based Access Control ([ABAC](https://en.wikipedia.org/wiki/Attribute-based_access_control)) authorization
 framework for Ruby.
 
 ![Eaco e Telamone][eaco-e-telamone]
 
-*"Aeacus telemon by user Ravenous at en.wikipedia.org - Public domain through Wikimedia Commons - http://commons.wikimedia.org/wiki/File:Aeacus_telemon.jpg"*
+*"Aeacus telemon by user Ravenous at en.wikipedia.org - Public domain through Wikimedia Commons - https://commons.wikimedia.org/wiki/File:Aeacus_telemon.jpg"*
 
 ## Design
 
@@ -56,7 +56,7 @@ And then execute:
 
 ## Usage
 
-Create `config/authorization.rb` [(rdoc)](http://www.rubydoc.info/github/ifad/eaco/master/Eaco/DSL)
+Create `config/authorization.rb` [(rdoc)](https://www.rubydoc.info/github/ifad/eaco/master/Eaco/DSL)
 
 ```ruby
 # Defines `Document` to be an authorized resource.
@@ -91,8 +91,8 @@ actor User do
 end
 ```
 
-Given a Resource [(rdoc)](http://www.rubydoc.info/github/ifad/eaco/master/Eaco/Resource)
-with an ACL [(rdoc)](http://www.rubydoc.info/github/ifad/eaco/master/Eaco/ACL):
+Given a Resource [(rdoc)](https://www.rubydoc.info/github/ifad/eaco/master/Eaco/Resource)
+with an ACL [(rdoc)](https://www.rubydoc.info/github/ifad/eaco/master/Eaco/ACL):
 
 ```ruby
 # An example ACL
@@ -103,7 +103,7 @@ with an ACL [(rdoc)](http://www.rubydoc.info/github/ifad/eaco/master/Eaco/ACL):
 => #<Document::ACL {"user:10" => :owner, "group:reviewers" => :reader}>
 ```
 
-and an Actor [(rdoc)](http://www.rubydoc.info/github/ifad/eaco/master/Eaco/Actor):
+and an Actor [(rdoc)](https://www.rubydoc.info/github/ifad/eaco/master/Eaco/Actor):
 
 ```ruby
 # An example Actor
@@ -176,7 +176,7 @@ Grant reader access to a group:
 ```
 
 Obtain a collection of Resources accessible by a given Actor
-[(rdoc)](http://www.rubydoc.info/github/ifad/eaco/master/Eaco/Adapters):
+[(rdoc)](https://www.rubydoc.info/github/ifad/eaco/master/Eaco/Adapters):
 
 ```ruby
 >> Document.accessible_by(user)
@@ -184,7 +184,7 @@ Obtain a collection of Resources accessible by a given Actor
 
 Check whether a controller action can be accessed by an user. Your
 Controller must respond to `current_user` for this to work.
-[(rdoc)](http://www.rubydoc.info/github/ifad/eaco/master/Eaco/Controller)
+[(rdoc)](https://www.rubydoc.info/github/ifad/eaco/master/Eaco/Controller)
 
 ```ruby
 class DocumentsController < ApplicationController
@@ -227,7 +227,8 @@ Run `rake`. This will run the specs and cucumber features and report coverage.
 
 Specs are run against the supported rails versions in turn. If you want to
 focus on a single release, use `appraisal rails-X.Y rake`, where `X.Y` can be
-`3.2`, `4.0`, `4.1` or `4.2`.
+`3.2`, `4.0`, `4.1`, `4.2`, `5.0`, `5.1`, `5.2`, `6.0`, `6.1`, `7.0`, `7.1`,
+or `7.2`.
 
 ## Contributing
 
@@ -241,4 +242,4 @@ focus on a single release, use `appraisal rails-X.Y rake`, where `X.Y` can be
 
 This software is Made in Italy :it: :smile:.
 
-[eaco-e-telamone]: http://upload.wikimedia.org/wikipedia/commons/7/70/Aeacus_telemon.jpg
+[eaco-e-telamone]: https://upload.wikimedia.org/wikipedia/commons/7/70/Aeacus_telemon.jpg
