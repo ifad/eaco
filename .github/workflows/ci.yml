@@ -191,12 +191,30 @@ jobs:
 
           echo "version=$rubygems" >> "$GITHUB_OUTPUT"
 
+      - name: Decide Bundler
+        id: setup-bundler
+        run: |
+          rv="${{ matrix.ruby-version }}"
+          gf="${{ matrix.gemfile }}"
+
+          # Default Bundler
+          bundler=default
+
+          # Only for:
+          # - Ruby 2.4 + rails_4.0
+          if [ "$rv" = "2.4" ] && [ "$gf" = "rails_4.0" ]; then
+            bundler=1.17.3
+          fi
+
+          echo "version=$bundler" >> "$GITHUB_OUTPUT"
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
           rubygems: ${{ steps.setup-params.outputs.version }}
+          bundler: ${{ steps.setup-bundler.outputs.version }}
 
       - name: Run Specs
         run: |
