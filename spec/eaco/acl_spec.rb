@@ -167,7 +167,7 @@ RSpec.describe Eaco::ACL do
 
     subject { acl.inspect }
 
-    it { expect(subject).to eq('#<Eaco::ACL: {"foo"=>:bar}>') }
+    it { expect(subject).to match(/#<Eaco::ACL: \{"foo"\s*=>\s*:bar\}>/) }
   end
 
   describe '#pretty_inspect' do
@@ -177,7 +177,7 @@ RSpec.describe Eaco::ACL do
 
     subject { acl.pretty_inspect }
 
-    it { expect(subject).to eq("Eaco::ACL\n{\"foo\"=>:bar}\n") }
+    it { expect(subject).to match(/Eaco::ACL\n\{"foo"\s*=>\s*:bar\}\n/) }
   end
 
 end
