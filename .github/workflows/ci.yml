@@ -1,0 +1,182 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Ruby ${{ matrix.ruby-version }}, ${{ matrix.gemfile }}, PG ${{ matrix.postgres-version }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        ruby-version: ['3.1']
+        gemfile: [rails_6.1]
+        postgres-version: ['12']
+
+        include:
+          - ruby-version: '2.1'
+            gemfile: rails_3.2
+            postgres-version: 10
+          - ruby-version: '2.1'
+            gemfile: rails_4.0
+            postgres-version: 10
+          - ruby-version: '2.1'
+            gemfile: rails_4.1
+            postgres-version: 10
+          - ruby-version: '2.1'
+            gemfile: rails_4.2
+            postgres-version: 12
+
+          - ruby-version: '2.2'
+            gemfile: rails_3.2
+            postgres-version: 10
+          - ruby-version: '2.2'
+            gemfile: rails_4.0
+            postgres-version: 10
+          - ruby-version: '2.2'
+            gemfile: rails_4.1
+            postgres-version: 10
+          - ruby-version: '2.2'
+            gemfile: rails_4.2
+            postgres-version: 12
+          - ruby-version: '2.2'
+            gemfile: rails_5.0
+            postgres-version: 12
+          - ruby-version: '2.2'
+            gemfile: rails_5.1
+            postgres-version: 12
+          - ruby-version: '2.2'
+            gemfile: rails_5.2
+            postgres-version: 12
+
+          - ruby-version: '2.3'
+            gemfile: rails_3.2
+            postgres-version: 10
+          - ruby-version: '2.3'
+            gemfile: rails_4.2
+            postgres-version: 12
+          - ruby-version: '2.3'
+            gemfile: rails_5.0
+            postgres-version: 12
+          - ruby-version: '2.3'
+            gemfile: rails_5.1
+            postgres-version: 12
+          - ruby-version: '2.3'
+            gemfile: rails_5.2
+            postgres-version: 12
+
+          - ruby-version: '2.4'
+            gemfile: rails_4.2
+            postgres-version: 12
+          - ruby-version: '2.4'
+            gemfile: rails_5.0
+            postgres-version: 12
+          - ruby-version: '2.4'
+            gemfile: rails_5.1
+            postgres-version: 12
+          - ruby-version: '2.4'
+            gemfile: rails_5.2
+            postgres-version: 12
+
+          - ruby-version: '2.5'
+            gemfile: rails_5.0
+            postgres-version: 12
+          - ruby-version: '2.5'
+            gemfile: rails_5.1
+            postgres-version: 12
+          - ruby-version: '2.5'
+            gemfile: rails_5.2
+            postgres-version: 12
+          - ruby-version: '2.5'
+            gemfile: rails_6.0
+            postgres-version: 12
+          - ruby-version: '2.5'
+            gemfile: rails_6.1
+            postgres-version: 12
+
+          - ruby-version: '2.6'
+            gemfile: rails_5.0
+            postgres-version: 12
+          - ruby-version: '2.6'
+            gemfile: rails_5.1
+            postgres-version: 12
+          - ruby-version: '2.6'
+            gemfile: rails_5.2
+            postgres-version: 12
+          - ruby-version: '2.6'
+            gemfile: rails_6.0
+            postgres-version: 12
+          - ruby-version: '2.6'
+            gemfile: rails_6.1
+            postgres-version: 12
+
+          - ruby-version: '2.7'
+            gemfile: rails_5.2
+            postgres-version: 12
+          - ruby-version: '2.7'
+            gemfile: rails_6.0
+            postgres-version: 12
+          - ruby-version: '2.7'
+            gemfile: rails_6.1
+            postgres-version: 12
+
+          - ruby-version: '3.0'
+            gemfile: rails_6.0
+            postgres-version: 12
+          - ruby-version: '3.0'
+            gemfile: rails_6.1
+            postgres-version: 12
+
+    env:
+      BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}.gemfile
+      EACO_AR_CONFIG: ./features/active_record.github.yml
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: ankane/setup-postgres@v1
+        with:
+          postgres-version: ${{ matrix.postgres-version }}
+          database: eaco
+
+      - name: Decide RubyGems
+        id: setup-params
+        run: |
+          rv="${{ matrix.ruby-version }}"
+          gf="${{ matrix.gemfile }}"
+
+          # Default RubyGems
+          rubygems=default
+
+          # Only for:
+          # - Ruby 2.3 + rails_3.2
+          # - Ruby 2.3 + rails_4.2
+          # - Ruby 2.4 + rails_4.2
+          if { [ "$rv" = "2.3" ] && { [ "$gf" = "rails_3.2" ] || [ "$gf" = "rails_4.2" ]; }; } ||
+             { [ "$rv" = "2.4" ] && [ "$gf" = "rails_4.2" ]; }; then
+            rubygems=2.7.11
+          fi
+
+          echo "version=$rubygems" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
+          rubygems: ${{ steps.setup-params.outputs.version }}
+
+      - name: Run Specs
+        run: |
+          bundle exec rspec
+
+      - name: Run Cucumber features
+        run: |
+          bundle exec cucumber -f pretty

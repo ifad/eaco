@@ -2,6 +2,7 @@
 
 source "https://rubygems.org"
 
+gem "loofah", "~> 2.20.0"
 gem "rails", "~> 5.2.0"
 gem "term-ansicolor", "~> 1.7.0"
 
