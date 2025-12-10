@@ -1,6 +1,6 @@
 module Eaco
 
-  # Persistance adapters for ACL objects and authorized collections extractor
+  # Persistence adapters for ACL objects and authorized collections extractor
   # strategies.
   #
   # @see ActiveRecord

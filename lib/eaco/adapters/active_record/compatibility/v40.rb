@@ -10,7 +10,7 @@ module Eaco
           ##
           #
           # Sets up the OID Type Map, reloads it, hacks native database types,
-          # and makes jsonb mimick itself as a json - for the rest of the AR
+          # and makes jsonb mimic itself as a json - for the rest of the AR
           # machinery to work intact.
           #
           # @param base [Class] the +ActiveRecord+ model to mangle

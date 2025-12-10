@@ -21,7 +21,7 @@ module Eaco
       end
 
       ##
-      # Checks whether the model's data structure fits the ACL persistance
+      # Checks whether the model's data structure fits the ACL persistence
       # requirements.
       #
       # @param base [Class] your application's model

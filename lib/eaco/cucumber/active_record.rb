@@ -61,14 +61,14 @@ module Eaco
       end
 
       ##
-      # Returns an Hash wit the database configuration.
+      # Returns an Hash with the database configuration.
       #
       # Caveat:the returned +Hash+ has a custom +.to_s+ method that formats
       # the configuration as a +pgsql://+ URL.
       #
       # @return [Hash] the current database configuration
       #
-      # @see {#config_file}
+      # @see #config_file
       #
       def configuration
         @_config ||= YAML.load(config_file.read).tap do |conf|
@@ -84,7 +84,7 @@ module Eaco
 
       ##
       # @return [Pathname] the currently configured configuration file. Override
-      #                    using the +EACO_AR_CONFIG' envinronment variable.
+      #                    using the +EACO_AR_CONFIG' environment variable.
       #
       def config_file
         Pathname.new(ENV['EACO_AR_CONFIG'] || default_config_file)
@@ -147,7 +147,7 @@ module Eaco
       #
       # @param block [Proc]
       # @return [nil]
-      # @see {Rake::Utils.capture_stdout}
+      # @see Rake::Utils.capture_stdout
       #
       def log_stdout(&block)
         stdout = Rake::Utils.capture_stdout(&block)

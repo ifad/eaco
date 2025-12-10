@@ -60,7 +60,7 @@ module Eaco
   end
 
   ##
-  # Evaluates the given authorization rules +source+, orignally found on
+  # Evaluates the given authorization rules +source+, originally found on
   # +path+.
   #
   # @param source [String] {DSL} source code

@@ -90,7 +90,7 @@ module Eaco
     #                  mmmmmmMMMM"
     #                                   ch1x0r
     #
-    #         http://ascii.co.uk/art/anime
+    #         https://ascii.co.uk/art/anime
     #
     # = Scenario
     #
@@ -145,7 +145,7 @@ module Eaco
       #
       # @param name [String] the model name
       # @param definition [String] the {DSL} code
-      # @see {#find_model}
+      # @see #find_model
       #
       # @return [void]
       #

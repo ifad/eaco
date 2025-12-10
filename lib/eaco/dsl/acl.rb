@@ -12,7 +12,7 @@ module Eaco
     # * Defines syntactic sugar on the ACL to easily retrieve {Actor}s with a
     #   specific Role ({#define_role_getters})
     #
-    # * Installs {ACL} objects persistance for the supported ORMs
+    # * Installs {ACL} objects persistence for the supported ORMs
     #   ({#install_persistance})
     #
     # * Installs the authorized collection extraction strategy
@@ -61,7 +61,7 @@ module Eaco
 
       ##
       # Define getter methods on the ACL for each role, syntactic sugar
-      # for calling {ACL#find_by_role}.
+      # for calling {Eaco::ACL#find_by_role}.
       #
       # Example:
       #
@@ -81,7 +81,7 @@ module Eaco
       end
 
       ##
-      # Sets up the persistance layer for ACLs (+#acl+ and +#acl=+).
+      # Sets up the persistence layer for ACLs (+#acl+ and +#acl=+).
       #
       # These APIs can be implemented directly in your Resource model, as long
       # as the +acl+ accessor accepts and returns the Resource model's ACL
