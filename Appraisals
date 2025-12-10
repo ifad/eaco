@@ -18,24 +18,29 @@ appraise 'rails-4.1' do
 end
 
 appraise 'rails-4.2' do
+  gem 'bigdecimal', '< 2'
+  gem 'loofah', '~> 2.20.0'
   gem 'rails', '~> 4.2.0'
   gem 'pg', '~> 0.21'
   gem 'term-ansicolor', '~> 1.7.0'
 end
 
 appraise 'rails-5.0' do
+  gem 'loofah', '~> 2.20.0'
   gem 'rails', '~> 5.0.0'
   gem 'pg', '~> 0.21'
   gem 'term-ansicolor', '~> 1.7.0'
 end
 
 appraise 'rails-5.1' do
+  gem 'loofah', '~> 2.20.0'
   gem 'rails', '~> 5.1.0'
   gem 'pg', '~> 0.21'
   gem 'term-ansicolor', '~> 1.7.0'
 end
 
 appraise 'rails-5.2' do
+  gem 'loofah', '~> 2.20.0'
   gem 'rails', '~> 5.2.0'
   gem 'term-ansicolor', '~> 1.7.0'
 end

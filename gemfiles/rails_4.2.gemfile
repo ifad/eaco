@@ -2,6 +2,8 @@
 
 source "https://rubygems.org"
 
+gem "bigdecimal", "< 2"
+gem "loofah", "~> 2.20.0"
 gem "rails", "~> 4.2.0"
 gem "pg", "~> 0.21"
 gem "term-ansicolor", "~> 1.7.0"

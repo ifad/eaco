@@ -1,4 +1,4 @@
-name: Ruby specs
+name: CI
 
 on:
   push:
@@ -11,33 +11,38 @@ permissions:
 
 jobs:
   test:
-    name: Ruby specs
+    name: Ruby ${{ matrix.ruby-version }}, ${{ matrix.gemfile }}, PG ${{ matrix.postgres-version }}
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
+        ruby-version: ['3.1']
+        gemfile: [rails_6.1]
+        postgres-version: ['12']
+
         include:
           - ruby-version: '2.1'
             gemfile: rails_3.2
-            postgres-version: 9
+            postgres-version: 10
           - ruby-version: '2.1'
             gemfile: rails_4.0
-            postgres-version: 9
+            postgres-version: 10
           - ruby-version: '2.1'
             gemfile: rails_4.1
-            postgres-version: 9
+            postgres-version: 10
           - ruby-version: '2.1'
             gemfile: rails_4.2
             postgres-version: 12
 
           - ruby-version: '2.2'
             gemfile: rails_3.2
-            postgres-version: 9
+            postgres-version: 10
           - ruby-version: '2.2'
             gemfile: rails_4.0
-            postgres-version: 9
+            postgres-version: 10
           - ruby-version: '2.2'
             gemfile: rails_4.1
+            postgres-version: 10
           - ruby-version: '2.2'
             gemfile: rails_4.2
             postgres-version: 12
@@ -53,7 +58,7 @@ jobs:
 
           - ruby-version: '2.3'
             gemfile: rails_3.2
-            postgres-version: 12
+            postgres-version: 10
           - ruby-version: '2.3'
             gemfile: rails_4.2
             postgres-version: 12
@@ -126,18 +131,12 @@ jobs:
             gemfile: rails_6.0
             postgres-version: 12
           - ruby-version: '3.0'
-            gemfile: rails_6.1
-            postgres-version: 12
-
-          - ruby-version: '3.1'
             gemfile: rails_6.1
             postgres-version: 12
 
     env:
       BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}.gemfile
       EACO_AR_CONFIG: ./features/active_record.github.yml
-
-    continue-on-error: true
 
     steps:
       - uses: actions/checkout@v6
@@ -174,7 +173,7 @@ jobs:
           bundler-cache: true
           rubygems: ${{ steps.setup-params.outputs.version }}
 
-      - name: Run specs
+      - name: Run Specs
         run: |
           bundle exec rspec
 
