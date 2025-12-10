@@ -164,7 +164,7 @@ jobs:
       EACO_AR_CONFIG: ./features/active_record.github.yml
 
     steps:
-      - uses: actions/checkout@v8
+      - uses: actions/checkout@v6
 
       - uses: ankane/setup-postgres@v1
         with:
