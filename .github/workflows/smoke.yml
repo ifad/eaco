@@ -1,0 +1,42 @@
+name: Smoke
+
+# Fast, Postgres-free authorization smoke for the Ruby 4 / Rails 8.1 upgrade.
+# The full pg + cucumber matrix lives in ci.yml; this proves the compatibility
+# layer installs and Actor#can? resolves on the new stack (and still on the old
+# one) using an in-memory ACL over sqlite.
+
+on:
+  push:
+    branches: [ master, "upgrade/**" ]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # upgrade target
+          - { ruby: "4.0.5", rails: "~> 8.1.0" }
+          - { ruby: "3.4",   rails: "~> 8.1.0" }
+          - { ruby: "3.4",   rails: "~> 7.2.0" }
+          # backward compat — consumers still on the old stack (explicit V61
+          # support module, sqlite3 1.4 for Ruby 2.7)
+          - { ruby: "2.7",   rails: "~> 6.1.0", sqlite3: "~> 1.4.0" }
+    name: "ruby ${{ matrix.ruby }} / rails ${{ matrix.rails }}"
+    env:
+      BUNDLE_GEMFILE: test/Gemfile.ci
+      RAILS_VERSION: ${{ matrix.rails }}
+      SQLITE3_VERSION: ${{ matrix.sqlite3 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: Smoke (authorize on the version stack)
+        run: bundle exec ruby test/smoke.rb

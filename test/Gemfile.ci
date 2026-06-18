@@ -1,0 +1,13 @@
+# CI / smoke Gemfile. eaco declares no runtime deps (the host app brings Rails),
+# so we pin the stack here. RAILS_VERSION / SQLITE3_VERSION swept by the matrix.
+source 'https://rubygems.org'
+
+# GitHub Actions sets an unspecified matrix var to "" (not unset), so a bare
+# ENV.fetch(...) returns "" and `gem 'x', ""` raises Illformed requirement.
+# Treat blank as absent.
+ci = ->(name, default = nil) { v = ENV[name].to_s.strip; v.empty? ? default : v }
+
+gem 'eaco', path: '..'   # runtime deps only (eaco declares none); skips pg/guard/etc.
+
+gem 'rails',   ci.('RAILS_VERSION', '~> 8.1.0')
+gem 'sqlite3', ci.('SQLITE3_VERSION', '>= 0')
