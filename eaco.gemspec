@@ -25,7 +25,10 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "appraisal"
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "guard-rspec"
-  spec.add_development_dependency "cucumber"
+  # Pin cucumber: unpinned, the resolver picks wildly different versions per row
+  # (10.x on some, the ancient 3.2.0 on Ruby 4) — 3.2.0 needs ostruct and the
+  # profile ERB path breaks on Ruby 3.4. ~> 9.2 is consistent and Ruby-4 clean.
+  spec.add_development_dependency "cucumber", "~> 9.2"
   spec.add_development_dependency "guard-cucumber"
   spec.add_development_dependency "yard-cucumber"
   spec.add_development_dependency "coveralls"
@@ -33,4 +36,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "multi_json"
   spec.add_development_dependency "rails"
   spec.add_development_dependency "pg"
+  # No longer default gems on Ruby 3.4+/4.0 — needed by the test toolchain.
+  spec.add_development_dependency "ostruct"
+  spec.add_development_dependency "base64"
+  spec.add_development_dependency "bigdecimal"
 end
