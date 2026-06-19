@@ -167,7 +167,9 @@ RSpec.describe Eaco::ACL do
 
     subject { acl.inspect }
 
-    it { expect(subject).to eq('#<Eaco::ACL: {"foo"=>:bar}>') }
+    # Hash#inspect spacing changed in Ruby 3.4 ("a"=>1 -> "a" => 1); derive the
+    # expectation from the same Ruby so it holds on every version.
+    it { expect(subject).to eq("#<Eaco::ACL: #{ { 'foo' => :bar }.inspect }>") }
   end
 
   describe '#pretty_inspect' do
@@ -177,7 +179,7 @@ RSpec.describe Eaco::ACL do
 
     subject { acl.pretty_inspect }
 
-    it { expect(subject).to eq("Eaco::ACL\n{\"foo\"=>:bar}\n") }
+    it { expect(subject).to eq("Eaco::ACL\n#{ { 'foo' => :bar }.pretty_inspect }") }
   end
 
 end

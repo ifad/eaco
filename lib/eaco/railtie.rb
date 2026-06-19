@@ -17,17 +17,14 @@ module Eaco
     #
     # @!method parse_rules
     #
-    initializer 'eaco.parse_rules' do
+    initializer 'eaco.parse_rules' do |app|
       # :nocov:
-      Eaco.parse_default_rules_file!
-
-      unless Rails.configuration.cache_classes
-        if defined? ActiveSupport::Reloader
-          ActiveSupport::Reloader.to_prepare { Eaco.parse_default_rules_file! }
-        else
-          ActionDispatch::Reloader.to_prepare { Eaco.parse_default_rules_file! }
-        end
-      end
+      # Parse in a to_prepare hook, not inline: the rules reference application
+      # models (e.g. ::Dossier), which under Zeitwerk (Rails 7+) cannot be
+      # autoloaded during initialization. to_prepare runs after the app is
+      # initialized (once at boot in every env, and again on each dev reload),
+      # by which point the autoloaders are ready.
+      app.config.to_prepare { Eaco.parse_default_rules_file! }
       # :nocov:
     end
 
