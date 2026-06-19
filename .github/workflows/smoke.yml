@@ -33,7 +33,7 @@ jobs:
       RAILS_VERSION: ${{ matrix.rails }}
       SQLITE3_VERSION: ${{ matrix.sqlite3 }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
