@@ -74,11 +74,22 @@ module Eaco
           # No exact Vxx module: Active Record 7.0+ all share the same
           # requirements, so fall back to {Modern} rather than raising on every
           # new Rails release. Genuinely unknown/old versions still raise.
-          return Modern if ::ActiveRecord::VERSION::MAJOR >= 7
+          # The major is taken from the looked-up version (so a stubbed
+          # active_record_version is honoured), not the live constant.
+          return Modern if active_record_major >= 7
 
           raise Eaco::Error, <<-EOF
             Unsupported Active Record version: #{active_record_version}
           EOF
+        end
+
+        ##
+        # @return [Integer] the major of the {#active_record_version} being
+        #   looked up. The minor is always a single digit in Rails, so the
+        #   major is everything but the last character of the joined version.
+        #
+        def active_record_major
+          active_record_version.to_s[0..-2].to_i
         end
 
         ##
