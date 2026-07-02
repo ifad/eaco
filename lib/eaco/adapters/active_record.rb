@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Eaco
   module Adapters
 
@@ -31,7 +33,14 @@ module Eaco
       def self.included(base)
         Compatibility.new(base).check!
 
-        return unless base.table_exists?
+        # If the database is not reachable or does not exist yet (e.g. while
+        # running `rails db:create`), skip the schema validation so the app
+        # can still boot and run the very tasks that will create it.
+        begin
+          return unless base.table_exists?
+        rescue ::ActiveRecord::NoDatabaseError, ::ActiveRecord::ConnectionNotEstablished
+          return
+        end
 
         column = base.columns_hash.fetch('acl', nil)
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'eaco/coverage'
 
 module Eaco
@@ -16,16 +18,14 @@ module Eaco
       ##
       # Main +Eaco+ rake task.
       #
-      # If running appraisals or running within Travis CI, run all specs and
-      # cucumber features.
+      # If running appraisals, run all specs and cucumber features and print a
+      # coverage summary.
       #
       # The concept here is to prepare the environment with the gems set we
-      # are testing against, and this is done by Appraisals and Travis, albeit
-      # in a different way. The first uses the +Appraisals+ file, the second
-      # instead relies on the +.travis.yml+ configuration.
+      # are testing against, which is done by the +Appraisals+ file. In CI the
+      # matrix runs each gemfile in turn (see +.github/workflows/ci.yml+).
       #
-      # Documentation is generated at the end, once if running locally, but
-      # multiple times, once for each appraisal, on Travis.
+      # Documentation is generated at the end when running locally.
       #
       def initialize
         if running_appraisals?
@@ -33,13 +33,6 @@ module Eaco
             run_specs
             run_cucumber
             output_coverage
-          end
-
-        elsif running_in_travis?
-          task :default do
-            run_specs
-            run_cucumber
-            report_coverage
           end
 
         else
@@ -118,15 +111,6 @@ module Eaco
       end
 
       ##
-      # Reports coverage data
-      #
-      # @return [void]
-      #
-      def report_coverage
-        Eaco::Coverage.report!
-      end
-
-      ##
       # Formats code coverage results and prints a summary
       #
       # @return [void]
@@ -200,13 +184,6 @@ module Eaco
       #
       def running_appraisals?
         ENV["APPRAISAL_INITIALIZED"]
-      end
-
-      ##
-      # @return [Boolean] Are we running on Travis CI?
-      #
-      def running_in_travis?
-        ENV["TRAVIS"]
       end
     end
 

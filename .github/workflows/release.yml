@@ -1,0 +1,40 @@
+name: Release
+
+# Publishes the gem to RubyGems when a version tag is pushed, using RubyGems
+# Trusted Publishing (OIDC) — no API key stored in repository secrets.
+#
+# One-time setup on rubygems.org: add this repository and the `release.yml`
+# workflow as a trusted publisher for the `eaco` gem.
+# https://guides.rubygems.org/trusted-publishing/
+#
+# To cut a release: bump Eaco::VERSION, update CHANGELOG.md, then
+#   git tag v2.0.0.beta1 && git push origin v2.0.0.beta1
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: release
+
+    permissions:
+      contents: write   # create the GitHub Release
+      id-token: write   # exchange the OIDC token with RubyGems
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+          bundler-cache: true
+
+      - name: Build and push gem to RubyGems
+        uses: rubygems/release-gem@v1

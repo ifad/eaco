@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 begin
   require 'active_record'
 rescue LoadError
@@ -96,8 +98,8 @@ module Eaco
       # @raise [Errno::ENOENT] if the configuration file is not found.
       #
       # :nocov:
-      # This isn't ran by Travis as we set EACO_AR_CONFIG, so Coveralls raises
-      # a false positive.
+      # This isn't run in CI as we set EACO_AR_CONFIG, so coverage would report
+      # a false negative here.
       def default_config_file
         Pathname.new('features/active_record.yml').realpath
 

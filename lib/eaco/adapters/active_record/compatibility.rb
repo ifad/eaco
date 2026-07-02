@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Eaco
   module Adapters
     module ActiveRecord
@@ -15,6 +17,11 @@ module Eaco
         autoload :V52, 'eaco/adapters/active_record/compatibility/v52.rb'
         autoload :V60, 'eaco/adapters/active_record/compatibility/v60.rb'
         autoload :V61, 'eaco/adapters/active_record/compatibility/v61.rb'
+        autoload :V70, 'eaco/adapters/active_record/compatibility/v70.rb'
+        autoload :V71, 'eaco/adapters/active_record/compatibility/v71.rb'
+        autoload :V72, 'eaco/adapters/active_record/compatibility/v72.rb'
+        autoload :V80, 'eaco/adapters/active_record/compatibility/v80.rb'
+        autoload :V81, 'eaco/adapters/active_record/compatibility/v81.rb'
 
         autoload :Scoped,    'eaco/adapters/active_record/compatibility/scoped.rb'
         autoload :Sanitized, 'eaco/adapters/active_record/compatibility/sanitized.rb'

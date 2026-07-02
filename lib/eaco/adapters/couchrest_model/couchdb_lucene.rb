@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Eaco
   module Adapters
     module CouchrestModel

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Eaco
 
   autoload :Controller, 'eaco/controller'
@@ -17,16 +19,14 @@ module Eaco
     #
     # @!method parse_rules
     #
-    initializer 'eaco.parse_rules' do
+    initializer 'eaco.parse_rules' do |app|
       # :nocov:
-      Eaco.parse_default_rules_file!
-
-      unless Rails.configuration.cache_classes
-        if defined? ActiveSupport::Reloader
-          ActiveSupport::Reloader.to_prepare { Eaco.parse_default_rules_file! }
-        else
-          ActionDispatch::Reloader.to_prepare { Eaco.parse_default_rules_file! }
-        end
+      # Application constants (models) cannot be autoloaded while Rails is
+      # booting: with Zeitwerk they become available only once the app is
+      # fully initialized. +to_prepare+ runs after boot and again on each
+      # code reload in development.
+      app.config.to_prepare do
+        Eaco.parse_default_rules_file!
       end
       # :nocov:
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Eaco
 
   # Persistence adapters for ACL objects and authorized collections extractor

@@ -167,7 +167,9 @@ RSpec.describe Eaco::ACL do
 
     subject { acl.inspect }
 
-    it { expect(subject).to eq('#<Eaco::ACL: {"foo"=>:bar}>') }
+    # Built from the underlying Hash representation so the expectation tracks
+    # Ruby's own formatting (Ruby 3.4+ adds spaces around the `=>`).
+    it { expect(subject).to eq("#<Eaco::ACL: #{ { 'foo' => :bar }.inspect }>") }
   end
 
   describe '#pretty_inspect' do
@@ -177,7 +179,7 @@ RSpec.describe Eaco::ACL do
 
     subject { acl.pretty_inspect }
 
-    it { expect(subject).to eq("Eaco::ACL\n{\"foo\"=>:bar}\n") }
+    it { expect(subject).to eq("Eaco::ACL\n#{ { 'foo' => :bar }.pretty_inspect }") }
   end
 
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec::Matchers.define :be_able_to do |*args|
   match do |actor|
     actor.can?(*args)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'eaco/error'
 require 'eaco/version'
 

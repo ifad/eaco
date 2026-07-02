@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'eaco/dsl/base'
 
 module Eaco

@@ -1,4 +1,5 @@
-require 'coveralls'
+# frozen_string_literal: true
+
 require 'simplecov'
 require 'eaco/rake'
 
@@ -18,19 +19,7 @@ module Eaco
     # @return [nil]
     #
     def start!
-      Coveralls.wear_merged!(&simplecov_configuration)
-
-      nil
-    end
-
-    ##
-    # Reports coverage data to the remote service
-    #
-    # @return [nil]
-    #
-    def report!
-      simplecov
-      Coveralls.push!
+      SimpleCov.start(&simplecov_configuration)
 
       nil
     end

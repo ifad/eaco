@@ -10,7 +10,7 @@ Feature: Authorization rules error handling
      """
     Then I should receive a DSL error SyntaxError saying
      """
-     \(feature\):1: syntax error, unexpected '=', expecting end-of-input
+     \(feature\):1.*unexpected '='
      """
 
   Scenario: Referencing a non-existing model

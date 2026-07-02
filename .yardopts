@@ -2,5 +2,4 @@
 --private
 --no-private
 --hide-void-return
---plugin cucumber
 '{lib,features}/**/*.rb' - README.md LICENSE.txt
